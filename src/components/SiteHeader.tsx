@@ -36,10 +36,10 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           className="transition-opacity hover:opacity-75"
           style={{
             fontFamily: "var(--font-cormorant)",
-            fontSize: "13px",
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            fontWeight: 500,
+            fontSize: "15px",
+            letterSpacing: "0.04em",
+            fontWeight: 400,
+            fontStyle: "italic",
             color,
           }}
         >

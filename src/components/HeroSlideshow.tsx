@@ -109,9 +109,10 @@ export function HeroSlideshow({ images, name, title }: Props) {
           className="animate-fade-up text-white text-center"
           style={{
             fontFamily: "var(--font-cormorant)",
-            fontWeight: 400,
-            fontSize: "clamp(2.8rem, 7vw, 7rem)",
-            letterSpacing: "-0.01em",
+            fontWeight: 300,
+            fontStyle: "italic",
+            fontSize: "clamp(3rem, 8vw, 8rem)",
+            letterSpacing: "0.01em",
             lineHeight: 1,
             animationDelay: "0.2s",
           }}
