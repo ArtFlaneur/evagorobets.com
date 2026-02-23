@@ -95,39 +95,31 @@ export function HeroSlideshow({ images, name, title }: Props) {
 
       {/* ── Intro overlay: black, slides up on exit ── */}
       <div
-        className="absolute inset-0 z-20 bg-black pointer-events-none flex flex-col justify-end"
+        className="absolute inset-0 z-20 bg-black pointer-events-none flex flex-col"
         style={{
           transition: "transform 0.9s cubic-bezier(0.76, 0, 0.24, 1)",
           transform: phase === "photo" ? "translateY(-100%)" : "translateY(0)",
-          padding: "0 10vw 10vh",
+          justifyContent: "center",
+          padding: "0 10vw",
+          paddingTop: "30vh",
         }}
       >
         <p
-          className="animate-fade-up text-white"
+          className="text-white whitespace-nowrap"
           style={{
             fontFamily: "var(--font-dm-sans)",
-            fontWeight: 600,
-            fontSize: "12px",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            lineHeight: 1,
-            animationDelay: "0.3s",
-          }}
-        >
-          {name}
-        </p>
-        <p
-          className="animate-fade-in mt-2 text-white/45"
-          style={{
-            fontFamily: "var(--font-dm-sans)",
-            fontWeight: 300,
             fontSize: "11px",
             letterSpacing: "0.18em",
             textTransform: "uppercase",
-            animationDelay: "0.9s",
+            lineHeight: 1,
           }}
         >
-          {title}
+          <span className="animate-fade-in" style={{ fontWeight: 600, animationDelay: "0.3s" }}>
+            {name}
+          </span>
+          <span className="animate-fade-in text-white/45" style={{ fontWeight: 300, animationDelay: "1s" }}>
+            {" "}— {title}
+          </span>
         </p>
       </div>
 

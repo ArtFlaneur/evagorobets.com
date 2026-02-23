@@ -12,16 +12,16 @@ export function SiteHeader({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
 
-  // Start light (white) on home page while black intro is showing.
-  // HeroSlideshow writes data-hero-phase="photo" on body when overlay leaves.
-  const [light, setLight] = useState(isHome);
+  // Hidden during black intro, appears when slideshow starts.
+  // HeroSlideshow writes data-hero-phase="photo" on body when overlay slides away.
+  const [visible, setVisible] = useState(!isHome);
 
   useEffect(() => {
-    if (!isHome) { setLight(false); return; }
-    setLight(true);
+    if (!isHome) { setVisible(true); return; }
+    setVisible(false);
     const observer = new MutationObserver(() => {
       if (document.body.dataset.heroPhase === "photo") {
-        setLight(false);
+        setVisible(true);
         observer.disconnect();
       }
     });
@@ -29,11 +29,14 @@ export function SiteHeader({ locale }: { locale: Locale }) {
     return () => observer.disconnect();
   }, [isHome]);
 
-  const color = light ? "rgba(255,255,255,0.8)" : "rgba(0,0,0,0.4)";
+  const color = "rgba(0,0,0,0.4)";
   const colorTransition = "color 0.5s ease";
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-30">
+    <header
+      className="fixed top-0 left-0 right-0 z-30 transition-opacity duration-500"
+      style={{ opacity: visible ? 1 : 0, pointerEvents: visible ? "auto" : "none" }}
+    >
       <div className="mx-auto flex w-full max-w-340 items-center justify-between px-6 py-6 md:px-10">
         <Link
           href={`/${locale}`}
@@ -92,7 +95,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
 
         <div className="flex items-center gap-5" style={{ color, transition: colorTransition }}>
           <div className="hidden md:block">
-            <LanguageSwitcher currentLocale={locale} light={light} />
+            <LanguageSwitcher currentLocale={locale} />
           </div>
           <MobileMenu locale={locale} />
         </div>
