@@ -89,19 +89,8 @@ export default async function AboutPage({ params }: PageProps) {
 
   return (
     <>
-      {/* Heading */}
-      <section className="section pt-20 md:pt-32">
-        <p className="label mb-6">{t.eyebrow}</p>
-        <h1
-          className="text-[clamp(3rem,7vw,6rem)] leading-[0.95]"
-          style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
-        >
-          Eva Gorobets
-        </h1>
-      </section>
-
       {/* Bio + info */}
-      <section className="section grid gap-16 border-t border-black/[0.07] md:grid-cols-2">
+      <section className="section grid gap-16 pt-20 md:pt-32 md:grid-cols-2">
         <div>
           <div className="mb-8 overflow-hidden" style={{ width: "200px", aspectRatio: "3/4", position: "relative" }}>
             <Image
