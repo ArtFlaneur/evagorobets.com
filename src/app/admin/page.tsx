@@ -12,7 +12,7 @@ const GALLERIES = [
   { label: "Business Portraits", folder: "eva/portraits" },
   { label: "Corporate Events", folder: "eva/corporate" },
   { label: "Art & Galleries", folder: "eva/art" },
-  { label: "Featured (Home)", folder: "eva/featured" },
+  { label: "Hero Slideshow", folder: "eva/featured" },
   { label: "Portfolio", folder: "eva/portfolio" },
 ] as const;
 
@@ -210,10 +210,10 @@ export default function AdminPage() {
               className="text-3xl md:text-4xl"
               style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
             >
-              Featured (Home)
+              Hero Slideshow
             </h1>
             <p className="text-[11px] tracking-[0.1em] opacity-30 mt-1">
-              Select photos from your galleries to show on the home page
+              Select photos to show in the hero slideshow on the home page
             </p>
           </div>
 
