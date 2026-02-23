@@ -1,13 +1,15 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { EditorialGallery } from "@/components/EditorialGallery";
+import { HeroSlideshow } from "@/components/HeroSlideshow";
 import { getFeaturedGallery } from "@/lib/gallery-data";
 
 type PageProps = { params: Promise<{ locale: string }> };
 
 const content = {
   en: {
+    heroName: "Eva Gorobets",
+    heroTitle: "Photographer",
     eyebrow: "Tokyo · Melbourne · Worldwide",
     h1: ["Portrait &", "Corporate", "Photographer"],
     subhero: "Business portraits, corporate events and art world photography.\nAustralian photographer based in Tokyo.",
@@ -49,6 +51,8 @@ const content = {
     ctaBtn: "Contact / Book",
   },
   jp: {
+    heroName: "Eva Gorobets",
+    heroTitle: "Photographer",
     eyebrow: "東京 · メルボルン · 世界各地",
     h1: ["ポートレート &", "コーポレート", "フォトグラファー"],
     subhero: "ビジネスポートレート、コーポレートイベント、アート写真。\n東京在住のオーストラリア人フォトグラファー。",
@@ -90,6 +94,8 @@ const content = {
     ctaBtn: "お問い合わせ・予約",
   },
   ru: {
+    heroName: "Eva Gorobets",
+    heroTitle: "Photographer",
     eyebrow: "Токио · Мельбурн · Весь мир",
     h1: ["Портретный &", "корпоративный", "фотограф"],
     subhero: "Бизнес-портреты, корпоративные мероприятия и фотография арт-мира.\nАвстралийский фотограф, живущий в Токио.",
@@ -141,42 +147,13 @@ export default async function LocaleHome({ params }: PageProps) {
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative flex min-h-screen flex-col justify-end overflow-hidden bg-[#1a1916]">
-        <Image
-          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1800&q=80"
-          alt="Business portrait — Eva Gorobets Photography, Tokyo"
-          fill
-          priority
-          className="object-cover opacity-60"
-          style={{ objectPosition: "50% 30%" }}
-        />
-        <div className="relative section pb-16 pt-36">
-          <p className="label mb-6" style={{ color: "rgba(255,255,255,0.55)" }}>{t.eyebrow}</p>
-          <h1
-            className="max-w-4xl text-[clamp(3rem,8vw,7.5rem)] leading-[0.95] tracking-[-0.02em] text-white"
-            style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
-          >
-            {t.h1[0]}<br />
-            {t.h1[1]}<br />
-            {t.h1[2]}
-          </h1>
-          <p className="mt-8 max-w-md text-sm leading-relaxed whitespace-pre-line" style={{ color: "rgba(255,255,255,0.6)" }}>
-            {t.subhero}
-          </p>
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-            <Link href={`/${locale}/tokyo-business-portraits`} className="btn" style={{ borderColor: "rgba(255,255,255,0.5)", color: "white" }}>
-              {t.cta1}
-            </Link>
-            <Link href={`/${locale}/art-galleries-photography`} className="btn" style={{ borderColor: "rgba(255,255,255,0.5)", color: "white" }}>
-              {t.cta2}
-            </Link>
-            <Link href={`/${locale}/contact-booking`} className="btn-ghost" style={{ color: "rgba(255,255,255,0.7)" }}>
-              {t.cta3}
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* Hero slideshow */}
+      <HeroSlideshow
+        images={featuredGallery}
+        name={t.heroName}
+        title={t.heroTitle}
+        locale={locale}
+      />
 
       {/* Services */}
       <section className="section border-t border-black/[0.07]">
