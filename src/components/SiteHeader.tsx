@@ -35,11 +35,11 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           href={`/${locale}`}
           className="transition-opacity hover:opacity-75"
           style={{
-            fontFamily: "var(--font-cormorant)",
-            fontSize: "15px",
-            letterSpacing: "0.04em",
-            fontWeight: 400,
-            fontStyle: "italic",
+            fontFamily: "var(--font-dm-sans)",
+            fontSize: "11px",
+            letterSpacing: "0.22em",
+            fontWeight: 300,
+            textTransform: "uppercase",
             color,
           }}
         >

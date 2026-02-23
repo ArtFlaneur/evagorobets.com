@@ -92,7 +92,7 @@ export function HeroSlideshow({ images, name, title }: Props) {
               fill
               priority={i === 0}
               sizes="100vw"
-              className="object-cover"
+              className="object-contain"
             />
           </div>
         ))}
@@ -108,11 +108,11 @@ export function HeroSlideshow({ images, name, title }: Props) {
         <p
           className="animate-fade-up text-white text-center"
           style={{
-            fontFamily: "var(--font-cormorant)",
+            fontFamily: "var(--font-dm-sans)",
             fontWeight: 300,
-            fontStyle: "italic",
-            fontSize: "clamp(3rem, 8vw, 8rem)",
-            letterSpacing: "0.01em",
+            fontSize: "clamp(2rem, 5vw, 5rem)",
+            letterSpacing: "0.3em",
+            textTransform: "uppercase",
             lineHeight: 1,
             animationDelay: "0.2s",
           }}

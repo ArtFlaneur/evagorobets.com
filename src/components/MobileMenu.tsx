@@ -37,7 +37,7 @@ export function MobileMenu({ locale }: { locale: Locale }) {
           <Link
             href={`/${locale}`}
             onClick={() => setOpen(false)}
-            style={{ fontFamily: "var(--font-cormorant)", fontSize: "15px", letterSpacing: "0.04em", fontWeight: 400, fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-dm-sans)", fontSize: "11px", letterSpacing: "0.22em", fontWeight: 300, textTransform: "uppercase" }}
           >
             Eva Gorobets
           </Link>
