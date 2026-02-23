@@ -103,6 +103,61 @@ export async function getCloudinaryResources(
 }
 
 /**
+ * Fetch raw resources by tag (for featured picker).
+ */
+export async function getCloudinaryByTag(
+  tag: string
+): Promise<CloudinaryResource[]> {
+  if (!cloudinaryConfigured()) return [];
+
+  const cloud = process.env.CLOUDINARY_CLOUD_NAME;
+  const url =
+    `https://api.cloudinary.com/v1_1/${cloud}/resources/image/tags/${encodeURIComponent(tag)}` +
+    `?max_results=200&context=true`;
+
+  const res = await fetch(url, {
+    headers: { Authorization: basicAuth() },
+    cache: "no-store",
+  });
+
+  if (!res.ok) return [];
+  const data = await res.json();
+  return (data.resources ?? []) as CloudinaryResource[];
+}
+
+/**
+ * Add or remove a tag on a single image.
+ * action: "add" | "remove"
+ */
+export async function setCloudinaryTag(
+  publicId: string,
+  tag: string,
+  action: "add" | "remove"
+): Promise<boolean> {
+  if (!cloudinaryConfigured()) return false;
+
+  const cloud = process.env.CLOUDINARY_CLOUD_NAME;
+  const url = `https://api.cloudinary.com/v1_1/${cloud}/image/tags`;
+
+  const body = new URLSearchParams({
+    tag,
+    command: action,
+  });
+  body.append("public_ids[]", publicId);
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: basicAuth(),
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: body.toString(),
+  });
+
+  return res.ok;
+}
+
+/**
  * Delete a single image by public_id.
  */
 export async function deleteCloudinaryImage(publicId: string): Promise<boolean> {

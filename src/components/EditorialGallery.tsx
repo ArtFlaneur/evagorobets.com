@@ -30,7 +30,7 @@ export function EditorialGallery({ items }: { items: GalleryImage[] }) {
             key={`${item.src}-${index}`}
             type="button"
             onClick={() => setActiveIndex(index)}
-            className="group mb-0.5 block w-full overflow-hidden break-inside-avoid"
+            className="group mb-0.5 block w-full overflow-hidden break-inside-avoid cursor-pointer"
           >
             <div className={`relative w-full ${aspectClasses[item.aspect]}`}>
               <Image
@@ -38,7 +38,7 @@ export function EditorialGallery({ items }: { items: GalleryImage[] }) {
                 alt={item.alt}
                 fill
                 sizes="(max-width: 768px) 50vw, 33vw"
-                className="object-cover transition-all duration-500 opacity-90 group-hover:opacity-100 group-hover:scale-[1.02]"
+                className="object-cover transition-opacity duration-300 group-hover:opacity-75"
               />
             </div>
           </button>
@@ -48,29 +48,26 @@ export function EditorialGallery({ items }: { items: GalleryImage[] }) {
       {/* Lightbox */}
       {activeIndex !== null ? (
         <div
-          className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-white/97 p-4"
-          style={{ backdropFilter: "blur(4px)" }}
+          className="fixed inset-0 z-40 flex items-center justify-center bg-black"
           onClick={() => setActiveIndex(null)}
         >
+          {/* Close */}
           <button
             type="button"
             onClick={() => setActiveIndex(null)}
-            className="label absolute right-8 top-8 hover:opacity-60 transition-opacity"
+            className="absolute right-6 top-6 z-10 text-white/50 hover:text-white transition-colors text-[11px] tracking-[0.2em] uppercase"
           >
-            Close
+            ✕
           </button>
 
+          {/* Counter */}
+          <span className="absolute left-6 top-6 text-white/30 text-[11px] tracking-[0.15em]">
+            {String(activeIndex + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
+          </span>
+
+          {/* Image */}
           <div
-            className="relative w-full max-w-4xl"
-            style={{
-              aspectRatio:
-                items[activeIndex].aspect === "portrait"
-                  ? "2/3"
-                  : items[activeIndex].aspect === "square"
-                    ? "1/1"
-                    : "3/2",
-              maxHeight: "82vh",
-            }}
+            className="relative h-screen w-screen"
             onClick={(e) => e.stopPropagation()}
           >
             <Image
@@ -83,35 +80,23 @@ export function EditorialGallery({ items }: { items: GalleryImage[] }) {
             />
           </div>
 
-          <p className="label mt-6 opacity-50">{items[activeIndex].alt}</p>
-
-          <div className="absolute bottom-8 flex gap-10">
-            <button
-              type="button"
-              disabled={activeIndex === 0}
-              onClick={(e) => {
-                e.stopPropagation();
-                setActiveIndex(activeIndex - 1);
-              }}
-              className="label disabled:opacity-20 hover:opacity-60 transition-opacity"
-            >
-              ← Prev
-            </button>
-            <span className="label opacity-30">
-              {activeIndex + 1} / {items.length}
-            </span>
-            <button
-              type="button"
-              disabled={activeIndex === items.length - 1}
-              onClick={(e) => {
-                e.stopPropagation();
-                setActiveIndex(activeIndex + 1);
-              }}
-              className="label disabled:opacity-20 hover:opacity-60 transition-opacity"
-            >
-              Next →
-            </button>
-          </div>
+          {/* Prev / Next */}
+          <button
+            type="button"
+            disabled={activeIndex === 0}
+            onClick={(e) => { e.stopPropagation(); setActiveIndex(activeIndex - 1); }}
+            className="absolute left-6 bottom-8 text-white/40 hover:text-white disabled:opacity-0 transition-colors text-[11px] tracking-[0.2em] uppercase"
+          >
+            ← Prev
+          </button>
+          <button
+            type="button"
+            disabled={activeIndex === items.length - 1}
+            onClick={(e) => { e.stopPropagation(); setActiveIndex(activeIndex + 1); }}
+            className="absolute right-6 bottom-8 text-white/40 hover:text-white disabled:opacity-0 transition-colors text-[11px] tracking-[0.2em] uppercase"
+          >
+            Next →
+          </button>
         </div>
       ) : null}
     </>
