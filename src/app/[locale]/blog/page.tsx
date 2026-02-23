@@ -5,25 +5,49 @@ import { blogPosts } from "@/lib/blog-data";
 
 type PageProps = { params: Promise<{ locale: string }> };
 
-const categoryLabel: Record<string, string> = {
-  guide: "Guide",
-  portrait: "Portraits",
-  corporate: "Corporate",
-  art: "Art & Galleries",
-};
+const ui = {
+  en: {
+    eyebrow: "Journal",
+    h1: ["Notes on photography,", "portraiture and the art world"],
+    read: "Read",
+    readArrow: "Read →",
+    minRead: "min read",
+    categories: { guide: "Guide", portrait: "Portraits", corporate: "Corporate", art: "Art & Galleries" },
+  },
+  jp: {
+    eyebrow: "ジャーナル",
+    h1: ["写真、ポートレート、", "アートワールドについての記録"],
+    read: "読む",
+    readArrow: "読む →",
+    minRead: "分で読める",
+    categories: { guide: "ガイド", portrait: "ポートレート", corporate: "コーポレート", art: "アート＆ギャラリー" },
+  },
+  ru: {
+    eyebrow: "Журнал",
+    h1: ["Заметки о фотографии,", "портрете и мире искусства"],
+    read: "Читать",
+    readArrow: "Читать →",
+    minRead: "мин чтения",
+    categories: { guide: "Гид", portrait: "Портреты", corporate: "Корпоративное", art: "Арт и галереи" },
+  },
+} as const;
+
+type Locale = keyof typeof ui;
 
 export default async function BlogPage({ params }: PageProps) {
   const { locale } = await params;
+  const t = ui[(locale as Locale) in ui ? (locale as Locale) : "en"];
+  const cat = t.categories;
 
   return (
     <>
-      <section className="section pt-32">
-        <p className="label mb-6">Journal</p>
+      <section className="section pt-20 md:pt-32">
+        <p className="label mb-6">{t.eyebrow}</p>
         <h1
           className="max-w-2xl text-[clamp(2.5rem,6vw,5rem)] leading-[0.95]"
           style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
         >
-          Notes on photography,<br />portraiture and the art world
+          {t.h1[0]}<br />{t.h1[1]}
         </h1>
       </section>
 
@@ -45,7 +69,7 @@ export default async function BlogPage({ params }: PageProps) {
           <div className="mt-6 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
             <div className="max-w-xl">
               <p className="label mb-3">
-                {categoryLabel[blogPosts[0].category]} &nbsp;·&nbsp; {blogPosts[0].date.slice(0, 7)} &nbsp;·&nbsp; {blogPosts[0].readTime} min read
+                {cat[blogPosts[0].category as keyof typeof cat]} &nbsp;·&nbsp; {blogPosts[0].date.slice(0, 7)} &nbsp;·&nbsp; {blogPosts[0].readTime} {t.minRead}
               </p>
               <h2
                 className="text-[clamp(2rem,4vw,3.5rem)] leading-none"
@@ -57,7 +81,7 @@ export default async function BlogPage({ params }: PageProps) {
                 {blogPosts[0].excerpt}
               </p>
             </div>
-            <span className="btn-ghost shrink-0 self-end">Read</span>
+            <span className="btn-ghost shrink-0 self-end">{t.read}</span>
           </div>
         </Link>
 
@@ -80,7 +104,7 @@ export default async function BlogPage({ params }: PageProps) {
               </div>
               <div>
                 <p className="label mb-2">
-                  {categoryLabel[post.category]} &nbsp;·&nbsp; {post.date.slice(0, 7)}
+                  {cat[post.category as keyof typeof cat]} &nbsp;·&nbsp; {post.date.slice(0, 7)}
                 </p>
                 <h3
                   className="text-[clamp(1.5rem,2.5vw,2.2rem)] leading-[1.05]"
@@ -92,7 +116,7 @@ export default async function BlogPage({ params }: PageProps) {
                   {post.excerpt}
                 </p>
               </div>
-              <span className="btn-ghost mt-auto">Read &rarr;</span>
+              <span className="btn-ghost mt-auto">{t.readArrow}</span>
             </Link>
           ))}
         </div>
