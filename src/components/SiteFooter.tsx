@@ -8,8 +8,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
       <div className="mx-auto flex w-full max-w-340 flex-col gap-8 px-6 py-14 md:flex-row md:items-end md:justify-between md:px-10">
         <div>
           <p
-            className="text-base tracking-[0.15em] uppercase"
-            style={{ fontFamily: "var(--font-cormorant)", fontWeight: 500, fontSize: "15px" }}
+            style={{ fontFamily: "var(--font-dm-sans)", fontSize: "11px", letterSpacing: "0.22em", fontWeight: 300, textTransform: "uppercase" }}
           >
             Eva Gorobets
           </p>

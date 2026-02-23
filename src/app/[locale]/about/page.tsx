@@ -146,7 +146,7 @@ export default async function AboutPage({ params }: PageProps) {
       </section>
 
       {/* Contact CTA */}
-      <section className="section border-t border-black/[0.07] py-20">
+      <section className="section border-t border-black/[0.07] !py-10">
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
           <h2
             className="text-[clamp(2rem,4.5vw,4rem)] leading-[0.95]"

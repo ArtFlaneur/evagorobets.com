@@ -335,7 +335,7 @@ export default async function CorporatePage({ params }: PageProps) {
       </section>
 
       {/* CTA */}
-      <section className="section border-t border-black/[0.07] py-20">
+      <section className="section border-t border-black/[0.07] !py-10">
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <h2
