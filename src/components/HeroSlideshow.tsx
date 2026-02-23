@@ -14,7 +14,6 @@ export function HeroSlideshow({ images, name, title }: Props) {
   const [phase, setPhase] = useState<"intro" | "photo">("intro");
   const [current, setCurrent] = useState(0);
   const [cursorSide, setCursorSide] = useState<"left" | "right">("right");
-  const [photoVisible, setPhotoVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const total = images.length;
@@ -22,14 +21,16 @@ export function HeroSlideshow({ images, name, title }: Props) {
   // ── Intro → photo transition ──────────────────────────────────────────
 
   useEffect(() => {
-    // Start fading in photos slightly before intro overlay fades out
-    const photoTimer = setTimeout(() => setPhotoVisible(true), 2000);
-    const phaseTimer = setTimeout(() => setPhase("photo"), 2800);
-    return () => {
-      clearTimeout(photoTimer);
-      clearTimeout(phaseTimer);
-    };
+    // Overlay slides up at 2.4s, phase switches at 3.2s (after slide completes)
+    const phaseTimer = setTimeout(() => setPhase("photo"), 3200);
+    return () => clearTimeout(phaseTimer);
   }, []);
+
+  // Sync phase to body data attribute so SiteHeader can read it
+  useEffect(() => {
+    document.body.dataset.heroPhase = phase;
+    return () => { delete document.body.dataset.heroPhase; };
+  }, [phase]);
 
   // ── Keyboard navigation ───────────────────────────────────────────────
 
@@ -74,11 +75,8 @@ export function HeroSlideshow({ images, name, title }: Props) {
       onMouseMove={handleMouseMove}
       onClick={handleClick}
     >
-      {/* Photos — rendered behind intro overlay */}
-      <div
-        className="absolute inset-0 transition-opacity duration-1000"
-        style={{ opacity: photoVisible ? 1 : 0 }}
-      >
+      {/* Photos — always visible behind overlay */}
+      <div className="absolute inset-0">
         {images.map((img, i) => (
           <div
             key={img.src}
@@ -95,23 +93,41 @@ export function HeroSlideshow({ images, name, title }: Props) {
         ))}
       </div>
 
-      {/* ── Intro overlay ── */}
+      {/* ── Intro overlay: black, slides up on exit ── */}
       <div
-        className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white transition-opacity duration-1000 pointer-events-none"
-        style={{ opacity: phase === "intro" ? 1 : 0 }}
+        className="absolute inset-0 z-20 bg-black pointer-events-none flex flex-col justify-end"
+        style={{
+          transition: "transform 0.9s cubic-bezier(0.76, 0, 0.24, 1)",
+          transform: phase === "photo" ? "translateY(-100%)" : "translateY(0)",
+          padding: "0 10vw 10vh",
+        }}
       >
         <p
-          className="animate-fade-up text-black text-center"
+          className="animate-fade-up text-white"
           style={{
             fontFamily: "var(--font-dm-sans)",
-            fontSize: "clamp(1rem, 2.5vw, 1.5rem)",
-            letterSpacing: "0.05em",
+            fontWeight: 600,
+            fontSize: "12px",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
             lineHeight: 1,
-            animationDelay: "0.2s",
+            animationDelay: "0.3s",
           }}
         >
-          <span style={{ fontWeight: 700 }}>{name}</span>
-          <span style={{ fontWeight: 300, opacity: 0.45 }}> — {title}</span>
+          {name}
+        </p>
+        <p
+          className="animate-fade-in mt-2 text-white/45"
+          style={{
+            fontFamily: "var(--font-dm-sans)",
+            fontWeight: 300,
+            fontSize: "11px",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            animationDelay: "0.9s",
+          }}
+        >
+          {title}
         </p>
       </div>
 
@@ -120,15 +136,12 @@ export function HeroSlideshow({ images, name, title }: Props) {
         className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between px-8 pb-8 transition-opacity duration-700 pointer-events-none"
         style={{ opacity: phase === "photo" ? 1 : 0 }}
       >
-        {/* Counter */}
         <span
           className="text-black/30 tabular-nums"
           style={{ fontFamily: "var(--font-dm-sans)", fontSize: "11px", letterSpacing: "0.15em" }}
         >
           {String(current + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </span>
-
-        {/* Scroll hint */}
         <span
           className="text-black/20 uppercase"
           style={{ fontFamily: "var(--font-dm-sans)", fontSize: "10px", letterSpacing: "0.2em" }}
@@ -137,7 +150,6 @@ export function HeroSlideshow({ images, name, title }: Props) {
         </span>
       </div>
 
-      {/* ── Alt text for current photo (screenreader) ── */}
       <span className="sr-only">{img.alt}</span>
     </div>
   );

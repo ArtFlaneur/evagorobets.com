@@ -1,20 +1,43 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { Locale, navItems } from "@/lib/i18n";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileMenu } from "@/components/MobileMenu";
 
 export function SiteHeader({ locale }: { locale: Locale }) {
-  const color = "rgba(0,0,0,0.4)";
+  const pathname = usePathname();
+  const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
+
+  // Start light (white) on home page while black intro is showing.
+  // HeroSlideshow writes data-hero-phase="photo" on body when overlay leaves.
+  const [light, setLight] = useState(isHome);
+
+  useEffect(() => {
+    if (!isHome) { setLight(false); return; }
+    setLight(true);
+    const observer = new MutationObserver(() => {
+      if (document.body.dataset.heroPhase === "photo") {
+        setLight(false);
+        observer.disconnect();
+      }
+    });
+    observer.observe(document.body, { attributes: true, attributeFilter: ["data-hero-phase"] });
+    return () => observer.disconnect();
+  }, [isHome]);
+
+  const color = light ? "rgba(255,255,255,0.8)" : "rgba(0,0,0,0.4)";
+  const colorTransition = "color 0.5s ease";
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-20 transition-colors duration-500">
+    <header className="fixed top-0 left-0 right-0 z-30">
       <div className="mx-auto flex w-full max-w-340 items-center justify-between px-6 py-6 md:px-10">
         <Link
           href={`/${locale}`}
-          className="transition-opacity hover:opacity-75"
+          className="hover:opacity-75 transition-opacity"
           style={{
             fontFamily: "var(--font-dm-sans)",
             fontSize: "11px",
@@ -22,6 +45,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
             fontWeight: 300,
             textTransform: "uppercase",
             color,
+            transition: colorTransition,
           }}
         >
           Eva Gorobets
@@ -33,8 +57,8 @@ export function SiteHeader({ locale }: { locale: Locale }) {
               <div key={item.href} className="relative group">
                 <Link
                   href={`/${locale}${item.href}`}
-                  className="text-[10px] font-medium uppercase tracking-[0.2em] transition-opacity hover:opacity-100"
-                  style={{ fontFamily: "var(--font-dm-sans)", color }}
+                  className="text-[10px] font-medium uppercase tracking-[0.2em] hover:opacity-100 transition-opacity"
+                  style={{ fontFamily: "var(--font-dm-sans)", color, transition: colorTransition }}
                 >
                   {item.labels[locale]}
                 </Link>
@@ -57,8 +81,8 @@ export function SiteHeader({ locale }: { locale: Locale }) {
               <Link
                 key={item.href}
                 href={`/${locale}${item.href}`}
-                className="text-[10px] font-medium uppercase tracking-[0.2em] transition-opacity hover:opacity-100"
-                style={{ fontFamily: "var(--font-dm-sans)", color }}
+                className="text-[10px] font-medium uppercase tracking-[0.2em] hover:opacity-100 transition-opacity"
+                style={{ fontFamily: "var(--font-dm-sans)", color, transition: colorTransition }}
               >
                 {item.labels[locale]}
               </Link>
@@ -66,9 +90,9 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           )}
         </nav>
 
-        <div className="flex items-center gap-5" style={{ color }}>
+        <div className="flex items-center gap-5" style={{ color, transition: colorTransition }}>
           <div className="hidden md:block">
-            <LanguageSwitcher currentLocale={locale} />
+            <LanguageSwitcher currentLocale={locale} light={light} />
           </div>
           <MobileMenu locale={locale} />
         </div>
