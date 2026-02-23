@@ -69,7 +69,7 @@ export function HeroSlideshow({ images, name, title }: Props) {
   return (
     <div
       ref={containerRef}
-      className="relative h-screen w-full overflow-hidden bg-black select-none"
+      className="relative h-screen w-full overflow-hidden bg-white select-none"
       style={{ cursor: phase === "photo" ? (cursorSide === "right" ? "e-resize" : "w-resize") : "default" }}
       onMouseMove={handleMouseMove}
       onClick={handleClick}
@@ -83,13 +83,13 @@ export function HeroSlideshow({ images, name, title }: Props) {
           <div
             key={img.src}
             className="absolute inset-0 flex items-center justify-center transition-opacity duration-700"
-            style={{ opacity: i === current ? 1 : 0, padding: "72px 40px 40px" }}
+            style={{ opacity: i === current ? 1 : 0, padding: "88px 80px 56px" }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={img.src}
               alt={img.alt}
-              style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", display: "block" }}
+              style={{ maxWidth: "70%", maxHeight: "100%", objectFit: "contain", display: "block" }}
             />
           </div>
         ))}
@@ -97,11 +97,11 @@ export function HeroSlideshow({ images, name, title }: Props) {
 
       {/* ── Intro overlay ── */}
       <div
-        className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black transition-opacity duration-1000 pointer-events-none"
+        className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white transition-opacity duration-1000 pointer-events-none"
         style={{ opacity: phase === "intro" ? 1 : 0 }}
       >
         <p
-          className="animate-fade-up text-white text-center"
+          className="animate-fade-up text-black text-center"
           style={{
             fontFamily: "var(--font-dm-sans)",
             fontSize: "clamp(1rem, 2.5vw, 1.5rem)",
@@ -111,7 +111,7 @@ export function HeroSlideshow({ images, name, title }: Props) {
           }}
         >
           <span style={{ fontWeight: 700 }}>{name}</span>
-          <span style={{ fontWeight: 300, opacity: 0.55 }}> — {title}</span>
+          <span style={{ fontWeight: 300, opacity: 0.45 }}> — {title}</span>
         </p>
       </div>
 
@@ -122,7 +122,7 @@ export function HeroSlideshow({ images, name, title }: Props) {
       >
         {/* Counter */}
         <span
-          className="text-white/40 tabular-nums"
+          className="text-black/30 tabular-nums"
           style={{ fontFamily: "var(--font-dm-sans)", fontSize: "11px", letterSpacing: "0.15em" }}
         >
           {String(current + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
@@ -130,7 +130,7 @@ export function HeroSlideshow({ images, name, title }: Props) {
 
         {/* Scroll hint */}
         <span
-          className="text-white/25 uppercase"
+          className="text-black/20 uppercase"
           style={{ fontFamily: "var(--font-dm-sans)", fontSize: "10px", letterSpacing: "0.2em" }}
         >
           scroll

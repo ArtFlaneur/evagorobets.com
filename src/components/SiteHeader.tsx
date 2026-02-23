@@ -1,32 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
 import { Locale, navItems } from "@/lib/i18n";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileMenu } from "@/components/MobileMenu";
 
 export function SiteHeader({ locale }: { locale: Locale }) {
-  const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
-
-  // Home pages are exactly /en, /jp, /ru
-  const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
-
-  useEffect(() => {
-    if (!isHome) return;
-    function onScroll() { setScrolled(window.scrollY > 80); }
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [isHome]);
-
-  // On hero (home + not scrolled): white text. Everywhere else: black.
-  const light = isHome && !scrolled;
-  const color = light ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.4)";
-  const hoverColor = light ? "rgba(255,255,255,1)" : "rgba(0,0,0,0.9)";
+  const color = "rgba(0,0,0,0.4)";
 
   return (
     <header className="fixed top-0 left-0 right-0 z-20 transition-colors duration-500">
@@ -87,7 +68,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
 
         <div className="flex items-center gap-5" style={{ color }}>
           <div className="hidden md:block">
-            <LanguageSwitcher currentLocale={locale} light={light} />
+            <LanguageSwitcher currentLocale={locale} />
           </div>
           <MobileMenu locale={locale} />
         </div>
