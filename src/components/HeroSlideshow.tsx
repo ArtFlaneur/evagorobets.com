@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { GalleryImage } from "@/lib/gallery-data";
 
@@ -83,21 +82,17 @@ export function HeroSlideshow({ images, name, title }: Props) {
         {images.map((img, i) => (
           <div
             key={img.src}
-            className="absolute inset-0 transition-opacity duration-700"
-            style={{ opacity: i === current ? 1 : 0 }}
+            className="absolute inset-0 flex items-center justify-center transition-opacity duration-700"
+            style={{ opacity: i === current ? 1 : 0, padding: "72px 40px 40px" }}
           >
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={img.src}
               alt={img.alt}
-              fill
-              priority={i === 0}
-              sizes="100vw"
-              className="object-contain"
+              style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", display: "block" }}
             />
           </div>
         ))}
-        {/* Subtle vignette */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10 pointer-events-none" />
       </div>
 
       {/* ── Intro overlay ── */}
@@ -109,21 +104,14 @@ export function HeroSlideshow({ images, name, title }: Props) {
           className="animate-fade-up text-white text-center"
           style={{
             fontFamily: "var(--font-dm-sans)",
-            fontWeight: 300,
-            fontSize: "clamp(2rem, 5vw, 5rem)",
-            letterSpacing: "0.3em",
-            textTransform: "uppercase",
+            fontSize: "clamp(1rem, 2.5vw, 1.5rem)",
+            letterSpacing: "0.05em",
             lineHeight: 1,
             animationDelay: "0.2s",
           }}
         >
-          {name}
-        </p>
-        <p
-          className="animate-fade-in mt-4 text-white/50 uppercase tracking-[0.35em] text-[11px]"
-          style={{ animationDelay: "0.8s", fontFamily: "var(--font-dm-sans)" }}
-        >
-          {title}
+          <span style={{ fontWeight: 700 }}>{name}</span>
+          <span style={{ fontWeight: 300, opacity: 0.55 }}> — {title}</span>
         </p>
       </div>
 
