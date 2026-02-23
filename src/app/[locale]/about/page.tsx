@@ -105,7 +105,7 @@ export default async function AboutPage({ params }: PageProps) {
             {t.bio.map((p, i) => <p key={i}>{p}</p>)}
           </div>
         </div>
-        <div>
+        <div className="md:pt-[299px]">
           <ul>
             {t.facts.map(([label, value]) => (
               <li key={label} className="flex gap-8 border-t border-black/[0.07] py-4 text-sm">
