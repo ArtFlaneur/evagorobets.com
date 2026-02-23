@@ -7,13 +7,26 @@ import { getPortraitsGallery } from "@/lib/gallery-data";
 
 type PageProps = { params: Promise<{ locale: string }> };
 
-export async function generateMetadata(): Promise<Metadata> {
+const BASE_URL = "https://evagorobets.com";
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const path = "/tokyo-business-portraits";
+
   return {
     title: "Executive Headshots & Business Portraits Tokyo | Eva Gorobets",
     description: "Professional executive headshots and leadership portraits in Tokyo. Studio and on-location. Used for company websites, LinkedIn, annual reports and press. Trilingual briefing.",
     openGraph: {
       title: "Executive Headshots & Business Portraits Tokyo",
       description: "Studio and on-location portrait sessions for executives, founders and leadership teams in Tokyo. Fast delivery, trilingual communication.",
+    },
+    alternates: {
+      canonical: `${BASE_URL}/${locale}${path}`,
+      languages: {
+        en: `${BASE_URL}/en${path}`,
+        ja: `${BASE_URL}/jp${path}`,
+        ru: `${BASE_URL}/ru${path}`,
+      },
     },
   };
 }

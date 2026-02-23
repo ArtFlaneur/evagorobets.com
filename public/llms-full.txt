@@ -1,0 +1,62 @@
+# Eva Gorobets Photography — Full LLM Reference
+
+## Identity
+Eva Gorobets is an Australian portrait and corporate photographer based in Tokyo, with deep working ties to Melbourne.
+
+## Service Scope
+1) Executive and business portraits
+- Leadership headshots
+- Founder portraits
+- Team portrait sessions
+- Studio and on-location options
+
+2) Corporate event photography
+- Conferences and forums
+- Internal events and all-hands
+- Product and partner events
+- Delivery sets for PR, web, and social
+
+3) Art and gallery photography
+- Vernissages and exhibition openings
+- Artist and curator portraits
+- Artwork documentation
+- Talks, lectures, and cultural programs
+
+## Typical Clients
+- International companies with Tokyo offices
+- Corporate communications and PR teams
+- Galleries, museums, curators, and artists
+
+## Operational Notes
+- Communication: English, Japanese, Russian
+- NDA: available before briefing
+- Invoicing: JPY, AUD, USD
+- Typical first response: within 24 hours
+
+## Locations
+- Primary: Tokyo, Japan
+- Frequent: Melbourne, Australia
+- Also: international assignments by arrangement
+
+## Main Public Pages
+- Home: /en
+- Corporate overview: /en/corporate
+- Business portraits: /en/tokyo-business-portraits
+- Corporate events: /en/corporate-events-photography
+- Art and galleries: /en/art-galleries-photography
+- Clients: /en/clients
+- About: /en/about
+- Contact form: /en/contact-booking
+- Journal: /en/blog
+
+## Language Variants
+- English prefix: /en
+- Japanese prefix: /jp
+- Russian prefix: /ru
+
+## Contact
+- Email: eva@artflaneur.com.au
+- Contact form: /en/contact-booking
+
+## Website Canonical
+https://evagorobets.com

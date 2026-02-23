@@ -1,15 +1,32 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 
-export async function generateMetadata(): Promise<Metadata> {
+const BASE_URL = "https://evagorobets.com";
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const path = "/contact-booking";
+
   return {
     title: "Contact & Booking — Executive Portrait & Corporate Event Photographer Tokyo | Eva Gorobets",
     description:
       "Book an executive portrait or corporate event session in Tokyo. Structured brief form, response within 24 hours. Communication in English, Japanese and Russian.",
+    alternates: {
+      canonical: `${BASE_URL}/${locale}${path}`,
+      languages: {
+        en: `${BASE_URL}/en${path}`,
+        ja: `${BASE_URL}/jp${path}`,
+        ru: `${BASE_URL}/ru${path}`,
+      },
+    },
   };
 }
 
-type PageProps = { params: Promise<{ locale: string }> };
+type PageProps = {
+  params: Promise<{ locale: string }>;
+  searchParams?: Promise<{ sent?: string; error?: string }>;
+};
 
 const inputClass =
   "w-full border-t border-black/[0.07] bg-transparent py-5 text-sm placeholder:text-black/35 outline-none focus:border-black/30 transition-colors";
@@ -58,6 +75,8 @@ const content = {
       ["NDA and confidentiality", "An NDA can be signed before any brief is shared. Client names and project details are never published without explicit written consent."],
       ["Location and travel", "Based in Tokyo, available anywhere in Japan. Melbourne and international sessions by arrangement. Travel costs discussed at quote stage."],
     ],
+    sentMsg: "Thank you — your brief has been sent. You will receive a reply within 24 hours.",
+    errorMsg: "Something went wrong while sending. Please try again or email eva@artflaneur.com.au.",
   },
   jp: {
     eyebrow: "お問い合わせ",
@@ -100,6 +119,8 @@ const content = {
       ["NDAと守秘義務について", "ブリーフ共有前にNDA締結が可能。クライアント名およびプロジェクト詳細は書面による明示的な同意なしには公開しません。"],
       ["撮影場所と出張について", "東京を拠点とし、日本国内どこでも対応可能。メルボルンおよび海外での撮影はご相談ください。出張費は見積もり段階でご確認します。"],
     ],
+    sentMsg: "ありがとうございます。ブリーフを受け付けました。24時間以内にご返信します。",
+    errorMsg: "送信時に問題が発生しました。再度お試しいただくか、eva@artflaneur.com.au までご連絡ください。",
   },
   ru: {
     eyebrow: "Контакт",
@@ -142,17 +163,38 @@ const content = {
       ["NDA и конфиденциальность", "NDA может быть подписан до передачи брифа. Имена клиентов и детали проектов никогда не публикуются без явного письменного согласия."],
       ["Местоположение и выезд", "Базируется в Токио, работает по всей Японии. Мельбурн и международные съёмки — по договорённости. Транспортные расходы обсуждаются на этапе коммерческого предложения."],
     ],
+    sentMsg: "Спасибо — ваш бриф отправлен. Ответ поступит в течение 24 часов.",
+    errorMsg: "Не удалось отправить форму. Попробуйте снова или напишите на eva@artflaneur.com.au.",
   },
 } as const;
 
 type Locale = keyof typeof content;
 
-export default async function ContactPage({ params }: PageProps) {
+export default async function ContactPage({ params, searchParams }: PageProps) {
   const { locale } = await params;
+  const query = (await searchParams) ?? {};
   const t = content[(locale as Locale) in content ? (locale as Locale) : "en"];
+  const showSent = query.sent === "1";
+  const showError = query.error === "1";
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: t.faq.map(([question, answer]) => ({
+      "@type": "Question",
+      name: question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: answer,
+      },
+    })),
+  };
 
   return (
     <>
+      <Script id="contact-faq-schema" type="application/ld+json">
+        {JSON.stringify(faqSchema)}
+      </Script>
       <section className="section pt-32">
         <p className="label mb-6">{t.eyebrow}</p>
         <h1
@@ -166,13 +208,26 @@ export default async function ContactPage({ params }: PageProps) {
 
       <section className="section grid gap-20 border-t border-black/[0.07] md:grid-cols-[3fr_2fr]">
         {/* Form */}
-        <form className="space-y-0">
+        <form className="space-y-0" method="POST" action="/api/contact">
+          <input type="hidden" name="locale" value={locale} />
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
+
+          {showSent && (
+            <p className="mb-4 border border-black/15 bg-black/[0.02] px-4 py-3 text-sm text-black/70">
+              {t.sentMsg}
+            </p>
+          )}
+          {showError && (
+            <p className="mb-4 border border-black/15 bg-black/[0.02] px-4 py-3 text-sm text-black/70">
+              {t.errorMsg}
+            </p>
+          )}
 
           {/* Contact */}
           <p className="label py-5 border-t border-black/[0.07]">{t.sectionContact}</p>
-          <input type="text" name="name" placeholder={t.namePh} className={inputClass} />
+          <input type="text" name="name" required placeholder={t.namePh} className={inputClass} />
           <input type="text" name="company" placeholder={t.companyPh} className={inputClass} />
-          <input type="email" name="email" placeholder={t.emailPh} className={inputClass} />
+          <input type="email" name="email" required placeholder={t.emailPh} className={inputClass} />
 
           {/* Project */}
           <p className="label pt-8 pb-5 border-t border-black/[0.07] mt-4">{t.sectionProject}</p>

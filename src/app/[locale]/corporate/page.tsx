@@ -6,7 +6,12 @@ import { corporateGallery, portraitsGallery } from "@/lib/gallery-data";
 
 type PageProps = { params: Promise<{ locale: string }> };
 
-export async function generateMetadata(): Promise<Metadata> {
+const BASE_URL = "https://evagorobets.com";
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const path = "/corporate";
+
   return {
     title: "Corporate Photography Tokyo — For International Companies | Eva Gorobets",
     description:
@@ -15,6 +20,14 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "Corporate Photography Tokyo — For International Companies",
       description:
         "Executive portraits and event coverage for global companies with Tokyo offices. Structured process, fast turnaround, trilingual communication.",
+    },
+    alternates: {
+      canonical: `${BASE_URL}/${locale}${path}`,
+      languages: {
+        en: `${BASE_URL}/en${path}`,
+        ja: `${BASE_URL}/jp${path}`,
+        ru: `${BASE_URL}/ru${path}`,
+      },
     },
   };
 }

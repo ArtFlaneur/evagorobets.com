@@ -11,6 +11,8 @@ type LocaleLayoutProps = {
   params: Promise<{ locale: string }>;
 };
 
+const BASE_URL = "https://evagorobets.com";
+
 export async function generateMetadata({ params }: LocaleLayoutProps): Promise<Metadata> {
   const { locale } = await params;
   const baseTitle = "Eva Gorobets — Tokyo Photographer";
@@ -31,10 +33,11 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
       "Tokyo business photographer",
     ],
     alternates: {
+      canonical: `${BASE_URL}/${locale}`,
       languages: {
-        en: "/en",
-        ja: "/jp",
-        ru: "/ru",
+        en: `${BASE_URL}/en`,
+        ja: `${BASE_URL}/jp`,
+        ru: `${BASE_URL}/ru`,
       },
     },
   };
@@ -62,8 +65,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
           name: "Eva Gorobets Photography",
           description:
             "Executive portrait and corporate event photographer based in Tokyo. Trilingual: English, Japanese, Russian.",
-          url: "https://evagorobets.com",
-          telephone: "+81-",
+          url: BASE_URL,
           email: "eva@artflaneur.com.au",
           priceRange: "¥¥¥",
           image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=1200&q=80",
@@ -87,7 +89,10 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               { "@type": "Offer", itemOffered: { "@type": "Service", name: "Art Gallery Photography Tokyo" } },
             ],
           },
-          sameAs: ["https://instagram.com", "https://linkedin.com"],
+          sameAs: [
+            "https://www.instagram.com/evagorobets/",
+            "https://www.linkedin.com/in/evgorobets/",
+          ],
         })}
       </Script>
     </>

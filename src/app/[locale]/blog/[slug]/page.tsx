@@ -1,10 +1,14 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Script from "next/script";
 
 import { blogPosts } from "@/lib/blog-data";
 
 type PageProps = { params: Promise<{ locale: string; slug: string }> };
+
+const BASE_URL = "https://evagorobets.com";
 
 const categoryLabel: Record<string, string> = {
   guide: "Guide",
@@ -20,6 +24,38 @@ export async function generateStaticParams() {
   );
 }
 
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const post = blogPosts.find((p) => p.slug === slug);
+
+  if (!post) {
+    return {
+      title: "Journal — Eva Gorobets",
+    };
+  }
+
+  const path = `/blog/${post.slug}`;
+
+  return {
+    title: `${post.title} — Eva Gorobets Journal`,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      images: [{ url: post.coverSrc }],
+      type: "article",
+    },
+    alternates: {
+      canonical: `${BASE_URL}/${locale}${path}`,
+      languages: {
+        en: `${BASE_URL}/en${path}`,
+        ja: `${BASE_URL}/jp${path}`,
+        ru: `${BASE_URL}/ru${path}`,
+      },
+    },
+  };
+}
+
 export default async function BlogPostPage({ params }: PageProps) {
   const { locale, slug } = await params;
   const post = blogPosts.find((p) => p.slug === slug);
@@ -27,9 +63,33 @@ export default async function BlogPostPage({ params }: PageProps) {
   if (!post) notFound();
 
   const others = blogPosts.filter((p) => p.slug !== slug).slice(0, 3);
+  const publishedTime = `${post.date}T00:00:00.000Z`;
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    image: [post.coverSrc],
+    datePublished: publishedTime,
+    dateModified: publishedTime,
+    author: {
+      "@type": "Person",
+      name: "Eva Gorobets",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Eva Gorobets Photography",
+      url: BASE_URL,
+    },
+    mainEntityOfPage: `${BASE_URL}/${locale}/blog/${post.slug}`,
+    inLanguage: locale === "jp" ? "ja" : locale,
+  };
 
   return (
     <>
+      <Script id={`article-schema-${post.slug}`} type="application/ld+json">
+        {JSON.stringify(articleSchema)}
+      </Script>
       {/* Hero */}
       <section className="relative w-full aspect-16/7 bg-[#1a1916] overflow-hidden">
         <Image

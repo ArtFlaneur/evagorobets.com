@@ -1,0 +1,36 @@
+# Eva Gorobets Photography
+
+> Executive portraits, corporate events, and art-world photography based in Tokyo.
+
+## About
+- Website: https://evagorobets.com
+- Photographer: Eva Gorobets
+- Base: Tokyo, Japan
+- Also works in: Melbourne, Australia and international assignments
+- Languages: English, Japanese, Russian
+
+## Core Services
+- /en/tokyo-business-portraits
+- /en/corporate-events-photography
+- /en/art-galleries-photography
+- /en/corporate
+
+## Contact
+- /en/contact-booking
+- Email: eva@artflaneur.com.au
+
+## Trust & Process
+- NDA available before briefing
+- Corporate invoicing supported (JPY, AUD, USD)
+- Typical response time: within 24 hours
+
+## Journal
+- /en/blog
+
+## Languages
+- English: /en
+- Japanese: /jp
+- Russian: /ru
+
+## More Details
+- Full operational details: /llms-full.txt

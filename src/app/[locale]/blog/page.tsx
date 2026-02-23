@@ -1,9 +1,30 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
 import { blogPosts } from "@/lib/blog-data";
 
 type PageProps = { params: Promise<{ locale: string }> };
+
+const BASE_URL = "https://evagorobets.com";
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const path = "/blog";
+
+  return {
+    title: "Journal — Eva Gorobets",
+    description: "Notes on photography, portraiture and the art world by Eva Gorobets.",
+    alternates: {
+      canonical: `${BASE_URL}/${locale}${path}`,
+      languages: {
+        en: `${BASE_URL}/en${path}`,
+        ja: `${BASE_URL}/jp${path}`,
+        ru: `${BASE_URL}/ru${path}`,
+      },
+    },
+  };
+}
 
 const ui = {
   en: {
