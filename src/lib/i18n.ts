@@ -39,10 +39,6 @@ export const navItems: NavItem[] = [
     labels: { en: "For Art World", jp: "アートの世界", ru: "Для арт-мира" },
   },
   {
-    href: "/portfolio",
-    labels: { en: "Portfolio", jp: "ポートフォリオ", ru: "Портфолио" },
-  },
-  {
     href: "/clients",
     labels: { en: "Clients", jp: "クライアント", ru: "Клиенты" },
   },

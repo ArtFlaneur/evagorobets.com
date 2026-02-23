@@ -89,31 +89,32 @@ export default async function AboutPage({ params }: PageProps) {
 
   return (
     <>
-      {/* Hero portrait */}
-      <section className="relative w-full aspect-16/7 bg-[#1a1916] overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=1600&q=80"
-          alt={t.heroAlt}
-          fill
-          priority
-          className="object-cover object-top opacity-75"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-16">
-          <p className="label text-white/55 mb-4">{t.eyebrow}</p>
-          <h1
-            className="text-white text-[clamp(2.5rem,6vw,5.5rem)] leading-[0.93]"
-            style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
-          >
-            Eva Gorobets
-          </h1>
-        </div>
+      {/* Heading */}
+      <section className="section pt-20 md:pt-32">
+        <p className="label mb-6">{t.eyebrow}</p>
+        <h1
+          className="text-[clamp(3rem,7vw,6rem)] leading-[0.95]"
+          style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
+        >
+          Eva Gorobets
+        </h1>
       </section>
 
       {/* Bio + info */}
       <section className="section grid gap-16 border-t border-black/[0.07] md:grid-cols-2">
-        <div className="text-sm text-black/65 leading-relaxed space-y-5 max-w-md">
-          {t.bio.map((p, i) => <p key={i}>{p}</p>)}
+        <div>
+          <div className="mb-8 overflow-hidden" style={{ width: "200px", aspectRatio: "3/4", position: "relative" }}>
+            <Image
+              src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=80"
+              alt={t.heroAlt}
+              fill
+              className="object-cover object-top"
+              sizes="200px"
+            />
+          </div>
+          <div className="text-sm text-black/65 leading-relaxed space-y-5 max-w-md">
+            {t.bio.map((p, i) => <p key={i}>{p}</p>)}
+          </div>
         </div>
         <div>
           <ul>
