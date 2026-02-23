@@ -158,22 +158,27 @@ export default async function LocaleHome({ params }: PageProps) {
       {/* Services */}
       <section className="section border-t border-black/[0.07]">
         <p className="label mb-14">{t.servicesLabel}</p>
-        <div className="grid gap-y-12 md:grid-cols-3 md:gap-x-12">
+        <div className="grid md:grid-cols-3 md:divide-x md:divide-black/[0.07]">
           {[
             { num: t.services[0].num, title: t.services[0].title, text: t.services[0].text, link: t.services[0].link, href: `/${locale}/tokyo-business-portraits` },
             { num: t.services[1].num, title: t.services[1].title, text: t.services[1].text, link: t.services[1].link, href: `/${locale}/corporate-events-photography` },
             { num: t.services[2].num, title: t.services[2].title, text: t.services[2].text, link: t.services[2].link, href: `/${locale}/art-galleries-photography` },
           ].map((card) => (
-            <article key={card.title} className="flex flex-col gap-4">
-              <span className="label">{card.num}</span>
+            <article key={card.title} className="flex flex-col border-t border-black/[0.07] pt-8 pb-12 md:border-t-0 md:px-10 first:md:pl-0 last:md:pr-0">
+              <span
+                className="block text-[clamp(4rem,8vw,7rem)] leading-none text-black/10 mb-4 select-none"
+                style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
+              >
+                {card.num}
+              </span>
               <h2
-                className="text-3xl md:text-4xl"
+                className="text-[clamp(1.6rem,2.5vw,2.4rem)] leading-[1.05] mb-4"
                 style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
               >
                 {card.title}
               </h2>
-              <p className="text-sm text-black/60 leading-relaxed">{card.text}</p>
-              <Link href={card.href} className="btn-ghost mt-auto">
+              <p className="text-sm text-black/55 leading-relaxed flex-1">{card.text}</p>
+              <Link href={card.href} className="btn-ghost mt-8 self-start">
                 {card.link}
               </Link>
             </article>
