@@ -72,11 +72,11 @@ const content = {
     ],
     processLabel: "Process",
     process: [
-      ["1", "Brief", "We discuss your goals, intended use and visual direction — in EN, JP or RU."],
-      ["2", "Moodboard", "I share two or three reference images as a starting point before we meet."],
-      ["3", "Session", "60\u201390 minutes. Guided, relaxed, efficient. You do not need to know how to pose."],
-      ["4", "Selection", "You receive a proof gallery and choose your favourite frames."],
-      ["5", "Delivery", "Retouched web and print-ready files. Delivered within 3\u20135 business days."],
+      ["01", "Brief", "We discuss your goals, intended use and visual direction — in EN, JP or RU."],
+      ["02", "Moodboard", "I share two or three reference images as a starting point before we meet."],
+      ["03", "Session", "60\u201390 minutes. Guided, relaxed, efficient. You do not need to know how to pose."],
+      ["04", "Selection", "You receive a proof gallery and choose your favourite frames."],
+      ["05", "Delivery", "Retouched web and print-ready files. Delivered within 3\u20135 business days."],
     ],
     testimonial: "\u201cEva sees what others miss and captures the true essence of a person. I have commissioned her more than once and have always been very satisfied with the result.\u201d",
     testimonialBy: "Mikhail Yermolayev, Managing Partner, GAB Consulting",
@@ -96,11 +96,11 @@ const content = {
     ],
     processLabel: "撮影の流れ",
     process: [
-      ["1", "ブリーフ", "目的・用途・ビジュアル方向性について英語・日本語・ロシア語でお話しします。"],
-      ["2", "ムードボード", "事前にリファレンス画像を2〜3点共有します。"],
-      ["3", "撮影", "60〜90分。ガイド付きでリラックスした効率的な撮影。ポーズの知識は不要です。"],
-      ["4", "セレクション", "プルーフギャラリーをお送りし、お好みのカットをお選びいただきます。"],
-      ["5", "納品", "Web用・印刷用レタッチ済みファイル。3〜5営業日以内に納品。"],
+      ["01", "ブリーフ", "目的・用途・ビジュアル方向性について英語・日本語・ロシア語でお話しします。"],
+      ["02", "ムードボード", "事前にリファレンス画像を2〜3点共有します。"],
+      ["03", "撮影", "60〜90分。ガイド付きでリラックスした効率的な撮影。ポーズの知識は不要です。"],
+      ["04", "セレクション", "プルーフギャラリーをお送りし、お好みのカットをお選びいただきます。"],
+      ["05", "納品", "Web用・印刷用レタッチ済みファイル。3〜5営業日以内に納品。"],
     ],
     testimonial: "\u300cエヴァは、他の人が見落とす要素を見抜き、人物の本質を引き出して撮影してくれます。私は複数回依頼していますが、毎回とても満足しています。\u300d",
     testimonialBy: "Mikhail Yermolayev（GAB Consulting マネージングパートナー）",
@@ -120,11 +120,11 @@ const content = {
     ],
     processLabel: "Процесс",
     process: [
-      ["1", "Бриф", "Обсуждаем цели, способы использования и визуальное направление — на EN, JP или RU."],
-      ["2", "Мудборд", "Делюсь двумя-тремя референсами для отправки точки отсчёта."],
-      ["3", "Съёмка", "60–90 минут. С направлением, расслабленно, эффективно. Знание поз не требуется."],
-      ["4", "Отбор", "Получаете превью-галерею и выбираете лучшие кадры."],
-      ["5", "Доставка", "Ретушированные файлы для web и печати. В течение 3–5 рабочих дней."],
+      ["01", "Бриф", "Обсуждаем цели, способы использования и визуальное направление — на EN, JP или RU."],
+      ["02", "Мудборд", "Делюсь двумя-тремя референсами для отправки точки отсчёта."],
+      ["03", "Съёмка", "60–90 минут. С направлением, расслабленно, эффективно. Знание поз не требуется."],
+      ["04", "Отбор", "Получаете превью-галерею и выбираете лучшие кадры."],
+      ["05", "Доставка", "Ретушированные файлы для web и печати. В течение 3–5 рабочих дней."],
     ],
     testimonial: "\u00abЕвгения видит то, что обычно не замечают, и умеет передать суть человека в кадре. Не раз работал с ней как заказчик и всегда оставался очень доволен результатом.\u00bb",
     testimonialBy: "Михаил Ермолаев, управляющий партнёр GAB Consulting",
@@ -173,11 +173,16 @@ export default async function BusinessPortraitsPage({ params }: PageProps) {
           <p className="label mb-8">{t.processLabel}</p>
           <ol>
             {t.process.map(([n, step, detail]) => (
-              <li key={step} className="flex gap-6 border-t border-black/[0.07] py-5">
-                <span className="label w-4 pt-1">{n}</span>
+              <li key={step} className="flex gap-6 border-t border-black/[0.07] py-7">
+                <span
+                  className="w-12 shrink-0 text-[clamp(2.1rem,4vw,3.2rem)] leading-none text-black/12 select-none"
+                  style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
+                >
+                  {n}
+                </span>
                 <div>
                   <span className="block text-xl mb-1" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>{step}</span>
-                  <span className="text-xs text-black/50 leading-relaxed">{detail}</span>
+                  <span className="text-sm text-black/50 leading-relaxed">{detail}</span>
                 </div>
               </li>
             ))}

@@ -19,6 +19,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://evagorobets.com"),
   title: "Eva Gorobets — Photographer",
   description: "Tokyo - Melbourne - Worldwide",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export default async function RootLayout({

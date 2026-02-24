@@ -35,7 +35,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
 
         <div className="mt-7 border-t border-black/[0.07] pt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <p className="label">ABN: listed on invoices · GST if applicable</p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <a href="https://www.instagram.com/evagorobets/" target="_blank" rel="noreferrer" className="label hover:opacity-100 transition-opacity">Instagram</a>
             <a href="https://www.linkedin.com/in/evgorobets/" target="_blank" rel="noreferrer" className="label hover:opacity-100 transition-opacity">LinkedIn</a>
             <p className="label">© {new Date().getFullYear()} Eva Gorobets</p>

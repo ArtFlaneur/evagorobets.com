@@ -42,11 +42,11 @@ h1, h2, h3, h4 {
 
 /* Layout primitives */
 .section {
-  @apply mx-auto w-full max-w-340 px-6 py-20 md:px-10 md:py-28;
+  @apply mx-auto w-full max-w-340 px-4 py-18 sm:px-6 sm:py-20 md:px-10 md:py-28;
 }
 
 .section-narrow {
-  @apply mx-auto w-full max-w-3xl px-6 py-20 md:px-10;
+  @apply mx-auto w-full max-w-3xl px-4 py-18 sm:px-6 sm:py-20 md:px-10;
 }
 
 /* Typography tokens */

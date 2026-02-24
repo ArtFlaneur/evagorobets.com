@@ -82,10 +82,10 @@ export function HeroSlideshow({ images, name, title, descriptor }: Props) {
         {images.map((img, i) => (
           <div
             key={img.src}
-            className="absolute inset-0 flex items-center justify-center transition-opacity duration-700"
-            style={{ opacity: i === current ? 1 : 0, padding: "88px 80px 56px" }}
+            className="absolute inset-0 flex items-center justify-center px-4 pt-24 pb-14 transition-opacity duration-700 sm:px-8 md:px-20 md:pt-22 md:pb-14"
+            style={{ opacity: i === current ? 1 : 0 }}
           >
-            <div className="relative h-full w-full max-w-[70%]">
+            <div className="relative h-full w-full max-w-[92%] md:max-w-[78%] xl:max-w-[70%]">
               <Image
                 src={img.src}
                 alt={img.alt}
@@ -111,11 +111,11 @@ export function HeroSlideshow({ images, name, title, descriptor }: Props) {
         }}
       >
         <p
-          className="text-white whitespace-nowrap"
+          className="max-w-[92vw] text-white whitespace-normal sm:max-w-none sm:whitespace-nowrap"
           style={{
             fontFamily: "var(--font-dm-sans)",
-            fontSize: "11px",
-            letterSpacing: "0.18em",
+            fontSize: "clamp(9px, 2.5vw, 11px)",
+            letterSpacing: "clamp(0.11em, 0.35vw, 0.18em)",
             textTransform: "uppercase",
             lineHeight: 1,
           }}
@@ -128,11 +128,11 @@ export function HeroSlideshow({ images, name, title, descriptor }: Props) {
           </span>
         </p>
         <p
-          className="animate-fade-in mt-4 text-white/70"
+          className="animate-fade-in mt-3 max-w-[92vw] text-white/70 sm:mt-4 sm:max-w-none"
           style={{
             fontFamily: "var(--font-dm-sans)",
-            fontSize: "11px",
-            letterSpacing: "0.16em",
+            fontSize: "clamp(9px, 2.3vw, 11px)",
+            letterSpacing: "clamp(0.09em, 0.3vw, 0.16em)",
             textTransform: "uppercase",
             lineHeight: 1.5,
             animationDelay: "1.5s",
@@ -144,7 +144,7 @@ export function HeroSlideshow({ images, name, title, descriptor }: Props) {
 
       {/* ── Photo-phase UI (counter + hint) ── */}
       <div
-        className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between px-8 pb-8 transition-opacity duration-700 pointer-events-none"
+        className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between px-4 pb-6 transition-opacity duration-700 pointer-events-none md:px-8 md:pb-8"
         style={{ opacity: phase === "photo" ? 1 : 0 }}
       >
         <span

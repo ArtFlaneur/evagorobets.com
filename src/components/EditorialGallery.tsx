@@ -23,8 +23,11 @@ type EditorialGalleryProps = {
 export function EditorialGallery({ items, compact = false }: EditorialGalleryProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const wrapperClass = compact
-    ? "grid grid-cols-3 gap-0.5 sm:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6"
+    ? "grid grid-cols-2 gap-0.5 min-[420px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6"
     : "columns-2 gap-0.5 md:columns-3";
+  const imageSizes = compact
+    ? "(max-width: 420px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1536px) 20vw, 16vw"
+    : "(max-width: 768px) 50vw, 33vw";
 
   return (
     <>
@@ -41,7 +44,7 @@ export function EditorialGallery({ items, compact = false }: EditorialGalleryPro
                 src={item.src}
                 alt={item.alt}
                 fill
-                sizes="(max-width: 768px) 50vw, 33vw"
+                sizes={imageSizes}
                 className="object-cover transition-opacity duration-300 group-hover:opacity-75"
               />
             </div>
