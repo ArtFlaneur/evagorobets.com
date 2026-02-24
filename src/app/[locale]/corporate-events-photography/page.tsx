@@ -185,14 +185,14 @@ export default async function CorporateEventsPage({ params }: PageProps) {
         <CurrencyOptions
           sectionLabel="Coverage Options"
           packagesJPY={[
-            { label: "Half-day coverage (up to 4 hrs)", price: "from ¥165,000" },
-            { label: "Full-day coverage (up to 8 hrs)", price: "from ¥275,000" },
-            { label: "Multi-day rate (per day)", price: "from ¥242,000" },
+            { label: "Half-day coverage (up to 4 hrs)", price: "from ¥155,000" },
+            { label: "Full-day coverage (up to 8 hrs)", price: "from ¥255,000" },
+            { label: "Multi-day rate (per day)", price: "from ¥222,000" },
           ]}
           packagesAUD={[
-            { label: "Half-day coverage (up to 4 hrs)", price: "from A$1,850" },
-            { label: "Full-day coverage (up to 8 hrs)", price: "from A$3,050" },
-            { label: "Multi-day rate (per day)", price: "from A$2,700" },
+            { label: "Half-day coverage (up to 4 hrs)", price: "from A$1,720" },
+            { label: "Full-day coverage (up to 8 hrs)", price: "from A$2,830" },
+            { label: "Multi-day rate (per day)", price: "from A$2,470" },
           ]}
           footerNote="Includes pre-event briefing, on-site coverage and structured delivery sets."
         />

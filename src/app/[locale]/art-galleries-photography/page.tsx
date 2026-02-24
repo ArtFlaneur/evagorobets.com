@@ -204,12 +204,12 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
         <CurrencyOptions
           sectionLabel="Service Options"
           packagesJPY={[
-            { label: "Exhibition opening / vernissage", price: "from ¥132,000" },
+            { label: "Exhibition opening / vernissage", price: "from ¥100,000" },
             { label: "Artwork documentation session", price: "from ¥88,000" },
             { label: "Artist or curator portrait", price: "from ¥110,000" },
           ]}
           packagesAUD={[
-            { label: "Exhibition opening / vernissage", price: "from A$1,480" },
+            { label: "Exhibition opening / vernissage", price: "from A$1,110" },
             { label: "Artwork documentation session", price: "from A$980" },
             { label: "Artist or curator portrait", price: "from A$1,220" },
           ]}
