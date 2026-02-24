@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 
 import { Locale, locales } from "@/lib/i18n";
 
+const displayLabel: Record<Locale, string> = { en: "EN", jp: "JA", ru: "RU" };
+
 function replaceLocale(pathname: string, nextLocale: Locale) {
   const parts = pathname.split("/").filter(Boolean);
   if (parts.length === 0) return `/${nextLocale}`;
@@ -38,7 +40,7 @@ export function LanguageSwitcher({
               locale === currentLocale ? activeClass : inactiveClass
             }`}
           >
-            {locale}
+            {displayLabel[locale]}
           </Link>
         </span>
       ))}
