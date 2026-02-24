@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { CurrencyOptions } from "@/components/CurrencyOptions";
 import { EditorialGallery } from "@/components/EditorialGallery";
 import { getCorporateGallery } from "@/lib/gallery-data";
 
@@ -178,6 +179,23 @@ export default async function CorporateEventsPage({ params }: PageProps) {
             <span className="label">{t.by}</span>
           </footer>
         </blockquote>
+      </section>
+
+      <section className="section border-t border-black/[0.07]">
+        <CurrencyOptions
+          sectionLabel="Coverage Options"
+          packagesJPY={[
+            { label: "Half-day coverage (up to 4 hrs)", price: "from ¥165,000" },
+            { label: "Full-day coverage (up to 8 hrs)", price: "from ¥275,000" },
+            { label: "Multi-day rate (per day)", price: "from ¥242,000" },
+          ]}
+          packagesAUD={[
+            { label: "Half-day coverage (up to 4 hrs)", price: "from A$1,850" },
+            { label: "Full-day coverage (up to 8 hrs)", price: "from A$3,050" },
+            { label: "Multi-day rate (per day)", price: "from A$2,700" },
+          ]}
+          footerNote="Includes pre-event briefing, on-site coverage and structured delivery sets."
+        />
       </section>
 
       <section className="section border-t border-black/[0.07] py-6!">

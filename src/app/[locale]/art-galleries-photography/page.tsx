@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { CurrencyOptions } from "@/components/CurrencyOptions";
 import { EditorialGallery } from "@/components/EditorialGallery";
 import { getArtGallery } from "@/lib/gallery-data";
 
@@ -197,6 +198,23 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
             <span className="label">{t.testimonialBy}</span>
           </footer>
         </blockquote>
+      </section>
+
+      <section className="section border-t border-black/[0.07]">
+        <CurrencyOptions
+          sectionLabel="Service Options"
+          packagesJPY={[
+            { label: "Exhibition opening / vernissage", price: "from ¥132,000" },
+            { label: "Artwork documentation session", price: "from ¥88,000" },
+            { label: "Artist or curator portrait", price: "from ¥110,000" },
+          ]}
+          packagesAUD={[
+            { label: "Exhibition opening / vernissage", price: "from A$1,480" },
+            { label: "Artwork documentation session", price: "from A$980" },
+            { label: "Artist or curator portrait", price: "from A$1,220" },
+          ]}
+          footerNote="Colour-accurate files structured for press, catalogue and archive use."
+        />
       </section>
 
       <section className="section border-t border-black/[0.07] py-6!">
