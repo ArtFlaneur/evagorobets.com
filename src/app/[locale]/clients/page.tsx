@@ -13,9 +13,9 @@ const clientSectors = {
         "McKinsey & Company",
         "SAP",
         "General Electric",
+        "WISE Employment",
         "International management consulting firms, Tokyo",
         "Private equity and legal services groups",
-        "WISE Employment",
       ],
     },
     {
@@ -34,10 +34,10 @@ const clientSectors = {
       clients: [
         "State Library Victoria",
         "Contemporary art galleries, Tokyo",
+        "Cirque du Soleil",
         "International gallery groups, vernissages",
         "Art Flaneur (co-founded)",
         "Independent exhibition spaces, Melbourne",
-        "Cirque du Soleil",
       ],
     },
   ],

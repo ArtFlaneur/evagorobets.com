@@ -188,9 +188,8 @@ export default async function LocaleHome({ params }: PageProps) {
 
       {/* Selected work */}
       <section className="section border-t border-black/[0.07]">
-        <div className="mb-10 flex items-end justify-between">
+        <div className="mb-10">
           <p className="label">{t.selectedWork}</p>
-          <Link href={`/${locale}/portfolio`} className="btn-ghost">{t.fullPortfolio}</Link>
         </div>
         <EditorialGallery items={featuredGallery} />
       </section>
