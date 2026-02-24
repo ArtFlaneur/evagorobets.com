@@ -10,6 +10,7 @@ const content = {
   en: {
     heroName: "Eva Gorobets",
     heroTitle: "Photographer",
+    heroDescriptor: "Tokyo — Melbourne — Worldwide",
     eyebrow: "Tokyo · Melbourne · Worldwide",
     h1: ["Portrait &", "Corporate", "Photographer"],
     subhero: "Business portraits, corporate events and art world photography.\nAustralian photographer based in Tokyo.",
@@ -38,8 +39,8 @@ const content = {
       },
     ],
     selectedWork: "Selected Works",
-    testimonial: '"Eva has an instinctive understanding of the corporate environment. The portraits she made for our leadership team were used across every channel — within 48 hours of delivery."',
-    testimonialBy: "Chief Communications Officer, Fortune 500 firm — Tokyo",
+    testimonial: '"Working with Eva is always highly collaborative. She makes people feel at ease on set, gives expert direction, and consistently delivers top-class photography for our publications and campaigns."',
+    testimonialBy: "Danielle Chung, Senior Client Services Manager, ANZSAP Magazine",
     aboutLabel: "About",
     aboutH2: ["Australian photographer", "based in Tokyo"],
     aboutBody: "Melbourne background, deep connection to the art world. Communication in Russian, English and Japanese.",
@@ -47,11 +48,12 @@ const content = {
     workingLabel: "Working with clients in",
     workingList: ["Japan — Tokyo, Osaka, Kyoto", "Australia — Melbourne, Sydney", "International clients worldwide"],
     ctaH2: "Ready to work together?",
-    ctaBtn: "Contact / Book",
+    ctaBtn: "Contact / Book"
   },
   jp: {
     heroName: "Eva Gorobets",
     heroTitle: "Photographer",
+    heroDescriptor: "東京 コーポレート & アートワールド フォトグラファー",
     eyebrow: "東京 · メルボルン · 世界各地",
     h1: ["ポートレート &", "コーポレート", "フォトグラファー"],
     subhero: "ビジネスポートレート、コーポレートイベント、アート写真。\n東京在住のオーストラリア人フォトグラファー。",
@@ -81,8 +83,8 @@ const content = {
     ],
     selectedWork: "セレクテッドワーク",
     fullPortfolio: "全ポートフォリオ",
-    testimonial: "「エヴァはコーポレート環境を直感的に理解しています。彼女が撮影したリーダーシップチームのポートレートは、納品後48時間以内にあらゆるチャンネルで活用されました。」",
-    testimonialBy: "フォーチュン500企業 チーフ・コミュニケーションズ・オフィサー — 東京",
+    testimonial: "「エヴァとの仕事は、いつも協働的でスムーズです。現場で人をリラックスさせる力があり、的確なディレクションで、私たちの出版物やキャンペーン向けに常に高品質な写真を提供してくれます。」",
+    testimonialBy: "Danielle Chung（ANZSAP Magazine シニア・クライアントサービス・マネージャー）",
     aboutLabel: "プロフィール",
     aboutH2: ["東京を拠点とする", "オーストラリア人フォトグラファー"],
     aboutBody: "メルボルン出身。アートの世界に深い造詣を持つ。ロシア語・英語・日本語でのコミュニケーションが可能。",
@@ -91,10 +93,12 @@ const content = {
     workingList: ["日本 — 東京・大阪・京都", "オーストラリア — メルボルン・シドニー", "世界各地のクライアント対応可"],
     ctaH2: "一緒に仕事をしませんか？",
     ctaBtn: "お問い合わせ・予約",
+    ctaEmail: "メール",
   },
   ru: {
     heroName: "Eva Gorobets",
     heroTitle: "Photographer",
+    heroDescriptor: "Корпоративный и арт-фотограф в Токио",
     eyebrow: "Токио · Мельбурн · Весь мир",
     h1: ["Портретный &", "корпоративный", "фотограф"],
     subhero: "Бизнес-портреты, корпоративные мероприятия и фотография арт-мира.\nАвстралийский фотограф, живущий в Токио.",
@@ -124,8 +128,8 @@ const content = {
     ],
     selectedWork: "Избранные работы",
     fullPortfolio: "Полное портфолио",
-    testimonial: "«Ева обладает интуитивным пониманием корпоративной среды. Портреты команды руководства, сделанные ею, были использованы на всех каналах — в течение 48 часов после получения.»",
-    testimonialBy: "Директор по коммуникациям, компания Fortune 500 — Токио",
+    testimonial: "«С Евой всегда очень комфортно и по-настоящему совместно работать. Она легко помогает людям расслабиться на съёмке, чётко направляет процесс и стабильно даёт фотографии высокого класса для наших публикаций и кампаний.»",
+    testimonialBy: "Danielle Chung, Senior Client Services Manager, ANZSAP Magazine",
     aboutLabel: "О фотографе",
     aboutH2: ["Австралийский фотограф,", "живущий в Токио"],
     aboutBody: "Мельбурнские корни, глубокая связь с миром искусства. Общение на русском, английском и японском языках.",
@@ -134,6 +138,7 @@ const content = {
     workingList: ["Япония — Токио, Осака, Киото", "Австралия — Мельбурн, Сидней", "Международные клиенты по всему миру"],
     ctaH2: "Готовы к сотрудничеству?",
     ctaBtn: "Связаться / Забронировать",
+    ctaEmail: "Email",
   },
 } as const;
 
@@ -143,6 +148,27 @@ export default async function LocaleHome({ params }: PageProps) {
   const { locale } = await params;
   const t = content[(locale as Locale) in content ? (locale as Locale) : "en"];
   const featuredGallery = await getFeaturedGallery();
+  const anzsapUrl = "https://anzsapmagazine.com.au/";
+
+  function linkifyAnzsap(text: string) {
+    const parts = text.split(/(ANZSAP Magazine)/g);
+    return parts.map((part, index) => {
+      if (part === "ANZSAP Magazine") {
+        return (
+          <a
+            key={`${part}-${index}`}
+            href={anzsapUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2"
+          >
+            {part}
+          </a>
+        );
+      }
+      return part;
+    });
+  }
 
   return (
     <>
@@ -151,6 +177,7 @@ export default async function LocaleHome({ params }: PageProps) {
         images={featuredGallery}
         name={t.heroName}
         title={t.heroTitle}
+        descriptor={t.heroDescriptor}
         locale={locale}
       />
 
@@ -203,7 +230,7 @@ export default async function LocaleHome({ params }: PageProps) {
             {t.testimonial}
           </p>
           <footer className="mt-6">
-            <span className="label">{t.testimonialBy}</span>
+            <span className="label">{linkifyAnzsap(t.testimonialBy)}</span>
           </footer>
         </blockquote>
       </section>
@@ -238,7 +265,7 @@ export default async function LocaleHome({ params }: PageProps) {
       </section>
 
       {/* CTA */}
-      <section className="section border-t border-black/[0.07] !py-6">
+      <section className="section border-t border-black/[0.07] py-6!">
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
           <h2
             className="text-[clamp(2rem,5vw,4.5rem)] leading-[0.95]"
@@ -246,9 +273,14 @@ export default async function LocaleHome({ params }: PageProps) {
           >
             {t.ctaH2}
           </h2>
-          <Link href={`/${locale}/contact-booking`} className="btn whitespace-nowrap">
-            {t.ctaBtn}
-          </Link>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link href={`/${locale}/contact-booking`} className="btn whitespace-nowrap">
+              {t.ctaBtn}
+            </Link>
+            <a href="mailto:eva@artflaneur.com.au" className="btn-ghost whitespace-nowrap">
+              {t.ctaEmail}
+            </a>
+          </div>
         </div>
       </section>
     </>

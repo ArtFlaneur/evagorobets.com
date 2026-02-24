@@ -11,15 +11,40 @@ const BASE_URL = "https://evagorobets.com";
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
   const path = "/art-galleries-photography";
+  const seo = {
+    en: {
+      title: "Art Gallery & Exhibition Photography Tokyo | Eva Gorobets",
+      description:
+        "Photography for galleries, museums and artists in Tokyo and Melbourne. Vernissage coverage, artwork documentation, artist portraits. Catalogue and press-ready files.",
+      ogTitle: "Art Gallery & Exhibition Photography Tokyo",
+      ogDescription:
+        "Gallery openings, artwork documentation and artist portraits in Tokyo and Melbourne. Press and catalogue-ready delivery.",
+    },
+    jp: {
+      title: "東京アートギャラリー・展覧会撮影 | Eva Gorobets",
+      description:
+        "東京・メルボルンのギャラリー、美術館、アーティスト向け撮影。ヴェルニサージュ、作品ドキュメント、アーティストポートレート。カタログ・プレス対応ファイルで納品。",
+      ogTitle: "東京アートギャラリー・展覧会撮影",
+      ogDescription:
+        "ギャラリーオープニング、作品ドキュメンテーション、アーティストポートレートを東京・メルボルンで提供。",
+    },
+    ru: {
+      title: "Фотограф для галерей и выставок в Токио | Eva Gorobets",
+      description:
+        "Съёмка для галерей, музеев и художников в Токио и Мельбурне: вернисажи, документация произведений, портреты художников. Файлы, готовые для каталога и прессы.",
+      ogTitle: "Фотограф для галерей и выставок в Токио",
+      ogDescription:
+        "Открытия галерей, документация работ и портреты художников в Токио и Мельбурне. Готовая сдача для прессы и каталогов.",
+    },
+  } as const;
+  const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
 
   return {
-    title: "Art Gallery & Exhibition Photography Tokyo | Eva Gorobets",
-    description:
-      "Photography for galleries, museums and artists in Tokyo and Melbourne. Vernissage coverage, artwork documentation, artist portraits. Catalogue and press-ready files.",
+    title: t.title,
+    description: t.description,
     openGraph: {
-      title: "Art Gallery & Exhibition Photography Tokyo",
-      description:
-        "Gallery openings, artwork documentation and artist portraits in Tokyo and Melbourne. Press and catalogue-ready delivery.",
+      title: t.ogTitle,
+      description: t.ogDescription,
     },
     alternates: {
       canonical: `${BASE_URL}/${locale}${path}`,
@@ -174,7 +199,7 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
         </blockquote>
       </section>
 
-      <section className="section border-t border-black/[0.07] !py-6">
+      <section className="section border-t border-black/[0.07] py-6!">
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
           <h2
             className="text-[clamp(2rem,4.5vw,4rem)] leading-[0.95]"

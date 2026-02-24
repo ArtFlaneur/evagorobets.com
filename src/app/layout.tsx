@@ -18,16 +18,21 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL("https://evagorobets.com"),
   title: "Eva Gorobets — Photographer",
-  description: "Australian portrait & corporate photographer in Tokyo.",
+  description: "Tokyo - Melbourne - Worldwide",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale?: string }>;
 }>) {
+  const { locale } = await params;
+  const htmlLang = locale === "jp" ? "ja" : locale === "ru" ? "ru" : "en";
+
   return (
-    <html lang="en">
+    <html lang={htmlLang}>
       <body className={`${cormorant.variable} ${dmSans.variable} antialiased`}>
         {children}
       </body>

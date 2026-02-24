@@ -12,6 +12,12 @@ export type CloudinaryResource = {
   context?: { custom?: { alt?: string; caption?: string; featured_order?: string } };
 };
 
+export function optimizeCloudinaryDeliveryUrl(url: string): string {
+  if (!url.includes("res.cloudinary.com") || !url.includes("/image/upload/")) return url;
+  if (url.includes("/image/upload/f_auto,q_auto/")) return url;
+  return url.replace("/image/upload/", "/image/upload/f_auto,q_auto/");
+}
+
 function featuredOrderOf(resource: CloudinaryResource): number {
   const raw = resource.context?.custom?.featured_order;
   const parsed = raw ? Number(raw) : Number.NaN;
@@ -79,7 +85,7 @@ export async function getCloudinaryImages(
   return resources
     .sort((a, b) => a.created_at.localeCompare(b.created_at))
     .map((r) => ({
-      src: r.secure_url,
+      src: optimizeCloudinaryDeliveryUrl(r.secure_url),
       alt: r.context?.custom?.alt ?? r.public_id.split("/").pop() ?? "",
       aspect: aspectFromDimensions(r.width, r.height),
     }));

@@ -12,13 +12,40 @@ const BASE_URL = "https://evagorobets.com";
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
   const path = "/tokyo-business-portraits";
+  const seo = {
+    en: {
+      title: "Executive Headshots & Business Portraits Tokyo | Eva Gorobets",
+      description:
+        "Professional executive headshots and leadership portraits in Tokyo. Studio and on-location. Used for company websites, LinkedIn, annual reports and press. Trilingual briefing.",
+      ogTitle: "Executive Headshots & Business Portraits Tokyo",
+      ogDescription:
+        "Studio and on-location portrait sessions for executives, founders and leadership teams in Tokyo. Fast delivery, trilingual communication.",
+    },
+    jp: {
+      title: "東京ビジネスポートレート & エグゼクティブヘッドショット | Eva Gorobets",
+      description:
+        "東京でのエグゼクティブヘッドショットとリーダーシップポートレート。スタジオ・ロケーション対応。企業サイト、LinkedIn、年次報告書、プレス用途に最適。3言語でブリーフ対応。",
+      ogTitle: "東京ビジネスポートレート & エグゼクティブヘッドショット",
+      ogDescription:
+        "東京の経営層・創業者・リーダー向けスタジオ/ロケーション撮影。迅速納品、3言語コミュニケーション。",
+    },
+    ru: {
+      title: "Бизнес-портреты и executive headshots в Токио | Eva Gorobets",
+      description:
+        "Профессиональные headshots и портреты руководителей в Токио. Студия и съёмка на локации. Для корпоративных сайтов, LinkedIn, годовых отчётов и прессы. Брифинг на трёх языках.",
+      ogTitle: "Бизнес-портреты и executive headshots в Токио",
+      ogDescription:
+        "Студийные и выездные сессии для руководителей, основателей и команд лидерства в Токио. Быстрая сдача и трёхъязычная коммуникация.",
+    },
+  } as const;
+  const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
 
   return {
-    title: "Executive Headshots & Business Portraits Tokyo | Eva Gorobets",
-    description: "Professional executive headshots and leadership portraits in Tokyo. Studio and on-location. Used for company websites, LinkedIn, annual reports and press. Trilingual briefing.",
+    title: t.title,
+    description: t.description,
     openGraph: {
-      title: "Executive Headshots & Business Portraits Tokyo",
-      description: "Studio and on-location portrait sessions for executives, founders and leadership teams in Tokyo. Fast delivery, trilingual communication.",
+      title: t.ogTitle,
+      description: t.ogDescription,
     },
     alternates: {
       canonical: `${BASE_URL}/${locale}${path}`,
@@ -51,8 +78,8 @@ const content = {
       ["4", "Selection", "You receive a proof gallery and choose your favourite frames."],
       ["5", "Delivery", "Retouched web and print-ready files. Delivered within 3\u20135 business days."],
     ],
-    testimonial: "\u201cThe portraits Eva made for our Tokyo leadership team were used on the company website, in our annual report and across all press materials. The process was completely smooth.\u201d",
-    testimonialBy: "Head of Communications, Global Consulting Firm \u2014 Tokyo",
+    testimonial: "\u201cEva sees what others miss and captures the true essence of a person. I have commissioned her more than once and have always been very satisfied with the result.\u201d",
+    testimonialBy: "Mikhail Yermolayev, Managing Partner, GAB Consulting",
     ctaH2: "Let\u2019s create your portrait.",
     ctaBtn: "Enquire for a Business Portrait",
   },
@@ -75,8 +102,8 @@ const content = {
       ["4", "セレクション", "プルーフギャラリーをお送りし、お好みのカットをお選びいただきます。"],
       ["5", "納品", "Web用・印刷用レタッチ済みファイル。3〜5営業日以内に納品。"],
     ],
-    testimonial: "\u300cエヴァが撮影した東京リーダーシップチームのポートレートは、会社のウェブサイト、年次報告書、すべてのプレス素材に使用されました。プロセスは完全にスムーズでした。\u300d",
-    testimonialBy: "グローバルコミュニケーション部長、国際コンサルティングファーム \u2014 東京",
+    testimonial: "\u300cエヴァは、他の人が見落とす要素を見抜き、人物の本質を引き出して撮影してくれます。私は複数回依頼していますが、毎回とても満足しています。\u300d",
+    testimonialBy: "Mikhail Yermolayev（GAB Consulting マネージングパートナー）",
     ctaH2: "あなたのポートレートを撮影しましょう。",
     ctaBtn: "ビジネスポートレートのお問い合わせ",
   },
@@ -99,8 +126,8 @@ const content = {
       ["4", "Отбор", "Получаете превью-галерею и выбираете лучшие кадры."],
       ["5", "Доставка", "Ретушированные файлы для web и печати. В течение 3–5 рабочих дней."],
     ],
-    testimonial: "\u00abПортреты, которые Ева сделала для нашей токийской команды руководства, использовались на корпоративном сайте, в годовом отчёте и во всех пресс-материалах. Процесс был полностью гладким.\u00bb",
-    testimonialBy: "Директор по коммуникациям, международная консалтинговая компания \u2014 Токио",
+    testimonial: "\u00abЕвгения видит то, что обычно не замечают, и умеет передать суть человека в кадре. Не раз работал с ней как заказчик и всегда оставался очень доволен результатом.\u00bb",
+    testimonialBy: "Михаил Ермолаев, управляющий партнёр GAB Consulting",
     ctaH2: "Создадим ваш портрет.",
     ctaBtn: "Запрос на бизнес-портрет",
   },
@@ -171,7 +198,7 @@ export default async function BusinessPortraitsPage({ params }: PageProps) {
         <CurrencyOptions />
       </section>
 
-      <section className="section border-t border-black/[0.07] !py-6">
+      <section className="section border-t border-black/[0.07] py-6!">
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
           <h2 className="text-[clamp(2rem,4.5vw,4rem)] leading-[0.95]" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>
             {t.ctaH2}

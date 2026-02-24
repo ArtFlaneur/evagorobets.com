@@ -11,15 +11,40 @@ const BASE_URL = "https://evagorobets.com";
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
   const path = "/corporate";
+  const seo = {
+    en: {
+      title: "Corporate Photography Tokyo — For International Companies | Eva Gorobets",
+      description:
+        "Executive portraits, leadership headshots and corporate event photography for international companies based in Tokyo. Briefing in English, Japanese and Russian. Fast delivery.",
+      ogTitle: "Corporate Photography Tokyo — For International Companies",
+      ogDescription:
+        "Executive portraits and event coverage for global companies with Tokyo offices. Structured process, fast turnaround, trilingual communication.",
+    },
+    jp: {
+      title: "東京の法人向けコーポレート撮影 — 外資系企業対応 | Eva Gorobets",
+      description:
+        "東京の外資系企業向けに、エグゼクティブポートレート、リーダーシップヘッドショット、コーポレートイベント撮影を提供。英語・日本語・ロシア語でブリーフ対応。迅速納品。",
+      ogTitle: "東京の法人向けコーポレート撮影",
+      ogDescription:
+        "東京拠点のグローバル企業向けポートレートとイベント撮影。構造化された進行、迅速納品、3言語対応。",
+    },
+    ru: {
+      title: "Корпоративная фотография в Токио — для международных компаний | Eva Gorobets",
+      description:
+        "Портреты руководителей, корпоративные хэдшоты и съёмка корпоративных событий для международных компаний в Токио. Брифинг на английском, японском и русском. Быстрая сдача.",
+      ogTitle: "Корпоративная фотография в Токио — для международных компаний",
+      ogDescription:
+        "Портреты и съёмка мероприятий для глобальных компаний с офисами в Токио. Чёткий процесс, быстрая сдача, трёхъязычная коммуникация.",
+    },
+  } as const;
+  const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
 
   return {
-    title: "Corporate Photography Tokyo — For International Companies | Eva Gorobets",
-    description:
-      "Executive portraits, leadership headshots and corporate event photography for international companies based in Tokyo. Briefing in English, Japanese and Russian. Fast delivery.",
+    title: t.title,
+    description: t.description,
     openGraph: {
-      title: "Corporate Photography Tokyo — For International Companies",
-      description:
-        "Executive portraits and event coverage for global companies with Tokyo offices. Structured process, fast turnaround, trilingual communication.",
+      title: t.ogTitle,
+      description: t.ogDescription,
     },
     alternates: {
       canonical: `${BASE_URL}/${locale}${path}`,
@@ -353,7 +378,7 @@ export default async function CorporatePage({ params }: PageProps) {
       </section>
 
       {/* CTA */}
-      <section className="section border-t border-black/[0.07] !py-6">
+      <section className="section border-t border-black/[0.07] py-6!">
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <h2

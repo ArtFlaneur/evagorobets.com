@@ -22,19 +22,19 @@ type EditorialGalleryProps = {
  */
 export function EditorialGallery({ items, compact = false }: EditorialGalleryProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const gridClass = compact
-    ? "columns-3 gap-0.5 md:columns-4"
+  const wrapperClass = compact
+    ? "grid grid-cols-3 gap-0.5 sm:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6"
     : "columns-2 gap-0.5 md:columns-3";
 
   return (
     <>
-      <div className={gridClass} style={{ columnFill: "balance" }}>
+      <div className={wrapperClass} style={compact ? undefined : { columnFill: "balance" }}>
         {items.map((item, index) => (
           <button
             key={`${item.src}-${index}`}
             type="button"
             onClick={() => setActiveIndex(index)}
-            className="group mb-0.5 block w-full overflow-hidden break-inside-avoid cursor-pointer"
+            className={`group block w-full overflow-hidden cursor-pointer ${compact ? (item.aspect === "landscape" ? "sm:col-span-2" : "") : "mb-0.5 break-inside-avoid"}`}
           >
             <div className={`relative w-full ${aspectClasses[item.aspect]}`}>
               <Image

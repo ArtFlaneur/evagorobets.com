@@ -7,11 +7,41 @@ const BASE_URL = "https://evagorobets.com";
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
   const path = "/contact-booking";
+  const seo = {
+    en: {
+      title: "Contact & Booking — Executive Portrait & Corporate Event Photographer Tokyo | Eva Gorobets",
+      description:
+        "Book an executive portrait or corporate event session in Tokyo. Structured brief form, response within 24 hours. Communication in English, Japanese and Russian.",
+      ogTitle: "Contact & Booking — Eva Gorobets",
+      ogDescription:
+        "Send a brief for executive portraits, corporate events or art projects in Tokyo. Response within 24 hours.",
+    },
+    jp: {
+      title: "お問い合わせ・予約 — 東京のエグゼクティブポートレート/法人イベント撮影 | Eva Gorobets",
+      description:
+        "東京でのエグゼクティブポートレート・コーポレートイベント撮影のご予約。構造化フォームで3分以内、24時間以内に返信。英語・日本語・ロシア語対応。",
+      ogTitle: "お問い合わせ・予約 — Eva Gorobets",
+      ogDescription:
+        "エグゼクティブポートレート、法人イベント、アート案件のご相談を受付。24時間以内に返信。",
+    },
+    ru: {
+      title: "Контакт и бронирование — портреты руководителей и корпоративные события в Токио | Eva Gorobets",
+      description:
+        "Бронирование executive-портретов и корпоративных съёмок в Токио. Структурированная форма брифа, ответ в течение 24 часов. Коммуникация на английском, японском и русском.",
+      ogTitle: "Контакт и бронирование — Eva Gorobets",
+      ogDescription:
+        "Отправьте бриф на портретную, корпоративную или арт-съёмку в Токио. Ответ в течение 24 часов.",
+    },
+  } as const;
+  const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
 
   return {
-    title: "Contact & Booking — Executive Portrait & Corporate Event Photographer Tokyo | Eva Gorobets",
-    description:
-      "Book an executive portrait or corporate event session in Tokyo. Structured brief form, response within 24 hours. Communication in English, Japanese and Russian.",
+    title: t.title,
+    description: t.description,
+    openGraph: {
+      title: t.ogTitle,
+      description: t.ogDescription,
+    },
     alternates: {
       canonical: `${BASE_URL}/${locale}${path}`,
       languages: {
@@ -64,7 +94,7 @@ const content = {
     submitBtn: "Send brief",
     directLabel: "Direct contact",
     corporateLabel: "Corporate clients",
-    corporateItems: [["NDA", "Available before briefing"], ["Invoicing", "JPY · AUD · USD"], ["Payment", "Net-30 for corporate accounts"], ["Confidentiality", "Client names not published without consent"], ["Response", "Within 24 hours"]],
+    corporateItems: [["NDA", "Available before briefing"], ["Invoicing", "JPY · AUD · USD"], ["ABN / GST", "ABN listed on invoices · GST if applicable"], ["Payment", "Net-30 for corporate accounts"], ["Confidentiality", "Client names not published without consent"], ["Response", "Within 24 hours"]],
     langLabel: "Languages",
     langBody: "Briefing and communication in English, Japanese and Russian — your Tokyo office and your global HQ can both contact directly.",
     langLink: "For companies →",
@@ -108,7 +138,7 @@ const content = {
     submitBtn: "ブリーフを送る",
     directLabel: "直接連絡",
     corporateLabel: "法人クライアント",
-    corporateItems: [["NDA", "ブリーフ前に対応可能"], ["請求通貨", "JPY · AUD · USD"], ["支払条件", "法人アカウントはNet-30"], ["守秘義務", "同意なくクライアント名を公開しません"], ["応答時間", "24時間以内"]],
+    corporateItems: [["NDA", "ブリーフ前に対応可能"], ["請求通貨", "JPY · AUD · USD"], ["ABN / GST", "ABNは請求書に記載 · GSTは該当時のみ"], ["支払条件", "法人アカウントはNet-30"], ["守秘義務", "同意なくクライアント名を公開しません"], ["応答時間", "24時間以内"]],
     langLabel: "対応言語",
     langBody: "英語・日本語・ロシア語でのブリーフおよびコミュニケーションが可能。東京オフィスもグローバル本社も直接ご連絡いただけます。",
     langLink: "法人のお客様はこちら →",
@@ -152,7 +182,7 @@ const content = {
     submitBtn: "Отправить бриф",
     directLabel: "Прямой контакт",
     corporateLabel: "Корпоративным клиентам",
-    corporateItems: [["NDA", "По запросу до брифа"], ["Счета", "JPY · AUD · USD"], ["Оплата", "Net-30 для корпоративных аккаунтов"], ["Конфиденциальность", "Имена клиентов не публикуются без согласия"], ["Ответ", "В течение 24 часов"]],
+    corporateItems: [["NDA", "По запросу до брифа"], ["Счета", "JPY · AUD · USD"], ["ABN / GST", "ABN указывается в счетах · GST при применимости"], ["Оплата", "Net-30 для корпоративных аккаунтов"], ["Конфиденциальность", "Имена клиентов не публикуются без согласия"], ["Ответ", "В течение 24 часов"]],
     langLabel: "Языки",
     langBody: "Брифинг и коммуникация на английском, японском и русском — токийский офис и глобальный HQ могут обращаться напрямую.",
     langLink: "Для компаний →",
@@ -213,12 +243,12 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
           <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
 
           {showSent && (
-            <p className="mb-4 border border-black/15 bg-black/[0.02] px-4 py-3 text-sm text-black/70">
+            <p className="mb-4 border border-black/15 bg-black/2 px-4 py-3 text-sm text-black/70">
               {t.sentMsg}
             </p>
           )}
           {showError && (
-            <p className="mb-4 border border-black/15 bg-black/[0.02] px-4 py-3 text-sm text-black/70">
+            <p className="mb-4 border border-black/15 bg-black/2 px-4 py-3 text-sm text-black/70">
               {t.errorMsg}
             </p>
           )}

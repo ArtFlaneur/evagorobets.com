@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { GalleryImage } from "@/lib/gallery-data";
 
@@ -7,10 +8,11 @@ interface Props {
   images: GalleryImage[];
   name: string;
   title: string;
+  descriptor: string;
   locale: string;
 }
 
-export function HeroSlideshow({ images, name, title }: Props) {
+export function HeroSlideshow({ images, name, title, descriptor }: Props) {
   const [phase, setPhase] = useState<"intro" | "photo">("intro");
   const [current, setCurrent] = useState(0);
   const [cursorSide, setCursorSide] = useState<"left" | "right">("right");
@@ -83,12 +85,16 @@ export function HeroSlideshow({ images, name, title }: Props) {
             className="absolute inset-0 flex items-center justify-center transition-opacity duration-700"
             style={{ opacity: i === current ? 1 : 0, padding: "88px 80px 56px" }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={img.src}
-              alt={img.alt}
-              style={{ maxWidth: "70%", maxHeight: "100%", objectFit: "contain", display: "block" }}
-            />
+            <div className="relative h-full w-full max-w-[70%]">
+              <Image
+                src={img.src}
+                alt={img.alt}
+                fill
+                priority={i === 0}
+                sizes="(max-width: 768px) 90vw, 70vw"
+                className="object-contain"
+              />
+            </div>
           </div>
         ))}
       </div>
@@ -120,6 +126,19 @@ export function HeroSlideshow({ images, name, title }: Props) {
           <span className="animate-fade-in text-white/45" style={{ fontWeight: 300, animationDelay: "1s" }}>
             {" "}— {title}
           </span>
+        </p>
+        <p
+          className="animate-fade-in mt-4 text-white/70"
+          style={{
+            fontFamily: "var(--font-dm-sans)",
+            fontSize: "11px",
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            lineHeight: 1.5,
+            animationDelay: "1.5s",
+          }}
+        >
+          {descriptor}
         </p>
       </div>
 

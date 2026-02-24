@@ -15,6 +15,7 @@ const routes = [
   "/contact-booking",
 ];
 
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
 
@@ -32,6 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
       });
     }
+
   }
 
   return entries;

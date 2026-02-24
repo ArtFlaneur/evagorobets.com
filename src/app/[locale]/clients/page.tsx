@@ -1,6 +1,32 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 type PageProps = { params: Promise<{ locale: string }> };
+const BASE_URL = "https://evagorobets.com";
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const path = "/clients";
+
+  return {
+    title: "Clients — Corporate, Art & Media Photography | Eva Gorobets",
+    description:
+      "Selected corporate, gallery, media and public-sector clients across Tokyo, Melbourne and international commissions.",
+    openGraph: {
+      title: "Clients — Eva Gorobets",
+      description:
+        "Client sectors and references across corporate, art and media photography in Tokyo, Melbourne and worldwide.",
+    },
+    alternates: {
+      canonical: `${BASE_URL}/${locale}${path}`,
+      languages: {
+        en: `${BASE_URL}/en${path}`,
+        ja: `${BASE_URL}/jp${path}`,
+        ru: `${BASE_URL}/ru${path}`,
+      },
+    },
+  };
+}
 
 const clientSectors = {
   en: [
@@ -293,7 +319,7 @@ export default async function ClientsPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="section border-t border-black/[0.07] !py-6">
+      <section className="section border-t border-black/[0.07] py-6!">
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
           <h2
             className="text-[clamp(2rem,4.5vw,4rem)] leading-[0.95]"

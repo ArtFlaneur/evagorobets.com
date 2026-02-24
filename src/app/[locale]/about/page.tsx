@@ -1,8 +1,34 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getAboutPhotoSrc } from "@/lib/gallery-data";
 
 type PageProps = { params: Promise<{ locale: string }> };
+const BASE_URL = "https://evagorobets.com";
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const path = "/about";
+
+  return {
+    title: "About Eva Gorobets — Tokyo Photographer",
+    description:
+      "Portrait and corporate photographer based in Tokyo with 15+ years of international experience across corporate, cultural and art-world commissions.",
+    openGraph: {
+      title: "About Eva Gorobets — Tokyo Photographer",
+      description:
+        "15+ years of international portrait, corporate event and art photography experience across Tokyo, Melbourne and worldwide commissions.",
+    },
+    alternates: {
+      canonical: `${BASE_URL}/${locale}${path}`,
+      languages: {
+        en: `${BASE_URL}/en${path}`,
+        ja: `${BASE_URL}/jp${path}`,
+        ru: `${BASE_URL}/ru${path}`,
+      },
+    },
+  };
+}
 
 const content = {
   en: {
@@ -128,7 +154,7 @@ export default async function AboutPage({ params }: PageProps) {
             {t.bio.map((p, i) => <p key={i}>{linkifyArtFlaneur(p)}</p>)}
           </div>
         </div>
-        <div className="md:pt-[299px]">
+        <div className="md:pt-74.75">
           <ul>
             {t.facts.map(([label, value]) => (
               <li key={label} className="flex gap-8 border-t border-black/[0.07] py-4 text-sm">
@@ -158,7 +184,7 @@ export default async function AboutPage({ params }: PageProps) {
       </section>
 
       {/* Contact CTA */}
-      <section className="section border-t border-black/[0.07] !py-6">
+      <section className="section border-t border-black/[0.07] py-6!">
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
           <h2
             className="text-[clamp(2rem,4.5vw,4rem)] leading-[0.95]"

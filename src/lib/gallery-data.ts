@@ -35,7 +35,7 @@ export async function getArtGallery(): Promise<GalleryImage[]> {
 
 export async function getFeaturedGallery(): Promise<GalleryImage[]> {
   try {
-    const { getCloudinaryByTag, cloudinaryConfigured } = await import("./cloudinary");
+    const { getCloudinaryByTag, cloudinaryConfigured, optimizeCloudinaryDeliveryUrl } = await import("./cloudinary");
     if (!cloudinaryConfigured()) return featuredGallery;
     const resources = await getCloudinaryByTag("eva_featured");
     if (resources.length === 0) return featuredGallery;
@@ -44,7 +44,7 @@ export async function getFeaturedGallery(): Promise<GalleryImage[]> {
       const aspect: GalleryImage["aspect"] =
         ratio < 0.85 ? "portrait" : ratio > 1.15 ? "landscape" : "square";
       return {
-        src: r.secure_url,
+        src: optimizeCloudinaryDeliveryUrl(r.secure_url),
         alt: r.context?.custom?.alt ?? "",
         aspect,
       };
