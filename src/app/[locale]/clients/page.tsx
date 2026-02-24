@@ -78,6 +78,27 @@ export default async function ClientsPage({ params }: PageProps) {
   const loc = (locale as Locale) in content ? (locale as Locale) : "en";
   const t = content[loc];
   const sectors = clientSectors[loc];
+  const artFlaneurUrl = "https://www.artflaneur.art";
+
+  function linkifyArtFlaneur(text: string) {
+    const parts = text.split(/(Art Flaneur Global|Art Flaneur|アート・フラヌール)/g);
+    return parts.map((part, index) => {
+      if (part === "Art Flaneur Global" || part === "Art Flaneur" || part === "アート・フラヌール") {
+        return (
+          <a
+            key={`${part}-${index}`}
+            href={artFlaneurUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2"
+          >
+            {part}
+          </a>
+        );
+      }
+      return part;
+    });
+  }
 
   return (
     <>
@@ -100,7 +121,9 @@ export default async function ClientsPage({ params }: PageProps) {
               <p className="label mb-6 mt-1">{note}</p>
               <ul>
                 {clients.map((client) => (
-                  <li key={client} className="border-t border-black/[0.07] py-3 text-sm text-black/60">{client}</li>
+                  <li key={client} className="border-t border-black/[0.07] py-3 text-sm text-black/60">
+                    {linkifyArtFlaneur(client)}
+                  </li>
                 ))}
               </ul>
             </div>

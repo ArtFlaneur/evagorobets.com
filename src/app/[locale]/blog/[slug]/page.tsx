@@ -63,6 +63,28 @@ export default async function BlogPostPage({ params }: PageProps) {
   if (!post) notFound();
 
   const others = blogPosts.filter((p) => p.slug !== slug).slice(0, 3);
+  const artFlaneurUrl = "https://www.artflaneur.art";
+
+  function linkifyArtFlaneur(text: string) {
+    const parts = text.split(/(Art Flaneur Global|Art Flaneur)/g);
+    return parts.map((part, index) => {
+      if (part === "Art Flaneur Global" || part === "Art Flaneur") {
+        return (
+          <a
+            key={`${part}-${index}`}
+            href={artFlaneurUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2"
+          >
+            {part}
+          </a>
+        );
+      }
+      return part;
+    });
+  }
+
   const publishedTime = `${post.date}T00:00:00.000Z`;
   const articleSchema = {
     "@context": "https://schema.org",
@@ -124,7 +146,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         <div className="space-y-6">
           {post.body.map((para, i) => (
             <p key={i} className="text-sm text-black/70 leading-[1.8]">
-              {para}
+              {linkifyArtFlaneur(para)}
             </p>
           ))}
         </div>

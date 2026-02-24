@@ -88,6 +88,27 @@ export default async function AboutPage({ params }: PageProps) {
   const { locale } = await params;
   const t = content[(locale as Locale) in content ? (locale as Locale) : "en"];
   const aboutPhotoSrc = await getAboutPhotoSrc();
+  const artFlaneurUrl = "https://www.artflaneur.art";
+
+  function linkifyArtFlaneur(text: string) {
+    const parts = text.split(/(Art Flaneur Global|Art Flaneur|アート・フラヌール)/g);
+    return parts.map((part, index) => {
+      if (part === "Art Flaneur Global" || part === "Art Flaneur" || part === "アート・フラヌール") {
+        return (
+          <a
+            key={`${part}-${index}`}
+            href={artFlaneurUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2"
+          >
+            {part}
+          </a>
+        );
+      }
+      return part;
+    });
+  }
 
   return (
     <>
@@ -104,7 +125,7 @@ export default async function AboutPage({ params }: PageProps) {
             />
           </div>
           <div className="text-sm text-black/65 leading-relaxed space-y-5 max-w-md">
-            {t.bio.map((p, i) => <p key={i}>{p}</p>)}
+            {t.bio.map((p, i) => <p key={i}>{linkifyArtFlaneur(p)}</p>)}
           </div>
         </div>
         <div className="md:pt-[299px]">
@@ -112,7 +133,7 @@ export default async function AboutPage({ params }: PageProps) {
             {t.facts.map(([label, value]) => (
               <li key={label} className="flex gap-8 border-t border-black/[0.07] py-4 text-sm">
                 <span className="label w-36 shrink-0">{label}</span>
-                <span className="text-black/70">{value}</span>
+                <span className="text-black/70">{linkifyArtFlaneur(value)}</span>
               </li>
             ))}
           </ul>

@@ -95,6 +95,27 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
   const { locale } = await params;
   const t = artContent[(locale as Locale) in artContent ? (locale as Locale) : "en"];
   const artGallery = await getArtGallery();
+  const artFlaneurUrl = "https://www.artflaneur.art";
+
+  function linkifyArtFlaneur(text: string) {
+    const parts = text.split(/(Art Flaneur Global|Art Flaneur)/g);
+    return parts.map((part, index) => {
+      if (part === "Art Flaneur Global" || part === "Art Flaneur") {
+        return (
+          <a
+            key={`${part}-${index}`}
+            href={artFlaneurUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2"
+          >
+            {part}
+          </a>
+        );
+      }
+      return part;
+    });
+  }
 
   return (
     <>
@@ -108,7 +129,7 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
         </h1>
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           <p className="text-sm text-black/60 leading-relaxed">{t.p1}</p>
-          <p className="text-sm text-black/60 leading-relaxed">{t.p2}</p>
+          <p className="text-sm text-black/60 leading-relaxed">{linkifyArtFlaneur(t.p2)}</p>
         </div>
       </section>
 
