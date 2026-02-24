@@ -43,6 +43,8 @@ export default function AdminPage() {
   const [sourceImages, setSourceImages] = useState<CloudinaryResource[]>([]);
   const [featuredIds, setFeaturedIds] = useState<Set<string>>(new Set());
   const [featuredOrder, setFeaturedOrder] = useState<string[]>([]);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
   const [toggling, setToggling] = useState<Set<string>>(new Set());
   const [savingOrder, setSavingOrder] = useState(false);
   const [pickerLoading, setPickerLoading] = useState(false);
@@ -147,17 +149,15 @@ export default function AdminPage() {
     });
   }
 
-  async function moveFeatured(publicId: string, direction: "up" | "down") {
-    const index = featuredOrder.indexOf(publicId);
-    if (index < 0) return;
-    if (direction === "up" && index === 0) return;
-    if (direction === "down" && index === featuredOrder.length - 1) return;
+  async function reorderFeatured(draggedPublicId: string, targetPublicId: string) {
+    if (draggedPublicId === targetPublicId) return;
+    const from = featuredOrder.indexOf(draggedPublicId);
+    const to = featuredOrder.indexOf(targetPublicId);
+    if (from < 0 || to < 0) return;
 
     const next = [...featuredOrder];
-    const swapWith = direction === "up" ? index - 1 : index + 1;
-    const current = next[index];
-    next[index] = next[swapWith];
-    next[swapWith] = current;
+    next.splice(from, 1);
+    next.splice(to, 0, draggedPublicId);
     setFeaturedOrder(next);
     await saveFeaturedOrder(next);
   }
@@ -272,7 +272,7 @@ export default function AdminPage() {
               Select photos to show in the hero slideshow on the home page
             </p>
             <p className="text-[10px] tracking-[0.12em] opacity-30 mt-2 uppercase">
-              Use ↑ and ↓ to set slideshow order {savingOrder ? "(saving...)" : ""}
+              Drag and drop to set slideshow order {savingOrder ? "(saving...)" : ""}
             </p>
           </div>
 
@@ -296,7 +296,28 @@ export default function AdminPage() {
                   </p>
                   <div className="grid grid-cols-2 gap-0.5 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5">
                     {featured.map((img) => (
-                      <div key={img.public_id} className="group relative overflow-hidden">
+                      <div
+                        key={img.public_id}
+                        draggable={!savingOrder && !toggling.has(img.public_id)}
+                        onDragStart={() => setDraggingId(img.public_id)}
+                        onDragOver={(event) => {
+                          event.preventDefault();
+                          setDragOverId(img.public_id);
+                        }}
+                        onDrop={async (event) => {
+                          event.preventDefault();
+                          const dragged = draggingId;
+                          setDragOverId(null);
+                          setDraggingId(null);
+                          if (!dragged) return;
+                          await reorderFeatured(dragged, img.public_id);
+                        }}
+                        onDragEnd={() => {
+                          setDragOverId(null);
+                          setDraggingId(null);
+                        }}
+                        className={`group relative overflow-hidden ${dragOverId === img.public_id ? "ring-2 ring-black/30" : ""} ${draggingId === img.public_id ? "opacity-60" : ""}`}
+                      >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={thumbUrl(img.secure_url)}
@@ -308,22 +329,6 @@ export default function AdminPage() {
                           &#9733;
                         </div>
                         <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => moveFeatured(img.public_id, "up")}
-                              disabled={savingOrder || toggling.has(img.public_id)}
-                              className="text-[10px] tracking-[0.15em] uppercase text-white/80 hover:text-white disabled:opacity-30 border border-white/30 px-2 py-1"
-                            >
-                              ↑
-                            </button>
-                            <button
-                              onClick={() => moveFeatured(img.public_id, "down")}
-                              disabled={savingOrder || toggling.has(img.public_id)}
-                              className="text-[10px] tracking-[0.15em] uppercase text-white/80 hover:text-white disabled:opacity-30 border border-white/30 px-2 py-1"
-                            >
-                              ↓
-                            </button>
-                          </div>
                           <button
                             onClick={() => toggleFeatured(img.public_id)}
                             disabled={toggling.has(img.public_id)}
