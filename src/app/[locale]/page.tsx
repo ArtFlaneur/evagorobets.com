@@ -48,7 +48,8 @@ const content = {
     workingLabel: "Working with clients in",
     workingList: ["Japan — Tokyo, Osaka, Kyoto", "Australia — Melbourne, Sydney", "International clients worldwide"],
     ctaH2: "Ready to work together?",
-    ctaBtn: "Contact / Book"
+    ctaBtn: "Contact / Book",
+    ctaEmail: "Email",
   },
   jp: {
     heroName: "Eva Gorobets",
