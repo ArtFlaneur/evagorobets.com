@@ -248,7 +248,7 @@ export default async function ClientsPage({ params }: PageProps) {
       <section className="section border-t border-black/[0.07]">
         <div className="grid gap-y-0 md:grid-cols-2 lg:grid-cols-3">
           {sectors.map(({ sector, note, clients }) => (
-            <div key={sector} className="border-t border-black/[0.07] py-10 pr-0 md:pr-14">
+            <div key={sector} className="border-t border-black/[0.07] pt-6 pb-10 pr-0 md:pr-14">
               <p className="text-2xl mb-1" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>
                 {sector}
               </p>
