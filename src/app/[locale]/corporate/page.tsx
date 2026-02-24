@@ -304,7 +304,12 @@ export default async function CorporatePage({ params }: PageProps) {
         <ol className="grid gap-y-0 md:grid-cols-2">
           {t.process.map(([n, step, detail]) => (
             <li key={n} className="flex gap-6 border-t border-black/[0.07] py-7">
-              <span className="label w-6 shrink-0 pt-1">{n}</span>
+              <span
+                className="w-12 shrink-0 text-[clamp(2.1rem,4vw,3.2rem)] leading-none text-black/12 select-none"
+                style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
+              >
+                {n}
+              </span>
               <div>
                 <span
                   className="block text-xl mb-1"
