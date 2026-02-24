@@ -42,7 +42,9 @@ export default function AdminPage() {
   // featured picker state
   const [sourceImages, setSourceImages] = useState<CloudinaryResource[]>([]);
   const [featuredIds, setFeaturedIds] = useState<Set<string>>(new Set());
+  const [featuredOrder, setFeaturedOrder] = useState<string[]>([]);
   const [toggling, setToggling] = useState<Set<string>>(new Set());
+  const [savingOrder, setSavingOrder] = useState(false);
   const [pickerLoading, setPickerLoading] = useState(false);
 
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -72,6 +74,7 @@ export default function AdminPage() {
       ]);
       const ids: string[] = idsRes.ok ? await idsRes.json() : [];
       setFeaturedIds(new Set(ids));
+      setFeaturedOrder(ids);
       const all: CloudinaryResource[] = [];
       for (const res of srcResults) {
         if (res.ok) all.push(...(await res.json()));
@@ -84,6 +87,19 @@ export default function AdminPage() {
     }
   }, []);
 
+  const saveFeaturedOrder = useCallback(async (orderedIds: string[]) => {
+    setSavingOrder(true);
+    try {
+      await fetch("/api/admin/featured", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "reorder", orderedIds }),
+      });
+    } finally {
+      setSavingOrder(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (isFeatured) fetchFeaturedData();
     else fetchImages(gallery.folder);
@@ -92,21 +108,58 @@ export default function AdminPage() {
   async function toggleFeatured(publicId: string) {
     const action = featuredIds.has(publicId) ? "remove" : "add";
     setToggling((p) => new Set(p).add(publicId));
-    await fetch("/api/admin/featured", {
+    const response = await fetch("/api/admin/featured", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ publicId, action }),
     });
-    setFeaturedIds((p) => {
-      const n = new Set(p);
-      action === "add" ? n.add(publicId) : n.delete(publicId);
-      return n;
-    });
+    if (!response.ok) {
+      setToggling((p) => {
+        const n = new Set(p);
+        n.delete(publicId);
+        return n;
+      });
+      return;
+    }
+
+    const nextSet = new Set(featuredIds);
+    let nextOrder = [...featuredOrder];
+
+    if (action === "add") {
+      nextSet.add(publicId);
+      if (!nextOrder.includes(publicId)) nextOrder.push(publicId);
+    } else {
+      nextSet.delete(publicId);
+      nextOrder = nextOrder.filter((id) => id !== publicId);
+    }
+
+    setFeaturedIds(nextSet);
+    setFeaturedOrder(nextOrder);
+
+    if (action === "remove") {
+      await saveFeaturedOrder(nextOrder);
+    }
+
     setToggling((p) => {
       const n = new Set(p);
       n.delete(publicId);
       return n;
     });
+  }
+
+  async function moveFeatured(publicId: string, direction: "up" | "down") {
+    const index = featuredOrder.indexOf(publicId);
+    if (index < 0) return;
+    if (direction === "up" && index === 0) return;
+    if (direction === "down" && index === featuredOrder.length - 1) return;
+
+    const next = [...featuredOrder];
+    const swapWith = direction === "up" ? index - 1 : index + 1;
+    const current = next[index];
+    next[index] = next[swapWith];
+    next[swapWith] = current;
+    setFeaturedOrder(next);
+    await saveFeaturedOrder(next);
   }
 
   function openWidget() {
@@ -197,7 +250,10 @@ export default function AdminPage() {
   // ── FEATURED PICKER ────────────────────────────────────────────────────
 
   if (isFeatured) {
-    const featured = sourceImages.filter((img) => featuredIds.has(img.public_id));
+    const imageById = new Map(sourceImages.map((img) => [img.public_id, img]));
+    const featured = featuredOrder
+      .map((id) => imageById.get(id))
+      .filter((img): img is CloudinaryResource => Boolean(img));
     const others = sourceImages.filter((img) => !featuredIds.has(img.public_id));
 
     return (
@@ -214,6 +270,9 @@ export default function AdminPage() {
             </h1>
             <p className="text-[11px] tracking-[0.1em] opacity-30 mt-1">
               Select photos to show in the hero slideshow on the home page
+            </p>
+            <p className="text-[10px] tracking-[0.12em] opacity-30 mt-2 uppercase">
+              Use ↑ and ↓ to set slideshow order {savingOrder ? "(saving...)" : ""}
             </p>
           </div>
 
@@ -248,7 +307,23 @@ export default function AdminPage() {
                         <div className="absolute top-2 right-2 bg-black text-white text-[10px] px-1.5 py-0.5 leading-none">
                           &#9733;
                         </div>
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => moveFeatured(img.public_id, "up")}
+                              disabled={savingOrder || toggling.has(img.public_id)}
+                              className="text-[10px] tracking-[0.15em] uppercase text-white/80 hover:text-white disabled:opacity-30 border border-white/30 px-2 py-1"
+                            >
+                              ↑
+                            </button>
+                            <button
+                              onClick={() => moveFeatured(img.public_id, "down")}
+                              disabled={savingOrder || toggling.has(img.public_id)}
+                              className="text-[10px] tracking-[0.15em] uppercase text-white/80 hover:text-white disabled:opacity-30 border border-white/30 px-2 py-1"
+                            >
+                              ↓
+                            </button>
+                          </div>
                           <button
                             onClick={() => toggleFeatured(img.public_id)}
                             disabled={toggling.has(img.public_id)}

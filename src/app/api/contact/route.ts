@@ -157,7 +157,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const sent = (await sendViaWebhook(payload)) || (await sendViaResend(payload));
+    const sent = (await sendViaResend(payload)) || (await sendViaWebhook(payload));
     if (!sent) {
       console.error("Contact form: no delivery transport configured.");
       return redirectTo(payload.locale, "error", req);

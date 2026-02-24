@@ -9,8 +9,14 @@ export type CloudinaryResource = {
   height: number;
   bytes: number;
   created_at: string;
-  context?: { custom?: { alt?: string; caption?: string } };
+  context?: { custom?: { alt?: string; caption?: string; featured_order?: string } };
 };
+
+function featuredOrderOf(resource: CloudinaryResource): number {
+  const raw = resource.context?.custom?.featured_order;
+  const parsed = raw ? Number(raw) : Number.NaN;
+  return Number.isFinite(parsed) ? parsed : Number.MAX_SAFE_INTEGER;
+}
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
@@ -122,7 +128,11 @@ export async function getCloudinaryByTag(
 
   if (!res.ok) return [];
   const data = await res.json();
-  return (data.resources ?? []) as CloudinaryResource[];
+  return ((data.resources ?? []) as CloudinaryResource[]).sort((a, b) => {
+    const byOrder = featuredOrderOf(a) - featuredOrderOf(b);
+    if (byOrder !== 0) return byOrder;
+    return a.created_at.localeCompare(b.created_at);
+  });
 }
 
 /**
@@ -142,6 +152,43 @@ export async function setCloudinaryTag(
   const body = new URLSearchParams({
     tag,
     command: action,
+  });
+  body.append("public_ids[]", publicId);
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: basicAuth(),
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: body.toString(),
+  });
+
+  return res.ok;
+}
+
+/**
+ * Add or update context fields on a single image.
+ */
+export async function setCloudinaryContext(
+  publicId: string,
+  values: Record<string, string>
+): Promise<boolean> {
+  if (!cloudinaryConfigured()) return false;
+
+  const entries = Object.entries(values).filter(([, value]) => value.length > 0);
+  if (entries.length === 0) return true;
+
+  const cloud = process.env.CLOUDINARY_CLOUD_NAME;
+  const url = `https://api.cloudinary.com/v1_1/${cloud}/resources/image/context`;
+
+  const context = entries
+    .map(([key, value]) => `${key}=${value}`)
+    .join("|");
+
+  const body = new URLSearchParams({
+    command: "add",
+    context,
   });
   body.append("public_ids[]", publicId);
 
