@@ -11,20 +11,24 @@ const aspectClasses: Record<GalleryImage["aspect"], string> = {
   square: "aspect-square",
 };
 
+type EditorialGalleryProps = {
+  items: GalleryImage[];
+  compact?: boolean;
+};
+
 /**
  * Editorial grid — images are laid out in a CSS columns-based masonry.
  * Portrait images are taller and break the horizontal rhythm naturally.
  */
-export function EditorialGallery({ items }: { items: GalleryImage[] }) {
+export function EditorialGallery({ items, compact = false }: EditorialGalleryProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const gridClass = compact
+    ? "columns-3 gap-0.5 md:columns-4"
+    : "columns-2 gap-0.5 md:columns-3";
 
   return (
     <>
-      {/* CSS columns masonry */}
-      <div
-        className="columns-2 gap-0.5 md:columns-3"
-        style={{ columnFill: "balance" }}
-      >
+      <div className={gridClass} style={{ columnFill: "balance" }}>
         {items.map((item, index) => (
           <button
             key={`${item.src}-${index}`}
@@ -45,13 +49,11 @@ export function EditorialGallery({ items }: { items: GalleryImage[] }) {
         ))}
       </div>
 
-      {/* Lightbox */}
       {activeIndex !== null ? (
         <div
           className="fixed inset-0 z-40 flex items-center justify-center bg-black"
           onClick={() => setActiveIndex(null)}
         >
-          {/* Close */}
           <button
             type="button"
             onClick={() => setActiveIndex(null)}
@@ -60,16 +62,11 @@ export function EditorialGallery({ items }: { items: GalleryImage[] }) {
             ✕
           </button>
 
-          {/* Counter */}
           <span className="absolute left-6 top-6 text-white/30 text-[11px] tracking-[0.15em]">
             {String(activeIndex + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
           </span>
 
-          {/* Image */}
-          <div
-            className="relative h-screen w-screen"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="relative h-screen w-screen" onClick={(e) => e.stopPropagation()}>
             <Image
               src={items[activeIndex].src}
               alt={items[activeIndex].alt}
@@ -80,11 +77,13 @@ export function EditorialGallery({ items }: { items: GalleryImage[] }) {
             />
           </div>
 
-          {/* Prev / Next */}
           <button
             type="button"
             disabled={activeIndex === 0}
-            onClick={(e) => { e.stopPropagation(); setActiveIndex(activeIndex - 1); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setActiveIndex(activeIndex - 1);
+            }}
             className="absolute left-6 bottom-8 text-white/40 hover:text-white disabled:opacity-0 transition-colors text-[11px] tracking-[0.2em] uppercase"
           >
             ← Prev
@@ -92,7 +91,10 @@ export function EditorialGallery({ items }: { items: GalleryImage[] }) {
           <button
             type="button"
             disabled={activeIndex === items.length - 1}
-            onClick={(e) => { e.stopPropagation(); setActiveIndex(activeIndex + 1); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setActiveIndex(activeIndex + 1);
+            }}
             className="absolute right-6 bottom-8 text-white/40 hover:text-white disabled:opacity-0 transition-colors text-[11px] tracking-[0.2em] uppercase"
           >
             Next →

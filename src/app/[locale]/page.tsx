@@ -22,23 +22,22 @@ const content = {
         num: "01",
         title: "Business Portraits",
         text: "Executive headshots and brand portraits for leaders, founders and creatives working at international level.",
-        link: "View work",
+        link: "View works",
       },
       {
         num: "02",
         title: "Corporate Events",
         text: "Conference and event coverage with structured planning, discreet presence and fast delivery for PR and social.",
-        link: "View work",
+        link: "View works",
       },
       {
         num: "03",
         title: "Art & Galleries",
         text: "Vernissages, artist portraits and artwork documentation for galleries, museums and curators.",
-        link: "View work",
+        link: "View works",
       },
     ],
-    selectedWork: "Selected Work",
-    fullPortfolio: "Full portfolio",
+    selectedWork: "Selected Works",
     testimonial: '"Eva has an instinctive understanding of the corporate environment. The portraits she made for our leadership team were used across every channel — within 48 hours of delivery."',
     testimonialBy: "Chief Communications Officer, Fortune 500 firm — Tokyo",
     aboutLabel: "About",
@@ -191,7 +190,7 @@ export default async function LocaleHome({ params }: PageProps) {
         <div className="mb-10">
           <p className="label">{t.selectedWork}</p>
         </div>
-        <EditorialGallery items={featuredGallery} />
+        <EditorialGallery items={featuredGallery} compact />
       </section>
 
       {/* Testimonial */}
