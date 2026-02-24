@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getAboutPhotoSrc } from "@/lib/gallery-data";
 
 type PageProps = { params: Promise<{ locale: string }> };
 
@@ -86,6 +87,7 @@ type Locale = keyof typeof content;
 export default async function AboutPage({ params }: PageProps) {
   const { locale } = await params;
   const t = content[(locale as Locale) in content ? (locale as Locale) : "en"];
+  const aboutPhotoSrc = await getAboutPhotoSrc();
 
   return (
     <>
@@ -94,7 +96,7 @@ export default async function AboutPage({ params }: PageProps) {
         <div>
           <div className="mb-8 overflow-hidden" style={{ width: "200px", aspectRatio: "3/4", position: "relative" }}>
             <Image
-              src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=80"
+              src={aboutPhotoSrc}
               alt={t.heroAlt}
               fill
               className="object-cover object-top"

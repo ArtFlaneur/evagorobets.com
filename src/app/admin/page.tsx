@@ -12,6 +12,7 @@ const GALLERIES = [
   { label: "Business Portraits", folder: "eva/portraits" },
   { label: "Corporate Events", folder: "eva/corporate" },
   { label: "Art & Galleries", folder: "eva/art" },
+  { label: "About Photo", folder: "eva/about" },
   { label: "Hero Slideshow", folder: "eva/featured" },
   { label: "Portfolio", folder: "eva/portfolio" },
 ] as const;

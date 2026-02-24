@@ -59,6 +59,13 @@ export async function getPortfolioGallery(): Promise<GalleryImage[]> {
   return live.length > 0 ? live : portfolioGallery;
 }
 
+export async function getAboutPhotoSrc(): Promise<string> {
+  const fallback = "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=80";
+  const live = await fromCloudinary("eva/about");
+  if (live.length === 0) return fallback;
+  return live[live.length - 1].src;
+}
+
 // ── Business Portraits ───────────────────────────────────────────────────────
 
 export const portraitsGallery: GalleryImage[] = [
