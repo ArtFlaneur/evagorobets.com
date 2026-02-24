@@ -76,6 +76,9 @@ const artContent = {
     testimonialBy: "Gallery Director, Contemporary Art Gallery \u2014 Tokyo",
     ctaH2: "Working on an art project?",
     ctaBtn: "Art Project Enquiry",
+    pricingLabel: "Service Options",
+    pricingLabels: ["Exhibition opening / vernissage", "Artwork documentation session", "Artist or curator portrait"],
+    pricingNote: "Colour-accurate files structured for press, catalogue and archive use.",
   },
   jp: {
     eyebrow: "アート＆ギャラリー",
@@ -94,6 +97,9 @@ const artContent = {
     testimonialBy: "ギャラリーディレクター、現代アートギャラリー \u2014 東京",
     ctaH2: "アートプロジェクトに取り組んでいますか？",
     ctaBtn: "アートプロジェクトのお問い合わせ",
+    pricingLabel: "サービスオプション",
+    pricingLabels: ["展覧会オープニング / ヴェルニサージュ", "作品ドキュメンテーションセッション", "アーティスト・キュレーターポートレート"],
+    pricingNote: "プレス、カタログ、アーカイブ用途に対応したカラー精度の高いファイルを提供します。",
   },
   ru: {
     eyebrow: "Арт и галереи",
@@ -112,6 +118,9 @@ const artContent = {
     testimonialBy: "Директор галереи, галерея современного искусства \u2014 Токио",
     ctaH2: "Работаете над арт-проектом?",
     ctaBtn: "Запрос на арт-проект",
+    pricingLabel: "Варианты услуг",
+    pricingLabels: ["Открытие выставки / вернисаж", "Документирование произведений", "Портрет художника или куратора"],
+    pricingNote: "Цветоточные файлы, структурированные для прессы, каталогов и архивов.",
   },
 } as const;
 
@@ -121,6 +130,8 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
   const { locale } = await params;
   const t = artContent[(locale as Locale) in artContent ? (locale as Locale) : "en"];
   const artGallery = await getArtGallery();
+  const artJPY = ["from ¥100,000", "from ¥88,000", "from ¥110,000"];
+  const artAUD = ["from A$1,110", "from A$980", "from A$1,220"];
   const artFlaneurUrl = "https://www.artflaneur.art";
 
   function linkifyArtFlaneur(text: string) {
@@ -202,18 +213,10 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
 
       <section className="section border-t border-black/[0.07]">
         <CurrencyOptions
-          sectionLabel="Service Options"
-          packagesJPY={[
-            { label: "Exhibition opening / vernissage", price: "from ¥100,000" },
-            { label: "Artwork documentation session", price: "from ¥88,000" },
-            { label: "Artist or curator portrait", price: "from ¥110,000" },
-          ]}
-          packagesAUD={[
-            { label: "Exhibition opening / vernissage", price: "from A$1,110" },
-            { label: "Artwork documentation session", price: "from A$980" },
-            { label: "Artist or curator portrait", price: "from A$1,220" },
-          ]}
-          footerNote="Colour-accurate files structured for press, catalogue and archive use."
+          sectionLabel={t.pricingLabel}
+          packagesJPY={t.pricingLabels.map((label, i) => ({ label, price: artJPY[i] }))}
+          packagesAUD={t.pricingLabels.map((label, i) => ({ label, price: artAUD[i] }))}
+          footerNote={t.pricingNote}
         />
       </section>
 
