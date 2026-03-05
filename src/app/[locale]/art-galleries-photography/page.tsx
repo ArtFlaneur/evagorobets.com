@@ -130,8 +130,8 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
   const { locale } = await params;
   const t = artContent[(locale as Locale) in artContent ? (locale as Locale) : "en"];
   const artGallery = await getArtGallery();
-  const artJPY = ["from ¥100,000", "from ¥88,000", "from ¥110,000"];
-  const artAUD = ["from A$1,110", "from A$980", "from A$1,220"];
+  const artJPY = ["from ¥70,000", "from ¥70,000", "from ¥100,000"];
+  const artAUD = ["from A$800", "from A$800", "from A$1,120"];
   const artFlaneurUrl = "https://www.artflaneur.art";
 
   function linkifyArtFlaneur(text: string) {

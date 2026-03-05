@@ -155,8 +155,8 @@ export default async function CorporateEventsPage({ params }: PageProps) {
   const corporateGallery = await getCorporateGallery();
   const tE = eventsContent[(locale as Locale) in eventsContent ? (locale as Locale) : "en"];
 
-  const jpyPrices = ["from ¥155,000", "from ¥255,000", "from ¥222,000"];
-  const audPrices = ["from A$1,720", "from A$2,830", "from A$2,470"];
+  const jpyPrices = ["from ¥125,000", "from ¥215,000", "from ¥200,000"];
+  const audPrices = ["from A$1,520", "from A$2,630", "from A$2,370"];
 
   return (
     <>
