@@ -113,7 +113,7 @@ const content = {
       ["NDA", "Available on request before briefing"],
       ["Invoicing", "JPY \u00b7 AUD \u00b7 USD \u00b7 Net-30"],
       ["Confidentiality", "Client names not published without consent"],
-      ["Location", "Any district in Tokyo \u00b7 available nationwide"],
+      ["Location", "Any district in Tokyo \u00b7 Melbourne \u00b7 available nationwide"],
     ],
     testimonial: "\u201cOur Tokyo HR team briefed in Japanese, our London comms team received the files in English \u2014 Eva managed both sides without a single dropped message. The portraits went live on our global site within a week of the session.\u201d",
     testimonialBy: "Head of Global Communications \u2014 International Consulting Firm, Tokyo",

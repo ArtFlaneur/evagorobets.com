@@ -9,28 +9,28 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const path = "/contact-booking";
   const seo = {
     en: {
-      title: "Contact & Booking — Executive Portrait & Corporate Event Photographer Tokyo | Eva Gorobets",
+      title: "Contact & Booking — Executive Portrait & Corporate Event Photographer Tokyo & Melbourne | Eva Gorobets",
       description:
-        "Book an executive portrait or corporate event session in Tokyo. Structured brief form, response within 24 hours. Communication in English, Japanese and Russian.",
+        "Book an executive portrait or corporate event session in Tokyo or Melbourne. Structured brief form, response within 24 hours. Communication in English, Japanese and Russian.",
       ogTitle: "Contact & Booking — Eva Gorobets",
       ogDescription:
-        "Send a brief for executive portraits, corporate events or art projects in Tokyo. Response within 24 hours.",
+        "Send a brief for executive portraits, corporate events or art projects in Tokyo or Melbourne. Response within 24 hours.",
     },
     jp: {
-      title: "お問い合わせ・予約 — 東京のエグゼクティブポートレート/法人イベント撮影 | Eva Gorobets",
+      title: "お問い合わせ・予約 — 東京・メルボルンのエグゼクティブポートレート/法人イベント撮影 | Eva Gorobets",
       description:
-        "東京でのエグゼクティブポートレート・コーポレートイベント撮影のご予約。構造化フォームで3分以内、24時間以内に返信。英語・日本語・ロシア語対応。",
+        "東京・メルボルンでのエグゼクティブポートレート・コーポレートイベント撮影のご予約。構造化フォームで3分以内、24時間以内に返信。英語・日本語・ロシア語対応。",
       ogTitle: "お問い合わせ・予約 — Eva Gorobets",
       ogDescription:
-        "エグゼクティブポートレート、法人イベント、アート案件のご相談を受付。24時間以内に返信。",
+        "東京・メルボルンでのエグゼクティブポートレート、法人イベント、アート案件のご相談を受付。24時間以内に返信。",
     },
     ru: {
-      title: "Контакт и бронирование — портреты руководителей и корпоративные события в Токио | Eva Gorobets",
+      title: "Контакт и бронирование — портреты руководителей и корпоративные события в Токио и Мельбурне | Eva Gorobets",
       description:
-        "Бронирование executive-портретов и корпоративных съёмок в Токио. Структурированная форма брифа, ответ в течение 24 часов. Коммуникация на английском, японском и русском.",
+        "Бронирование executive-портретов и корпоративных съёмок в Токио и Мельбурне. Структурированная форма брифа, ответ в течение 24 часов. Коммуникация на английском, японском и русском.",
       ogTitle: "Контакт и бронирование — Eva Gorobets",
       ogDescription:
-        "Отправьте бриф на портретную, корпоративную или арт-съёмку в Токио. Ответ в течение 24 часов.",
+        "Отправьте бриф на портретную, корпоративную или арт-съёмку в Токио или Мельбурне. Ответ в течение 24 часов.",
     },
   } as const;
   const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];

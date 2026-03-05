@@ -11,31 +11,31 @@ const BASE_URL = "https://evagorobets.com";
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
-  const path = "/tokyo-business-portraits";
+  const path = "/business-portraits";
   const seo = {
     en: {
-      title: "Executive Headshots & Business Portraits Tokyo | Eva Gorobets",
+      title: "Executive Headshots & Business Portraits Tokyo & Melbourne | Eva Gorobets",
       description:
-        "Professional executive headshots and leadership portraits in Tokyo. Studio and on-location. Used for company websites, LinkedIn, annual reports and press. Trilingual briefing.",
-      ogTitle: "Executive Headshots & Business Portraits Tokyo",
+        "Professional executive headshots and leadership portraits in Tokyo and Melbourne. Studio and on-location. Used for company websites, LinkedIn, annual reports and press. Trilingual briefing.",
+      ogTitle: "Executive Headshots & Business Portraits Tokyo & Melbourne",
       ogDescription:
-        "Studio and on-location portrait sessions for executives, founders and leadership teams in Tokyo. Fast delivery, trilingual communication.",
+        "Studio and on-location portrait sessions for executives, founders and leadership teams in Tokyo and Melbourne. Fast delivery, trilingual communication.",
     },
     jp: {
-      title: "東京ビジネスポートレート & エグゼクティブヘッドショット | Eva Gorobets",
+      title: "東京・メルボルン ビジネスポートレート & エグゼクティブヘッドショット | Eva Gorobets",
       description:
-        "東京でのエグゼクティブヘッドショットとリーダーシップポートレート。スタジオ・ロケーション対応。企業サイト、LinkedIn、年次報告書、プレス用途に最適。3言語でブリーフ対応。",
-      ogTitle: "東京ビジネスポートレート & エグゼクティブヘッドショット",
+        "東京・メルボルンでのエグゼクティブヘッドショットとリーダーシップポートレート。スタジオ・ロケーション対応。企業サイト、LinkedIn、年次報告書、プレス用途に最適。3言語でブリーフ対応。",
+      ogTitle: "東京・メルボルン ビジネスポートレート & エグゼクティブヘッドショット",
       ogDescription:
-        "東京の経営層・創業者・リーダー向けスタジオ/ロケーション撮影。迅速納品、3言語コミュニケーション。",
+        "東京・メルボルンの経営層・創業者・リーダー向けスタジオ/ロケーション撮影。迅速納品、3言語コミュニケーション。",
     },
     ru: {
-      title: "Бизнес-портреты и executive headshots в Токио | Eva Gorobets",
+      title: "Бизнес-портреты в Токио и Мельбурне | Eva Gorobets",
       description:
-        "Профессиональные headshots и портреты руководителей в Токио. Студия и съёмка на локации. Для корпоративных сайтов, LinkedIn, годовых отчётов и прессы. Брифинг на трёх языках.",
-      ogTitle: "Бизнес-портреты и executive headshots в Токио",
+        "Профессиональные headshots и портреты руководителей в Токио и Мельбурне. Студия и съёмка на локации. Для корпоративных сайтов, LinkedIn, годовых отчётов и прессы. Брифинг на трёх языках.",
+      ogTitle: "Бизнес-портреты и executive headshots в Токио и Мельбурне",
       ogDescription:
-        "Студийные и выездные сессии для руководителей, основателей и команд лидерства в Токио. Быстрая сдача и трёхъязычная коммуникация.",
+        "Студийные и выездные сессии для руководителей, основателей и команд лидерства в Токио и Мельбурне. Быстрая сдача и трёхъязычная коммуникация.",
     },
   } as const;
   const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 const content = {
   en: {
     eyebrow: "Business Portraits",
-    h1: "Tokyo Business Portraits & Executive Headshots",
+    h1: "Business Portraits & Executive Headshots",
     p1: "Professional portraits for executives, founders, consultants, artists and art managers who need a premium, credible visual identity. Sessions are designed around brand positioning, communication goals and practical usage across websites, media kits and speaking profiles.",
     p2: "Based in Tokyo and available in Melbourne and internationally. Briefing and communication available in English, Japanese and Russian. Final retouched images delivered within three to five business days.",
     sessionTypesLabel: "Session Types",

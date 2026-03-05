@@ -12,9 +12,9 @@ const BASE_URL = "https://evagorobets.com";
 const eventsContent = {
   en: {
     eyebrow: "Corporate Events",
-    h1: "Corporate Events Photography in Tokyo",
+    h1: "Corporate Events Photography in Tokyo & Melbourne",
     p1: "Structured, discreet coverage for conferences, internal events, client activations, board meetings and product launches. I work from a pre-agreed timeline and shot list so you receive everything you need — without directing on the day.",
-    p2: "Coverage delivered in separate sets for internal use, PR and social media. Fast turnaround as standard. Available for single-day and multi-day events in Tokyo and across Japan.",
+    p2: "Coverage delivered in separate sets for internal use, PR and social media. Fast turnaround as standard. Available for single-day and multi-day events in Tokyo, Melbourne and across Japan.",
     ctaBtn: "Enquire about Event Coverage",
     ctaBtnPdf: "Download Events PDF Portfolio",
     columns: [
@@ -41,9 +41,9 @@ const eventsContent = {
   },
   jp: {
     eyebrow: "コーポレートイベント",
-    h1: "東京コーポレートイベント撮影",
+    h1: "東京・メルボルン コーポレートイベント撮影",
     p1: "会議、社内イベント、クライアントアクティベーション、取締役会、製品発表会など、体系的・目立たない撮影。事前に合意したタイムラインとショットリストに沿って進めるため、当日の指示なしに必要なすべてをお届けします。",
-    p2: "社内利用、PR、ソーシャルメディア用に分けて納品。迅速なターンアラウンドを標準提供。東京および日本全国での1日・複数日イベントに対応。",
+    p2: "社内利用、PR、ソーシャルメディア用に分けて納品。迅速なターンアラウンドを標準提供。東京・メルボルンおよび日本全国での1日・複数日イベントに対応。",
     ctaBtn: "イベント撮影のお問い合わせ",
     ctaBtnPdf: "イベントPDFポートフォリオをダウンロード",
     columns: [
@@ -70,9 +70,9 @@ const eventsContent = {
   },
   ru: {
     eyebrow: "Корпоративные мероприятия",
-    h1: "Съёмка корпоративных мероприятий в Токио",
+    h1: "Съёмка корпоративных мероприятий в Токио и Мельбурне",
     p1: "Структурированная, ненавязчивая съёмка конференций, внутренних мероприятий, клиентских активаций, заседаний совета директоров и запусков продуктов. Работаю по заранее согласованному расписанию и списку кадров — вы получаете всё необходимое без управления в день съёмки.",
-    p2: "Материалы поставляются отдельными наборами для внутреннего использования, PR и социальных сетей. Быстрый тёрнараунд в стандартной комплектации. Доступна для однодневных и многодневных мероприятий в Токио и по всей Японии.",
+    p2: "Материалы поставляются отдельными наборами для внутреннего использования, PR и социальных сетей. Быстрый тёрнараунд в стандартной комплектации. Доступна для однодневных и многодневных мероприятий в Токио, Мельбурне и по всей Японии.",
     ctaBtn: "Запросить съёмку мероприятия",
     ctaBtnPdf: "Скачать PDF-портфолио мероприятий",
     columns: [
@@ -106,28 +106,28 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const path = "/corporate-events-photography";
   const seo = {
     en: {
-      title: "Corporate Event Photographer Tokyo — Conferences, Forums & Internal Events | Eva Gorobets",
+      title: "Corporate Event Photographer Tokyo and Melbourne — Conferences, Forums & Internal Events | Eva Gorobets",
       description:
-        "Structured corporate event photography in Tokyo. Conferences, AGMs, product launches, client receptions. PR and social media delivery sets. Available across Japan.",
-      ogTitle: "Corporate Event Photographer Tokyo",
+        "Structured corporate event photography in Tokyo and Melbourne. Conferences, AGMs, product launches, client receptions. PR and social media delivery sets. Available across Japan.",
+      ogTitle: "Corporate Event Photographer Tokyo and Melbourne",
       ogDescription:
         "Coverage for corporate conferences, forums and internal events in Tokyo. Structured process, fast delivery, trilingual communication.",
     },
     jp: {
-      title: "東京コーポレートイベント撮影 — 会議・フォーラム・社内イベント | Eva Gorobets",
+      title: "東京・メルボルン コーポレートイベント撮影 — 会議・フォーラム・社内イベント | Eva Gorobets",
       description:
-        "東京の法人イベント撮影。会議、株主総会、製品発表、レセプションまで対応。PR・SNS向け納品セットを提供。日本全国で撮影可能。",
-      ogTitle: "東京コーポレートイベント撮影",
+        "東京・メルボルンの法人イベント撮影。会議、株主総会、製品発表、レセプションまで対応。PR・SNS向け納品セットを提供。日本・オーストラリア全国で撮影可能。",
+      ogTitle: "東京・メルボルン コーポレートイベント撮影",
       ogDescription:
-        "会議・フォーラム・社内イベントを構造化プロセスで撮影。迅速納品、3言語コミュニケーション。",
+        "東京・メルボルンで会議・フォーラム・社内イベントを構造化プロセスで撮影。迅速納品、3言語コミュニケーション。",
     },
     ru: {
-      title: "Фотограф корпоративных мероприятий в Токио — конференции и внутренние события | Eva Gorobets",
+      title: "Фотограф корпоративных мероприятий в Токио и Мельбурне — конференции и внутренние события | Eva Gorobets",
       description:
-        "Структурированная съёмка корпоративных мероприятий в Токио: конференции, AGMs, продуктовые запуски, клиентские приёмы. Отдельные наборы для PR и соцсетей. Работа по всей Японии.",
-      ogTitle: "Фотограф корпоративных мероприятий в Токио",
+        "Структурированная съёмка корпоративных мероприятий в Токио и Мельбурне: конференции, AGMs, продуктовые запуски, клиентские приёмы. Отдельные наборы для PR и соцсетей.",
+      ogTitle: "Фотограф корпоративных мероприятий в Токио и Мельбурне",
       ogDescription:
-        "Съёмка конференций, форумов и внутренних мероприятий в Токио. Чёткий процесс, быстрая сдача и трёхъязычная коммуникация.",
+        "Съёмка конференций, форумов и внутренних мероприятий в Токио и Мельбурне. Чёткий процесс, быстрая сдача и трёхъязычная коммуникация.",
     },
   } as const;
   const s = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];

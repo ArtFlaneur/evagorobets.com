@@ -11,11 +11,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const path = "/about";
 
   return {
-    title: "About Eva Gorobets — Tokyo Photographer",
+    title: "About Eva Gorobets — Tokyo & Melbourne Photographer",
     description:
-      "Portrait and corporate photographer based in Tokyo with 15+ years of international experience across corporate, cultural and art-world commissions.",
+      "Portrait and corporate photographer based in Tokyo with a Melbourne background. 15+ years of international experience across corporate, cultural and art-world commissions.",
     openGraph: {
-      title: "About Eva Gorobets — Tokyo Photographer",
+      title: "About Eva Gorobets — Tokyo & Melbourne Photographer",
       description:
         "15+ years of international portrait, corporate event and art photography experience across Tokyo, Melbourne and worldwide commissions.",
     },
