@@ -25,7 +25,7 @@ export const navItems: NavItem[] = [
     labels: { en: "For Companies", jp: "法人のお客様", ru: "Для компаний" },
     children: [
       {
-        href: "/tokyo-business-portraits",
+        href: "/business-portraits",
         labels: { en: "Business Portraits", jp: "ビジネスポートレート", ru: "Бизнес-портреты" },
       },
       {

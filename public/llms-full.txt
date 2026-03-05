@@ -41,7 +41,7 @@ Eva Gorobets is an Australian portrait and corporate photographer based in Tokyo
 ## Main Public Pages
 - Home: /en
 - Corporate overview: /en/corporate
-- Business portraits: /en/tokyo-business-portraits
+- Business portraits: /en/business-portraits
 - Corporate events: /en/corporate-events-photography
 - Art and galleries: /en/art-galleries-photography
 - Clients: /en/clients

@@ -10,7 +10,7 @@
 - Languages: English, Japanese, Russian
 
 ## Core Services
-- /en/tokyo-business-portraits
+- /en/business-portraits
 - /en/corporate-events-photography
 - /en/art-galleries-photography
 - /en/corporate

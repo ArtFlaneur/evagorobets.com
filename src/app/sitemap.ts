@@ -5,7 +5,7 @@ const locales = ["en", "jp", "ru"];
 
 const routes = [
   "",
-  "/tokyo-business-portraits",
+  "/business-portraits",
   "/corporate-events-photography",
   "/corporate",
   "/art-galleries-photography",

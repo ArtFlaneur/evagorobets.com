@@ -99,7 +99,7 @@ const content = {
   ru: {
     heroName: "Eva Gorobets",
     heroTitle: "Photographer",
-    heroDescriptor: "Корпоративный и арт-фотограф в Токио",
+    heroDescriptor: "Токио · Мельбурн",
     eyebrow: "Токио · Мельбурн · Весь мир",
     h1: ["Портретный &", "корпоративный", "фотограф"],
     subhero: "Бизнес-портреты, корпоративные мероприятия и фотография арт-мира.\nАвстралийский фотограф, живущий в Токио.",
@@ -187,7 +187,7 @@ export default async function LocaleHome({ params }: PageProps) {
         <p className="label mb-14">{t.servicesLabel}</p>
         <div className="grid md:grid-cols-3 md:divide-x md:divide-black/[0.07]">
           {[
-            { num: t.services[0].num, title: t.services[0].title, text: t.services[0].text, link: t.services[0].link, href: `/${locale}/tokyo-business-portraits` },
+            { num: t.services[0].num, title: t.services[0].title, text: t.services[0].text, link: t.services[0].link, href: `/${locale}/business-portraits` },
             { num: t.services[1].num, title: t.services[1].title, text: t.services[1].text, link: t.services[1].link, href: `/${locale}/corporate-events-photography` },
             { num: t.services[2].num, title: t.services[2].title, text: t.services[2].text, link: t.services[2].link, href: `/${locale}/art-galleries-photography` },
           ].map((card) => (
