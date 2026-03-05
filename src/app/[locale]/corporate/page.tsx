@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import Script from "next/script";
 import { EditorialGallery } from "@/components/EditorialGallery";
 import { corporateGallery, portraitsGallery } from "@/lib/gallery-data";
 
@@ -38,11 +39,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
   } as const;
   const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
+  const keywordSets: Record<string, string[]> = {
+    en: ["corporate photographer Tokyo international companies", "executive portraits Tokyo foreign companies", "corporate photography Tokyo expats", "photographer Tokyo English speaking", "business photographer Tokyo English Japanese", "corporate photographer Melbourne", "executive headshots Tokyo APAC", "photographer Tokyo trilingual"],
+    jp: ["東京 外資系企業 撮影", "外資系 コーポレート 写真家", "英語対応 東京 フォトグラファー", "東京 APAC リーダーシップ 撮影", "法人 写真 東京 グローバル"],
+    ru: ["фотограф для компаний Токио", "корпоративный фотограф на английском Токио", "съёмка для иностранных компаний Токио"],
+  };
 
   return {
     title: t.title,
     description: t.description,
+    keywords: keywordSets[locale] ?? keywordSets.en,
     openGraph: {
+      title: t.ogTitle,
+      description: t.ogDescription,
+    },
+    twitter: {
+      card: "summary_large_image",
       title: t.ogTitle,
       description: t.ogDescription,
     },
@@ -52,7 +64,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         en: `${BASE_URL}/en${path}`,
         ja: `${BASE_URL}/jp${path}`,
         ru: `${BASE_URL}/ru${path}`,
+        "x-default": `${BASE_URL}/en${path}`,
       },
+    },
+    other: {
+      "geo.region": "JP-13",
+      "geo.placename": "Tokyo",
+      "geo.position": "35.6762;139.6503",
+      ICBM: "35.6762, 139.6503",
     },
   };
 }
@@ -231,6 +250,38 @@ const content = {
 
 type Locale = keyof typeof content;
 
+const corporateFaqPerLocale = {
+  en: [
+    { q: "Can an international company commission photography in Tokyo directly in English?", a: "Yes — Eva works directly with global corporate clients from brief to delivery in English. Japanese and Russian are also available for local team communication." },
+    { q: "Is corporate invoicing in JPY, AUD or USD available?", a: "Yes — invoicing in JPY, AUD and USD is supported. An NDA is available before briefing on request." },
+    { q: "Do you work with companies' Tokyo offices for executive portraits without involving headquarters?", a: "Yes — Eva handles executive headshots, leadership portraits and full team portrait sessions for international companies with Tokyo offices, without requiring coordination through your home office." },
+    { q: "Can you cover both portraits and events as part of a retainer for a Tokyo office?", a: "Yes — combined packages covering executive portraits, regular event coverage and on-retainer arrangements are available for Tokyo-based corporate clients." },
+    { q: "Do you also work for companies in Melbourne?", a: "Yes — Eva is available for executive portrait and corporate event photography in Melbourne, in addition to her Tokyo base." },
+  ],
+  jp: [
+    { q: "外資系企業が東京で直接英語で撮影を発注することはできますか？", a: "はい — エヴァはグローバル企業クライアントと英語で直接対応します。日本語のスタッフが直接ブリーフすることも可能です。" },
+    { q: "JPY、AUD、USDでの請求書発行は可能ですか？", a: "はい — JPY、AUD、USDでの法人請求書発行に対応しています。ブリーフ前のNDAはリクエストに応じて対応可能です。" },
+    { q: "東京のオフィス向けにリテイナー契約は可能ですか？", a: "はい — 領術ポートレート、定期イベント撮影、リテイナー契約を包括した組み合わせパッケージに対応しています。" },
+  ],
+  ru: [
+    { q: "Может ли международная компания напрямую заказать съёмку в Токио на английском?", a: "Да — Ева работает напрямую с глобальными корпоративными клиентами на английском. Доступны русский и японский языки." },
+    { q: "Выючивается ли счёт в JPY, AUD или USD?", a: "Да — корпоративные счета выставляются в JPY, AUD и USD. NDA доступен по запросу до начала работы." },
+    { q: "Работаете ли вы и для компаний в Мельбурне?", a: "Да — Ева доступна для портретных и корпоративных съёмок в Мельбурне, помимо Токио." },
+  ],
+};
+
+function buildCorporateFAQSchema(items: Array<{ q: string; a: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  };
+}
+
 export default async function CorporatePage({ params }: PageProps) {
   const { locale } = await params;
   const t = content[(locale as Locale) in content ? (locale as Locale) : "en"];
@@ -394,6 +445,10 @@ export default async function CorporatePage({ params }: PageProps) {
           </Link>
         </div>
       </section>
+
+      <Script id="corporate-faq-schema" type="application/ld+json">
+        {JSON.stringify(buildCorporateFAQSchema(corporateFaqPerLocale[locale as keyof typeof corporateFaqPerLocale] ?? corporateFaqPerLocale.en))}
+      </Script>
     </>
   );
 }

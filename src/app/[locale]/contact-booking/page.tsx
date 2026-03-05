@@ -42,12 +42,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: t.ogTitle,
       description: t.ogDescription,
     },
+    twitter: {
+      card: "summary_large_image",
+      title: t.ogTitle,
+      description: t.ogDescription,
+    },
     alternates: {
       canonical: `${BASE_URL}/${locale}${path}`,
       languages: {
         en: `${BASE_URL}/en${path}`,
         ja: `${BASE_URL}/jp${path}`,
         ru: `${BASE_URL}/ru${path}`,
+        "x-default": `${BASE_URL}/en${path}`,
       },
     },
   };

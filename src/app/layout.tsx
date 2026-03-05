@@ -17,8 +17,16 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://evagorobets.com"),
-  title: "Eva Gorobets — Photographer",
-  description: "Tokyo - Melbourne - Worldwide",
+  title: "Eva Gorobets — Portrait & Corporate Photographer, Tokyo & Melbourne",
+  description:
+    "Portrait and corporate event photographer based in Tokyo, available in Melbourne. Executive headshots, corporate event coverage, art-world photography. Communication in English, Japanese and Russian.",
+  openGraph: {
+    type: "website",
+    siteName: "Eva Gorobets Photography",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

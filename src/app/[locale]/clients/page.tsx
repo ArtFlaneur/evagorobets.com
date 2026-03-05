@@ -8,14 +8,46 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { locale } = await params;
   const path = "/clients";
 
-  return {
-    title: "Clients — Corporate, Art & Media Photography | Eva Gorobets",
-    description:
-      "Selected corporate, gallery, media and public-sector clients across Tokyo, Melbourne and international commissions.",
-    openGraph: {
-      title: "Clients — Eva Gorobets",
+  const seo = {
+    en: {
+      title: "Clients — Corporate, Art & Media Photography Tokyo & Melbourne | Eva Gorobets",
       description:
-        "Client sectors and references across corporate, art and media photography in Tokyo, Melbourne and worldwide.",
+        "Selected corporate, gallery, media and public-sector clients across Tokyo, Melbourne and international commissions. Includes KPMG, EY, McKinsey, Google, SAP, State Library Victoria and more.",
+      ogTitle: "Clients — Eva Gorobets Photography",
+      ogDescription:
+        "Client sectors and references across corporate, art and media photography in Tokyo, Melbourne and worldwide. Multilingual communication.",
+    },
+    jp: {
+      title: "クライアント — 東京・メルボルン コーポレート/アート/メディア撮影 | Eva Gorobets",
+      description:
+        "東京・メルボルン・海外で実績のある法人・ギャラリー・メディア・公共機関のクライアント一覧。KPMG、EY、マッキンゼー、Google、SAP、ビクトリア州立図書館などを含む。",
+      ogTitle: "クライアント — Eva Gorobets Photography",
+      ogDescription:
+        "東京・メルボルン・海外にわたるコーポレート・アート・メディア撮影の実績クライアント一覧。",
+    },
+    ru: {
+      title: "Клиенты — корпоративная, арт и медиа фотография в Токио и Мельбурне | Eva Gorobets",
+      description:
+        "Избранные корпоративные, галерейные, медийные и государственные клиенты в Токио, Мельбурне и международные заказы. Включает KPMG, EY, McKinsey, Google, SAP, State Library Victoria.",
+      ogTitle: "Клиенты — Eva Gorobets Photography",
+      ogDescription:
+        "Секторы клиентов и референсы в корпоративной, арт- и медиафотографии. Токио, Мельбурн, весь мир.",
+    },
+  } as const;
+
+  const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
+
+  return {
+    title: t.title,
+    description: t.description,
+    openGraph: {
+      title: t.ogTitle,
+      description: t.ogDescription,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t.ogTitle,
+      description: t.ogDescription,
     },
     alternates: {
       canonical: `${BASE_URL}/${locale}${path}`,
@@ -23,6 +55,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         en: `${BASE_URL}/en${path}`,
         ja: `${BASE_URL}/jp${path}`,
         ru: `${BASE_URL}/ru${path}`,
+        "x-default": `${BASE_URL}/en${path}`,
       },
     },
   };

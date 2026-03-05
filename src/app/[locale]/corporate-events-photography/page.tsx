@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import Script from "next/script";
 import { CurrencyOptions } from "@/components/CurrencyOptions";
 import { EditorialGallery } from "@/components/EditorialGallery";
 import { getCorporateGallery } from "@/lib/gallery-data";
@@ -131,11 +132,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
   } as const;
   const s = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
+  const keywordSets: Record<string, string[]> = {
+    en: ["corporate event photographer Tokyo", "conference photographer Tokyo", "corporate event photographer Melbourne", "conference photographer Melbourne", "event photographer Tokyo", "AGM photographer Tokyo", "product launch photographer Tokyo", "corporate photographer Japan", "event photographer Melbourne CBD"],
+    jp: ["法人イベント 撮影 東京", "コーポレートイベント カメラマン 東京", "カンファレンス 撮影 東京", "イベント フォトグラファー 東京", "メルボルン 法人イベント 撮影"],
+    ru: ["фотограф корпоративных мероприятий Токио", "фотосъёмка конференций Токио", "корпоративный фотограф Мельбурн", "съёмка мероприятий Токио"],
+  };
 
   return {
     title: s.title,
     description: s.description,
+    keywords: keywordSets[locale] ?? keywordSets.en,
     openGraph: {
+      title: s.ogTitle,
+      description: s.ogDescription,
+    },
+    twitter: {
+      card: "summary_large_image",
       title: s.ogTitle,
       description: s.ogDescription,
     },
@@ -145,8 +157,47 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         en: `${BASE_URL}/en${path}`,
         ja: `${BASE_URL}/jp${path}`,
         ru: `${BASE_URL}/ru${path}`,
+        "x-default": `${BASE_URL}/en${path}`,
       },
     },
+    other: {
+      "geo.region": "JP-13",
+      "geo.placename": "Tokyo",
+      "geo.position": "35.6762;139.6503",
+      ICBM: "35.6762, 139.6503",
+    },
+  };
+}
+
+const eventsFaqPerLocale = {
+  en: [
+    { q: "Do you cover corporate events in Melbourne?", a: "Yes — Eva is available for corporate event photography in Melbourne and Sydney, as well as Tokyo and across Japan." },
+    { q: "What types of corporate events do you cover in Tokyo and Melbourne?", a: "Conferences, forums, board meetings, all-hands events, product launches, client activations and annual general meetings." },
+    { q: "How are files delivered after a corporate event?", a: "Delivery sets are structured separately: an internal online gallery, a curated PR selection, a cropped social-media pack, and high-resolution print files. A captioned press set is available on request." },
+    { q: "How quickly can you deliver images after a corporate event in Tokyo?", a: "A same-day highlight option is available. The full post-event gallery is delivered within a standard fast-turnaround schedule." },
+    { q: "Do you handle multi-day events in Tokyo and Japan?", a: "Yes — multi-day coverage is available in Tokyo, across Japan, and in Melbourne. A per-day rate applies." },
+  ],
+  jp: [
+    { q: "メルボルンでのコーポレートイベント撮影は可能ですか？", a: "はい — 東京および日本全国に加え、メルボルン・シドニーでもコーポレートイベント撮影に対応しています。" },
+    { q: "東京・メルボルンで対応できるイベントの種類は？", a: "会議、フォーラム、口屋会議、全体ミーティング、製品発表、クライアントアクティベーション、機学総会などに対応しています。" },
+    { q: "イベント後のファイル納品はどのように行われますか？", a: "社内オンラインギャラリー、PR用キュレーションセット、ソーシャルメディアパック、高解像度印刷ファイルを分けて納品します。キャプション付きプレスセットはリクエスト対応です。" },
+  ],
+  ru: [
+    { q: "Снимаете ли вы корпоративные мероприятия в Мельбурне?", a: "Да — помимо Токио и Японии, Ева доступна для съёмки корпоративных мероприятий в Мельбурне и Сиднее." },
+    { q: "Какие типы мероприятий вы снимаете в Токио и Мельбурне?", a: "Конференции, форумы, заседания совета директоров, общие собрания, запуски продуктов, клиентские активации и годовые общие собрания." },
+    { q: "Как быстро доставляются фотографии после мероприятия?", a: "Наборы доставляются отдельно: внутренняя онлайн-галерея, PR-подборка, пак для соцсетей и высокоразрешённые печатные файлы." },
+  ],
+};
+
+function buildEventsFAQSchema(items: Array<{ q: string; a: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
   };
 }
 
@@ -238,6 +289,10 @@ export default async function CorporateEventsPage({ params }: PageProps) {
           </Link>
         </div>
       </section>
+
+      <Script id="events-faq-schema" type="application/ld+json">
+        {JSON.stringify(buildEventsFAQSchema(eventsFaqPerLocale[locale as keyof typeof eventsFaqPerLocale] ?? eventsFaqPerLocale.en))}
+      </Script>
     </>
   );
 }

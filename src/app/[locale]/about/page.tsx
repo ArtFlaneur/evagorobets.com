@@ -10,14 +10,37 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { locale } = await params;
   const path = "/about";
 
-  return {
-    title: "About Eva Gorobets — Tokyo & Melbourne Photographer",
-    description:
-      "Portrait and corporate photographer based in Tokyo with a Melbourne background. 15+ years of international experience across corporate, cultural and art-world commissions.",
-    openGraph: {
-      title: "About Eva Gorobets — Tokyo & Melbourne Photographer",
+  const seo = {
+    en: {
+      title: "About Eva Gorobets — Portrait & Corporate Photographer Tokyo & Melbourne",
       description:
-        "15+ years of international portrait, corporate event and art photography experience across Tokyo, Melbourne and worldwide commissions.",
+        "Portrait and corporate photographer based in Tokyo with a Melbourne background. 15+ years of international experience across corporate, cultural and art-world commissions. Fluent in English, Japanese and Russian.",
+    },
+    jp: {
+      title: "エヴァ・ゴロベッツ プロフィール — 東京・メルボルンのポートレート & コーポレートフォトグラファー",
+      description:
+        "東京を拠点にメルボルンとの深いつながりを持つポートレート・コーポレートフォトグラファー。コーポレート、文化・アート分野で15年以上の国際的な実績。英語・日本語・ロシア語対応。",
+    },
+    ru: {
+      title: "Об Еве Горобец — Фотограф портретов и корпоративных мероприятий Токио и Мельбурн",
+      description:
+        "Портретный и корпоративный фотограф на базе в Токио с мельбурнскими корнями. Более 15 лет международного опыта в корпоративной, культурной и арт-среде. Общение на английском, японском и русском.",
+    },
+  } as const;
+
+  const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
+
+  return {
+    title: t.title,
+    description: t.description,
+    openGraph: {
+      title: t.title,
+      description: t.description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t.title,
+      description: t.description,
     },
     alternates: {
       canonical: `${BASE_URL}/${locale}${path}`,
@@ -25,6 +48,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         en: `${BASE_URL}/en${path}`,
         ja: `${BASE_URL}/jp${path}`,
         ru: `${BASE_URL}/ru${path}`,
+        "x-default": `${BASE_URL}/en${path}`,
       },
     },
   };

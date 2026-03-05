@@ -11,14 +11,46 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { locale } = await params;
   const path = "/portfolio";
 
-  return {
-    title: "Portfolio — Corporate, Portrait & Art Photography | Eva Gorobets",
-    description:
-      "Selected portfolio across business portraiture, corporate events and art photography in Tokyo, Melbourne and international commissions.",
-    openGraph: {
-      title: "Portfolio — Eva Gorobets",
+  const seo = {
+    en: {
+      title: "Portfolio — Corporate, Portrait & Art Photography Tokyo & Melbourne | Eva Gorobets",
       description:
-        "A curated portfolio spanning portraits, corporate events and art-world photography across Tokyo, Melbourne and worldwide.",
+        "Selected portfolio across business portraiture, corporate events and art photography in Tokyo, Melbourne and international commissions.",
+      ogTitle: "Portfolio — Eva Gorobets Photography",
+      ogDescription:
+        "A curated portfolio spanning executive portraits, corporate events and art-world photography across Tokyo, Melbourne and worldwide.",
+    },
+    jp: {
+      title: "ポートフォリオ — 東京・メルボルン コーポレート/ポートレート/アート撮影 | Eva Gorobets",
+      description:
+        "東京・メルボルン・海外でのビジネスポートレート、コーポレートイベント、アート写真にわたるキュレーテッド作品集。",
+      ogTitle: "ポートフォリオ — Eva Gorobets Photography",
+      ogDescription:
+        "エグゼクティブポートレート、コーポレートイベント、アート世界の写真作品集。東京・メルボルン・国際案件。",
+    },
+    ru: {
+      title: "Портфолио — корпоративная, портретная и арт-фотография, Токио и Мельбурн | Eva Gorobets",
+      description:
+        "Избранные работы по бизнес-портретам, корпоративным мероприятиям и арт-фотографии — Токио, Мельбурн и международные заказы.",
+      ogTitle: "Портфолио — Eva Gorobets Photography",
+      ogDescription:
+        "Отобранные работы по портретам руководителей, корпоративным событиям и арт-фотографии в Токио, Мельбурне и по всему миру.",
+    },
+  } as const;
+
+  const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
+
+  return {
+    title: t.title,
+    description: t.description,
+    openGraph: {
+      title: t.ogTitle,
+      description: t.ogDescription,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t.ogTitle,
+      description: t.ogDescription,
     },
     alternates: {
       canonical: `${BASE_URL}/${locale}${path}`,
@@ -26,6 +58,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         en: `${BASE_URL}/en${path}`,
         ja: `${BASE_URL}/jp${path}`,
         ru: `${BASE_URL}/ru${path}`,
+        "x-default": `${BASE_URL}/en${path}`,
       },
     },
   };

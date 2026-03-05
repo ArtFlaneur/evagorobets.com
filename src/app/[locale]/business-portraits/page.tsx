@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import Script from "next/script";
 import { CurrencyOptions } from "@/components/CurrencyOptions";
 import { EditorialGallery } from "@/components/EditorialGallery";
 import { getPortraitsGallery } from "@/lib/gallery-data";
@@ -39,11 +40,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
   } as const;
   const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
+  const keywordSets: Record<string, string[]> = {
+    en: ["executive headshots Tokyo", "business portrait photographer Tokyo", "executive headshots Melbourne", "business portrait photographer Melbourne", "LinkedIn headshots Tokyo", "LinkedIn headshots Melbourne", "professional headshots Marunouchi", "executive portraits Tokyo", "corporate portraits Melbourne", "headshot photographer Melbourne CBD"],
+    jp: ["エグゼクティブヘッドショット 東京", "ビジネスポートレート 東京", "エグゼクティブポートレート 東京", "ビジネスポートレート メルボルン", "LinkedIn 写真 東京", "丸の内 ヘッドショット", "法人 ポートレート 東京"],
+    ru: ["бизнес-портреты Токио", "executive headshots Токио", "деловые портреты Мельбурн", "хэдшот фотограф Токио", "корпоративные портреты Мельбурн"],
+  };
 
   return {
     title: t.title,
     description: t.description,
+    keywords: keywordSets[locale] ?? keywordSets.en,
     openGraph: {
+      title: t.ogTitle,
+      description: t.ogDescription,
+    },
+    twitter: {
+      card: "summary_large_image",
       title: t.ogTitle,
       description: t.ogDescription,
     },
@@ -53,7 +65,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         en: `${BASE_URL}/en${path}`,
         ja: `${BASE_URL}/jp${path}`,
         ru: `${BASE_URL}/ru${path}`,
+        "x-default": `${BASE_URL}/en${path}`,
       },
+    },
+    other: {
+      "geo.region": "JP-13",
+      "geo.placename": "Tokyo",
+      "geo.position": "35.6762;139.6503",
+      ICBM: "35.6762, 139.6503",
     },
   };
 }
@@ -135,6 +154,40 @@ const content = {
 
 type Locale = keyof typeof content;
 
+const faqPerLocale = {
+  en: [
+    { q: "Do you offer executive headshots and business portraits in Melbourne?", a: "Yes — Eva is available for business portrait and executive headshot sessions in Melbourne, in addition to her Tokyo base. Sessions can be arranged at a studio, your office, or on location." },
+    { q: "How long does a business portrait session take?", a: "A standard session runs 60–90 minutes. The session is guided and structured — you do not need to know how to pose." },
+    { q: "Can you communicate in Japanese for a Tokyo portrait session?", a: "Yes — Eva works in English, Japanese and Russian. Your Japanese office manager or team can brief directly." },
+    { q: "How quickly are retouched business portrait files delivered?", a: "Retouched web and print-ready files are delivered within 3–5 business days of the session." },
+    { q: "Is corporate invoicing available in JPY, AUD or USD?", a: "Yes — invoicing in JPY, AUD and USD is supported. An NDA is available before briefing on request." },
+  ],
+  jp: [
+    { q: "メルボルンでのビジネスポートレートやエグゼクティブヘッドショットは可能ですか？", a: "はい — エヴァは東京を拠点としていますが、メルボルンでのポートレートセッションにも対応しています。スタジオ、オフィス、ロケーションでの撮影が可能です。" },
+    { q: "ビジネスポートレートのセッションはどのくらいかかりますか？", a: "標準的なセッションは60〜90分です。ガイド付きで進行しますので、ポーズの知識は不要です。" },
+    { q: "東京のポートレートセッションで日本語でのやり取りは可能ですか？", a: "はい — エヴァは英語・日本語・ロシア語でコミュニケーションが取れます。日本語スタッフが直接ブリーフすることも可能です。" },
+    { q: "レタッチ済み画像の納品までどのくらいかかりますか？", a: "Web用・印刷用レタッチ済みファイルは、撮影から3〜5営業日以内に納品されます。" },
+  ],
+  ru: [
+    { q: "Можно ли сделать деловые портреты и хэдшоты в Мельбурне?", a: "Да — помимо Токио, Ева доступна для съёмки бизнес-портретов и executive headshots в Мельбурне. Сессии проводятся в студии, офисе или на выбранной локации." },
+    { q: "Сколько длится сессия для бизнес-портретов?", a: "Стандартная сессия занимает 60–90 минут. Съёмка проводится с профессиональным руководством — знание поз не требуется." },
+    { q: "Можно ли работать на японском языке при съёмке в Токио?", a: "Да — Ева работает на английском, японском и русском языках. Ваш японский офис-менеджер может координировать съёмку напрямую." },
+    { q: "Как быстро готовы ретушированные файлы?", a: "Готовые web- и печатные файлы доставляются в течение 3–5 рабочих дней после сессии." },
+  ],
+};
+
+function buildFAQSchema(items: Array<{ q: string; a: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  };
+}
+
 export default async function BusinessPortraitsPage({ params }: PageProps) {
   const { locale } = await params;
   const t = content[(locale as Locale) in content ? (locale as Locale) : "en"];
@@ -211,6 +264,10 @@ export default async function BusinessPortraitsPage({ params }: PageProps) {
           <Link href={`/${locale}/contact-booking`} className="btn">{t.ctaBtn}</Link>
         </div>
       </section>
+
+      <Script id="bp-faq-schema" type="application/ld+json">
+        {JSON.stringify(buildFAQSchema(faqPerLocale[locale as keyof typeof faqPerLocale] ?? faqPerLocale.en))}
+      </Script>
     </>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import Script from "next/script";
 import { CurrencyOptions } from "@/components/CurrencyOptions";
 import { EditorialGallery } from "@/components/EditorialGallery";
 import { getArtGallery } from "@/lib/gallery-data";
@@ -39,11 +40,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
   } as const;
   const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
+  const keywordSets: Record<string, string[]> = {
+    en: ["art gallery photographer Tokyo", "exhibition photographer Tokyo", "vernissage photographer Tokyo", "art gallery photographer Melbourne", "exhibition photographer Melbourne", "artwork documentation photographer Tokyo", "artist portrait photographer Tokyo", "gallery opening photographer Melbourne", "art world photographer Tokyo"],
+    jp: ["アートギャラリー 撮影 東京", "展覧会 カメラマン 東京", "ヴェルニサージュ 撮影", "アーティストポートレート 東京", "作品ドキュメンテーション 東京", "メルボルン ギャラリー 撮影"],
+    ru: ["фотограф галерей Токио", "съёмка выставок Токио", "фотограф вернисажей Токио", "фотограф галерей Мельбурн", "документация произведений искусства"],
+  };
 
   return {
     title: t.title,
     description: t.description,
+    keywords: keywordSets[locale] ?? keywordSets.en,
     openGraph: {
+      title: t.ogTitle,
+      description: t.ogDescription,
+    },
+    twitter: {
+      card: "summary_large_image",
       title: t.ogTitle,
       description: t.ogDescription,
     },
@@ -53,7 +65,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         en: `${BASE_URL}/en${path}`,
         ja: `${BASE_URL}/jp${path}`,
         ru: `${BASE_URL}/ru${path}`,
+        "x-default": `${BASE_URL}/en${path}`,
       },
+    },
+    other: {
+      "geo.region": "JP-13",
+      "geo.placename": "Tokyo",
+      "geo.position": "35.6762;139.6503",
+      ICBM: "35.6762, 139.6503",
     },
   };
 }
@@ -125,6 +144,38 @@ const artContent = {
 } as const;
 
 type Locale = keyof typeof artContent;
+
+const artFaqPerLocale = {
+  en: [
+    { q: "Do you photograph gallery openings and vernissages in Melbourne?", a: "Yes — available for exhibition openings and vernissages in Melbourne, Sydney, Tokyo and Japan-wide." },
+    { q: "What file formats do you deliver for artwork documentation?", a: "High-resolution TIFF and JPEG files, colour-accurate and calibrated for print catalogues, insurance records and digital archives." },
+    { q: "Can you photograph artist portraits as part of an exhibition commission?", a: "Yes — artist and curator portrait sessions can be combined with exhibition or vernissage coverage." },
+    { q: "Do you have experience with the Tokyo and Melbourne art scenes?", a: "Yes — Eva is co-founder of Art Flaneur Global, a platform connecting art discourse between Australia and international contemporary art communities. She has worked with galleries, museums and cultural institutions in both cities." },
+    { q: "How are exhibition photographs delivered?", a: "Files are captioned and structured for easy integration into press materials, catalogues and online archives. PR and social media sets are delivered separately." },
+  ],
+  jp: [
+    { q: "メルボルンでのギャラリーオープニングやヴェルニサージュの撮影は可能ですか？", a: "はい — 東京・日本全国に加え、メルボルン・シドニーでも展覧オープニングおよびヴェルニサージュの撮影に対応しています。" },
+    { q: "作品ドキュメンテーションのファイル形式は？", a: "印刷カタログ、保険記録、デジタルアーカイブ用に色彩正確度を校正した高解像度TIFFおよびJPEGファイルで納品します。" },
+    { q: "展覧撮影にアーティストポートレートを組み合わせることはできますか？", a: "はい — 展覧の撮影にアーティストまたはキュレーターのポートレートセッションを合わせて過可能です。" },
+  ],
+  ru: [
+    { q: "Вы снимаете открытия галерей и вернисажи в Мельбурне?", a: "Да — доступна для съёмки открытий выставок и вернисажей в Мельбурне, Сиднее, Токио и по всей Японии." },
+    { q: "В каких форматах доставляются файлы документации произведений?", a: "Высокоразрешённые TIFF и JPEG, с колорокоррекцией для печатных каталогов, страховых записей и цифровых архивов." },
+    { q: "Есть ли у вас опыт работы с арт-сценой Токио и Мельбурна?", a: "Да — Ева является соучредителем Art Flaneur Global, платформы, сݎединяющей арт-дискурс Австралии и международного арт-сообщества. Опыт работы с галереями и музеями обеих городов." },
+  ],
+};
+
+function buildArtFAQSchema(items: Array<{ q: string; a: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  };
+}
 
 export default async function ArtGalleriesPage({ params }: PageProps) {
   const { locale } = await params;
@@ -231,6 +282,10 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
           <Link href={`/${locale}/contact-booking`} className="btn">{t.ctaBtn}</Link>
         </div>
       </section>
+
+      <Script id="art-faq-schema" type="application/ld+json">
+        {JSON.stringify(buildArtFAQSchema(artFaqPerLocale[locale as keyof typeof artFaqPerLocale] ?? artFaqPerLocale.en))}
+      </Script>
     </>
   );
 }
