@@ -1,4 +1,4 @@
-export const locales = ["en", "jp", "ru"] as const;
+export const locales = ["en", "jp"] as const;
 
 export type Locale = (typeof locales)[number];
 
@@ -22,32 +22,32 @@ export type NavItem = {
 export const navItems: NavItem[] = [
   {
     href: "/corporate",
-    labels: { en: "For Companies", jp: "法人のお客様", ru: "Для компаний" },
+    labels: { en: "For Companies", jp: "法人のお客様" },
     children: [
       {
         href: "/business-portraits",
-        labels: { en: "Business Portraits", jp: "ビジネスポートレート", ru: "Бизнес-портреты" },
+        labels: { en: "Business Portraits", jp: "ビジネスポートレート" },
       },
       {
         href: "/corporate-events-photography",
-        labels: { en: "Corporate Events", jp: "コーポレートイベント", ru: "Корпоративные события" },
+        labels: { en: "Corporate Events", jp: "コーポレートイベント" },
       },
     ],
   },
   {
     href: "/art-galleries-photography",
-    labels: { en: "For Art World", jp: "アートの世界", ru: "Для арт-мира" },
+    labels: { en: "For Art World", jp: "アートの世界" },
   },
   {
     href: "/clients",
-    labels: { en: "Clients", jp: "クライアント", ru: "Клиенты" },
+    labels: { en: "Clients", jp: "クライアント" },
   },
   {
     href: "/about",
-    labels: { en: "About", jp: "プロフィール", ru: "О фотографе" },
+    labels: { en: "About", jp: "プロフィール" },
   },
   {
     href: "/contact-booking",
-    labels: { en: "Contact", jp: "お問い合わせ", ru: "Контакт" },
+    labels: { en: "Contact", jp: "お問い合わせ" },
   },
 ];

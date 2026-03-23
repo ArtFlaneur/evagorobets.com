@@ -256,6 +256,31 @@ export default function AdminPage() {
       .map((id) => imageById.get(id))
       .filter((img): img is CloudinaryResource => Boolean(img));
     const others = sourceImages.filter((img) => !featuredIds.has(img.public_id));
+    const featuredDiagnostics = featured.map((img, index) => {
+      const rawOrder = img.context?.custom?.featured_order ?? "";
+      const storedOrder = Number(rawOrder);
+      const hasStoredOrder = Number.isFinite(storedOrder) && storedOrder > 0;
+      return {
+        publicId: img.public_id,
+        position: index + 1,
+        storedOrder: hasStoredOrder ? storedOrder : null,
+        createdAt: img.created_at,
+      };
+    });
+    const missingOrderCount = featuredDiagnostics.filter((img) => img.storedOrder === null).length;
+    const duplicateOrderCount = Math.max(
+      0,
+      featuredDiagnostics.length - new Set(featuredDiagnostics.map((img) => img.storedOrder).filter((value): value is number => value !== null)).size - missingOrderCount
+    );
+    const mismatchedOrderCount = featuredDiagnostics.filter(
+      (img) => img.storedOrder !== null && img.storedOrder !== img.position
+    ).length;
+    const chronologicalFallbackLikely = missingOrderCount > 0 || duplicateOrderCount > 0;
+
+    async function repairFeaturedOrder() {
+      await saveFeaturedOrder(featuredOrder);
+      await fetchFeaturedData();
+    }
 
     return (
       <div className="flex min-h-screen bg-white">
@@ -276,6 +301,64 @@ export default function AdminPage() {
               Drag and drop to set slideshow order {savingOrder ? "(saving...)" : ""}
             </p>
           </div>
+
+          {!pickerLoading && featured.length > 0 && (
+            <section className="mb-10 border border-black/10 bg-black/[0.02] px-4 py-4 md:px-5">
+              <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                <div>
+                  <p className="text-[10px] tracking-[0.2em] uppercase opacity-40">Diagnostics</p>
+                  <p className="mt-2 text-sm text-black/70">
+                    {chronologicalFallbackLikely
+                      ? "Homepage order is likely falling back to upload chronology because featured_order metadata is missing or inconsistent."
+                      : mismatchedOrderCount > 0
+                        ? "Stored featured_order values exist, but they do not match the current admin order."
+                        : "Stored featured_order values match the current admin order."}
+                  </p>
+                </div>
+                <button onClick={repairFeaturedOrder} disabled={savingOrder} className="btn-ghost disabled:opacity-30 whitespace-nowrap">
+                  Rewrite order metadata
+                </button>
+              </div>
+
+              <div className="mt-4 grid gap-3 md:grid-cols-3">
+                <div className="border-t border-black/[0.07] pt-3">
+                  <p className="text-[10px] tracking-[0.15em] uppercase opacity-40">Missing order</p>
+                  <p className="mt-1 text-sm text-black/75">{missingOrderCount}</p>
+                </div>
+                <div className="border-t border-black/[0.07] pt-3">
+                  <p className="text-[10px] tracking-[0.15em] uppercase opacity-40">Duplicate order</p>
+                  <p className="mt-1 text-sm text-black/75">{duplicateOrderCount}</p>
+                </div>
+                <div className="border-t border-black/[0.07] pt-3">
+                  <p className="text-[10px] tracking-[0.15em] uppercase opacity-40">Mismatch vs admin</p>
+                  <p className="mt-1 text-sm text-black/75">{mismatchedOrderCount}</p>
+                </div>
+              </div>
+
+              <div className="mt-4 overflow-x-auto">
+                <table className="w-full border-collapse text-left text-xs text-black/70">
+                  <thead>
+                    <tr className="border-t border-black/[0.07]">
+                      <th className="py-2 pr-4 font-normal uppercase tracking-[0.12em] opacity-40">Admin</th>
+                      <th className="py-2 pr-4 font-normal uppercase tracking-[0.12em] opacity-40">Stored</th>
+                      <th className="py-2 pr-4 font-normal uppercase tracking-[0.12em] opacity-40">Uploaded</th>
+                      <th className="py-2 font-normal uppercase tracking-[0.12em] opacity-40">Public ID</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {featuredDiagnostics.map((img) => (
+                      <tr key={img.publicId} className="border-t border-black/[0.07] align-top">
+                        <td className="py-2 pr-4">{img.position}</td>
+                        <td className="py-2 pr-4">{img.storedOrder ?? "missing"}</td>
+                        <td className="py-2 pr-4 whitespace-nowrap">{new Date(img.createdAt).toLocaleDateString()}</td>
+                        <td className="py-2 break-all opacity-60">{img.publicId}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          )}
 
           {pickerLoading ? (
             <div className="flex h-48 items-center justify-center">
@@ -327,7 +410,7 @@ export default function AdminPage() {
                           className="w-full object-cover block"
                         />
                         <div className="absolute top-2 right-2 bg-black text-white text-[10px] px-1.5 py-0.5 leading-none">
-                          &#9733;
+                          #{featuredOrder.indexOf(img.public_id) + 1}
                         </div>
                         <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity">
                           <button

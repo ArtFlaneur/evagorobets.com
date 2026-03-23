@@ -43,10 +43,14 @@ const content = {
     testimonialBy: "Danielle Chung, Senior Client Services Manager, ANZSAP Magazine",
     aboutLabel: "About",
     aboutH2: ["Australian photographer", "based in Tokyo"],
-    aboutBody: "Melbourne background, deep connection to the art world. Communication in Russian, English and Japanese.",
+    aboutBody: "Melbourne background, deep connection to the art world. Available in English, Japanese and Russian.",
     aboutLink: "About Eva",
     workingLabel: "Working with clients in",
-    workingList: ["Japan — Tokyo, Osaka, Kyoto", "Australia — Melbourne, Sydney", "International clients worldwide"],
+    workingList: [
+      { label: "Japan — Tokyo, Osaka, Kyoto", href: "/photographer-japan" },
+      { label: "Australia — Melbourne, Sydney", href: "/photographer-australia" },
+      { label: "International clients worldwide", href: "/contact-booking" },
+    ],
     ctaH2: "Ready to work together?",
     ctaBtn: "Contact / Book",
     ctaEmail: "Email",
@@ -91,55 +95,14 @@ const content = {
     aboutBody: "メルボルン出身。アートの世界に深い造詣を持つ。ロシア語・英語・日本語でのコミュニケーションが可能。",
     aboutLink: "エヴァについて",
     workingLabel: "活動地域",
-    workingList: ["日本 — 東京・大阪・京都", "オーストラリア — メルボルン・シドニー", "世界各地のクライアント対応可"],
+    workingList: [
+      { label: "日本 — 東京・大阪・京都", href: "/photographer-japan" },
+      { label: "オーストラリア — メルボルン・シドニー", href: "/photographer-australia" },
+      { label: "世界各地のクライアント対応可", href: "/contact-booking" },
+    ],
     ctaH2: "一緒に仕事をしませんか？",
     ctaBtn: "お問い合わせ・予約",
     ctaEmail: "メール",
-  },
-  ru: {
-    heroName: "Eva Gorobets",
-    heroTitle: "Photographer",
-    heroDescriptor: "Токио · Мельбурн",
-    eyebrow: "Токио · Мельбурн · Весь мир",
-    h1: ["Портретный &", "корпоративный", "фотограф"],
-    subhero: "Бизнес-портреты, корпоративные мероприятия и фотография арт-мира.\nАвстралийский фотограф, живущий в Токио.",
-    cta1: "Бизнес-портреты",
-    cta2: "Арт и галереи",
-    cta3: "Забронировать съёмку",
-    servicesLabel: "Услуги",
-    services: [
-      {
-        num: "01",
-        title: "Бизнес-портреты",
-        text: "Официальные портреты и личный брендинг для руководителей, основателей и творческих профессионалов международного уровня.",
-        link: "Смотреть работы",
-      },
-      {
-        num: "02",
-        title: "Корпоративные мероприятия",
-        text: "Съёмка конференций и событий: чёткое планирование, ненавязчивое присутствие, быстрая доставка для PR и соцсетей.",
-        link: "Смотреть работы",
-      },
-      {
-        num: "03",
-        title: "Арт и галереи",
-        text: "Вернисажи, портреты художников и документация произведений для галерей, музеев и кураторов.",
-        link: "Смотреть работы",
-      },
-    ],
-    selectedWork: "Избранные работы",
-    fullPortfolio: "Полное портфолио",
-    testimonial: "«С Евой всегда очень комфортно и по-настоящему совместно работать. Она легко помогает людям расслабиться на съёмке, чётко направляет процесс и стабильно даёт фотографии высокого класса для наших публикаций и кампаний.»",
-    testimonialBy: "Danielle Chung, Senior Client Services Manager, ANZSAP Magazine",
-    aboutLabel: "О фотографе",
-    aboutH2: ["Австралийский фотограф,", "живущий в Токио"],
-    aboutBody: "Мельбурнские корни, глубокая связь с миром искусства. Общение на русском, английском и японском языках.",
-    aboutLink: "Об Еве",
-    workingLabel: "Работает с клиентами в",
-    workingList: ["Япония — Токио, Осака, Киото", "Австралия — Мельбурн, Сидней", "Международные клиенты по всему миру"],
-    ctaH2: "Готовы к сотрудничеству?",
-    ctaBtn: "Связаться / Забронировать",
-    ctaEmail: "Email",
   },
 } as const;
 
@@ -257,8 +220,10 @@ export default async function LocaleHome({ params }: PageProps) {
           <p className="label mb-6">{t.workingLabel}</p>
           <ul>
             {t.workingList.map((item) => (
-              <li key={item} className="border-b border-black/[0.07] py-3 text-sm text-black/70">
-                {item}
+              <li key={item.label} className="border-b border-black/[0.07] py-3 text-sm text-black/70">
+                <Link href={`/${locale}${item.href}`} className="hover:opacity-75 transition-opacity">
+                  {item.label}
+                </Link>
               </li>
             ))}
           </ul>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const SUPPORTED_LOCALES = new Set(["en", "jp", "ru"]);
+const SUPPORTED_LOCALES = new Set(["en", "jp"]);
 
 type ContactPayload = {
   locale: string;

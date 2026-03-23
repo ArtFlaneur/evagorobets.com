@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-
 import Script from "next/script";
+
 import { EditorialGallery } from "@/components/EditorialGallery";
 import { corporateGallery, portraitsGallery } from "@/lib/gallery-data";
 
@@ -29,20 +29,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ogDescription:
         "東京拠点のグローバル企業向けポートレートとイベント撮影。構造化された進行、迅速納品、3言語対応。",
     },
-    ru: {
-      title: "Корпоративная фотография в Токио — для международных компаний | Eva Gorobets",
-      description:
-        "Портреты руководителей, корпоративные хэдшоты и съёмка корпоративных событий для международных компаний в Токио. Брифинг на английском, японском и русском. Быстрая сдача.",
-      ogTitle: "Корпоративная фотография в Токио — для международных компаний",
-      ogDescription:
-        "Портреты и съёмка мероприятий для глобальных компаний с офисами в Токио. Чёткий процесс, быстрая сдача, трёхъязычная коммуникация.",
-    },
   } as const;
   const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
   const keywordSets: Record<string, string[]> = {
-    en: ["corporate photographer Tokyo international companies", "executive portraits Tokyo foreign companies", "corporate photography Tokyo expats", "photographer Tokyo English speaking", "business photographer Tokyo English Japanese", "corporate photographer Melbourne", "executive headshots Tokyo APAC", "photographer Tokyo trilingual"],
-    jp: ["東京 外資系企業 撮影", "外資系 コーポレート 写真家", "英語対応 東京 フォトグラファー", "東京 APAC リーダーシップ 撮影", "法人 写真 東京 グローバル"],
-    ru: ["фотограф для компаний Токио", "корпоративный фотограф на английском Токио", "съёмка для иностранных компаний Токио"],
+    en: [
+      "corporate photographer Tokyo international companies",
+      "executive portraits Tokyo foreign companies",
+      "corporate photography Tokyo expats",
+      "photographer Tokyo English speaking",
+      "business photographer Tokyo English Japanese",
+      "corporate photographer Melbourne",
+      "executive headshots Tokyo APAC",
+      "photographer Tokyo trilingual",
+    ],
+    jp: [
+      "東京 外資系企業 撮影",
+      "外資系 コーポレート 写真家",
+      "英語対応 東京 フォトグラファー",
+      "東京 APAC リーダーシップ 撮影",
+      "法人 写真 東京 グローバル",
+    ],
   };
 
   return {
@@ -63,7 +69,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       languages: {
         en: `${BASE_URL}/en${path}`,
         ja: `${BASE_URL}/jp${path}`,
-        ru: `${BASE_URL}/ru${path}`,
         "x-default": `${BASE_URL}/en${path}`,
       },
     },
@@ -76,7 +81,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-// Mix: portraits + one corporate moment for the hero gallery
 const heroGallery = [
   portraitsGallery[0],
   corporateGallery[0],
@@ -90,11 +94,11 @@ const content = {
   en: {
     eyebrow: "For International Companies in Tokyo",
     h1: "Photography your Tokyo office can commission directly",
-    p1: "Your Tokyo team needs portraits for the new regional director, coverage of next month\u2019s all-hands, or headshots for the APAC leadership page. Eva Gorobets handles the full process — brief, shoot, delivery — without escalating to your London or New York office for coordination.",
+    p1: "Your Tokyo team needs portraits for the new regional director, coverage of next month’s all-hands, or headshots for the APAC leadership page. Eva Gorobets handles the full process — brief, shoot, delivery — without escalating to your London or New York office for coordination.",
     p2: "Communication in English, Japanese and Russian. Your Japanese office manager can brief directly. Your global PR team gets press-ready files. Corporate invoicing in JPY, AUD or USD. NDA available on request.",
     p2Bold: "English, Japanese and Russian",
     ctaPrimary: "Submit a brief",
-    ctaSecondary: "See client sectors \u2192",
+    ctaSecondary: "See client sectors →",
     coversLabel: "What we cover",
     covers: [
       {
@@ -124,18 +128,18 @@ const content = {
       ["02", "Confirmation within 24 hours", "Availability confirmed, quote sent. Corporate PO process and NDA handled here if needed."],
       ["03", "Pre-shoot call or email", "Shot list, location, schedule and any brand guidelines reviewed. In English or Japanese."],
       ["04", "Session", "On-site, on time. Discreet, self-directed. No day-of managing required from your side."],
-      ["05", "Delivery", "Separated file sets for web, print and social. Delivered within 3\u20135 business days as standard."],
+      ["05", "Delivery", "Separated file sets for web, print and social. Delivered within 3–5 business days as standard."],
       ["06", "Invoice", "JPY, AUD or USD. Standard net-30 for corporate accounts. Receipts for accounts payable."],
     ],
     termsLabel: "Corporate terms",
     terms: [
       ["NDA", "Available on request before briefing"],
-      ["Invoicing", "JPY \u00b7 AUD \u00b7 USD \u00b7 Net-30"],
+      ["Invoicing", "JPY · AUD · USD · Net-30"],
       ["Confidentiality", "Client names not published without consent"],
-      ["Location", "Any district in Tokyo \u00b7 Melbourne \u00b7 available nationwide"],
+      ["Location", "Any district in Tokyo · Melbourne · available nationwide"],
     ],
-    testimonial: "\u201cOur Tokyo HR team briefed in Japanese, our London comms team received the files in English \u2014 Eva managed both sides without a single dropped message. The portraits went live on our global site within a week of the session.\u201d",
-    testimonialBy: "Head of Global Communications \u2014 International Consulting Firm, Tokyo",
+    testimonial: "Our Tokyo HR team briefed in Japanese, our London comms team received the files in English — Eva managed both sides without a single dropped message. The portraits went live on our global site within a week of the session.",
+    testimonialBy: "Head of Global Communications — International Consulting Firm, Tokyo",
     ctaH2: "Ready to brief?",
     ctaSub: "Response within 24 hours. No phone call required.",
     ctaBtn: "Submit a brief",
@@ -147,7 +151,7 @@ const content = {
     p2: "日本語・英語・ロシア語でコミュニケーション可能。東京オフィスのマネージャーが直接ブリーフできます。グローバルPRチームにはプレス対応ファイルを納品。法人請求はJPY・AUD・USD対応。NDAはご要望に応じて対応。",
     p2Bold: "日本語・英語・ロシア語",
     ctaPrimary: "ブリーフを送る",
-    ctaSecondary: "クライアント実績を見る \u2192",
+    ctaSecondary: "クライアント実績を見る →",
     coversLabel: "撮影対応内容",
     covers: [
       {
@@ -183,68 +187,15 @@ const content = {
     termsLabel: "法人向け条件",
     terms: [
       ["NDA", "ブリーフ前にご要望に応じて対応"],
-      ["請求通貨", "JPY \u00b7 AUD \u00b7 USD \u00b7 Net-30"],
+      ["請求通貨", "JPY · AUD · USD · Net-30"],
       ["守秘義務", "書面での同意なくクライアント名を公開しません"],
-      ["撮影場所", "東京全区対応 \u00b7 国内出張可"],
+      ["撮影場所", "東京全区対応 · 国内出張可"],
     ],
-    testimonial: "\u300c東京のHRチームが日本語でブリーフし、ロンドンのコミュニケーションチームが英語でファイルを受け取りました。エヴァはどちらの側も一つの抜けもなく管理してくれました。撮影から1週間以内にグローバルサイトにポートレートが掲載されました。\u300d",
-    testimonialBy: "グローバルコミュニケーション部長 \u2014 国際コンサルティングファーム、東京",
+    testimonial: "東京のHRチームが日本語でブリーフし、ロンドンのコミュニケーションチームが英語でファイルを受け取りました。エヴァはどちらの側も一つの抜けもなく管理してくれました。撮影から1週間以内にグローバルサイトにポートレートが掲載されました。",
+    testimonialBy: "グローバルコミュニケーション部長 — 国際コンサルティングファーム、東京",
     ctaH2: "ブリーフを送りますか？",
     ctaSub: "24時間以内に返信。電話不要です。",
     ctaBtn: "ブリーフを送る",
-  },
-  ru: {
-    eyebrow: "Для международных компаний в Токио",
-    h1: "Корпоративная фотосъёмка, которую ваш токийский офис заказывает напрямую",
-    p1: "Вашей токийской команде нужны портреты нового регионального директора, съёмка предстоящего all-hands или обновление фотографий для страницы руководства APAC. Ева Горобец ведёт весь процесс — бриф, съёмка, сдача — без необходимости подключать офис в Лондоне или Нью-Йорке.",
-    p2: "Коммуникация на английском, японском и русском языках. Менеджер токийского офиса может передать бриф напрямую. Глобальная PR-команда получает файлы, готовые к публикации. Корпоративные счета в JPY, AUD или USD. NDA по запросу.",
-    p2Bold: "английском, японском и русском",
-    ctaPrimary: "Отправить бриф",
-    ctaSecondary: "Клиентские сектора \u2192",
-    coversLabel: "Что включает съёмка",
-    covers: [
-      {
-        title: "Портреты руководства",
-        detail: ["Портреты новых сотрудников на постоянной основе", "Съёмка C-suite и совета директоров", "Обновление APAC-страницы руководства", "Фото для биографий спикеров и медиа-кит", "Портреты для LinkedIn и корпоративного справочника"],
-      },
-      {
-        title: "Корпоративные мероприятия",
-        detail: ["Ежегодные конференции и форумы", "Общие собрания и town hall", "Клиентские ужины и приёмы", "Презентации продуктов и пресс-события", "Общие собрания акционеров и заседания совета"],
-      },
-      {
-        title: "Съёмка по подписке",
-        detail: ["Ежемесячные или ежеквартальные портретные сессии", "Приоритетная доступность для срочных событий", "Единый визуальный стиль для всех материалов", "Единая точка контакта, без повторных брифов", "Отдельный портал для доставки файлов по запросу"],
-      },
-    ],
-    trilingualLabel: "Преимущество трёхязычной работы",
-    trilingualH2: "Токийский персонал и глобальный HQ могут общаться напрямую — каждый на своём языке",
-    trilingualBody: "Большинство фотографов в Токио работают только на японском, и вся нагрузка по координации ложится на местный офис. Ева работает одинаково на английском, японском и русском: HR-партнёр в Лондоне пишет по-английски, менеджер токийского офиса уточняет по-японски — и ничего не теряется между ними.",
-    languages: [
-      ["Английский", "Основная коммуникация с глобальным HQ, PR и юридическими командами"],
-      ["Японский", "Прямая связь с администрацией токийского офиса и персоналом площадки"],
-      ["Русский", "Для русскоязычных руководителей и дипломатических клиентов"],
-    ],
-    processLabel: "Как это работает",
-    process: [
-      ["01", "Отправить бриф", "Заполнение структурированной формы занимает менее трёх минут. Звонок на этом этапе не нужен."],
-      ["02", "Подтверждение в течение 24 часов", "Подтверждение наличия, отправка коммерческого предложения. При необходимости — PO и NDA."],
-      ["03", "Звонок или письмо перед съёмкой", "Обсуждение списка кадров, локации, расписания и брендбука. На английском или японском."],
-      ["04", "Съёмка", "На месте, вовремя. Ненавязчиво, без необходимости управлять процессом с вашей стороны."],
-      ["05", "Сдача", "Файлы для web, печати и соцсетей — отдельно. Стандарт: 3–5 рабочих дней."],
-      ["06", "Счёт", "JPY, AUD или USD. Net-30 для корпоративных аккаунтов. Документы для бухгалтерии."],
-    ],
-    termsLabel: "Корпоративные условия",
-    terms: [
-      ["NDA", "По запросу до передачи брифа"],
-      ["Выставление счетов", "JPY \u00b7 AUD \u00b7 USD \u00b7 Net-30"],
-      ["Конфиденциальность", "Имена клиентов не публикуются без согласия"],
-      ["Локация", "Любой район Токио \u00b7 выезд по Японии"],
-    ],
-    testimonial: "\u00abТокийская HR-команда брифовала по-японски, лондонская команда по коммуникациям получила файлы на английском — Ева вела обе стороны без единого сбоя. Портреты появились на нашем глобальном сайте в течение недели после съёмки.\u00bb",
-    testimonialBy: "Руководитель глобальных коммуникаций \u2014 международная консалтинговая компания, Токио",
-    ctaH2: "Готовы отправить бриф?",
-    ctaSub: "Ответ в течение 24 часов. Звонок не нужен.",
-    ctaBtn: "Отправить бриф",
   },
 } as const;
 
@@ -261,12 +212,7 @@ const corporateFaqPerLocale = {
   jp: [
     { q: "外資系企業が東京で直接英語で撮影を発注することはできますか？", a: "はい — エヴァはグローバル企業クライアントと英語で直接対応します。日本語のスタッフが直接ブリーフすることも可能です。" },
     { q: "JPY、AUD、USDでの請求書発行は可能ですか？", a: "はい — JPY、AUD、USDでの法人請求書発行に対応しています。ブリーフ前のNDAはリクエストに応じて対応可能です。" },
-    { q: "東京のオフィス向けにリテイナー契約は可能ですか？", a: "はい — 領術ポートレート、定期イベント撮影、リテイナー契約を包括した組み合わせパッケージに対応しています。" },
-  ],
-  ru: [
-    { q: "Может ли международная компания напрямую заказать съёмку в Токио на английском?", a: "Да — Ева работает напрямую с глобальными корпоративными клиентами на английском. Доступны русский и японский языки." },
-    { q: "Выючивается ли счёт в JPY, AUD или USD?", a: "Да — корпоративные счета выставляются в JPY, AUD и USD. NDA доступен по запросу до начала работы." },
-    { q: "Работаете ли вы и для компаний в Мельбурне?", a: "Да — Ева доступна для портретных и корпоративных съёмок в Мельбурне, помимо Токио." },
+    { q: "東京のオフィス向けにリテイナー契約は可能ですか？", a: "はい — リーダーシップポートレート、定期イベント撮影、リテイナー契約を包括した組み合わせパッケージに対応しています。" },
   ],
 };
 
@@ -288,7 +234,6 @@ export default async function CorporatePage({ params }: PageProps) {
 
   return (
     <>
-      {/* Hero */}
       <section className="section pt-32">
         <p className="label mb-6">{t.eyebrow}</p>
         <h1
@@ -314,26 +259,24 @@ export default async function CorporatePage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Gallery */}
       <section className="section pt-0">
         <EditorialGallery items={heroGallery} />
       </section>
 
-      {/* What this covers */}
       <section className="section border-t border-black/[0.07]">
         <p className="label mb-10">{t.coversLabel}</p>
         <div className="grid gap-y-0 md:grid-cols-3">
           {t.covers.map(({ title, detail }) => (
             <div key={title} className="border-t border-black/[0.07] py-10 pr-0 md:pr-12">
               <h2
-                className="text-2xl mb-6"
+                className="text-2xl mb-4"
                 style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
               >
                 {title}
               </h2>
               <ul>
                 {detail.map((item) => (
-                  <li key={item} className="border-t border-black/[0.07] py-3 text-sm text-black/60">
+                  <li key={item} className="border-t border-black/[0.07] py-3 text-sm text-black/55 leading-relaxed first:border-t-0 first:pt-0">
                     {item}
                   </li>
                 ))}
@@ -343,7 +286,6 @@ export default async function CorporatePage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Trilingual advantage */}
       <section className="section border-t border-black/[0.07]">
         <div className="grid gap-12 md:grid-cols-2">
           <div>
@@ -360,10 +302,7 @@ export default async function CorporatePage({ params }: PageProps) {
             <ul>
               {t.languages.map(([lang, desc]) => (
                 <li key={lang} className="flex gap-6 border-t border-black/[0.07] py-5">
-                  <span
-                    className="w-24 shrink-0 text-xl"
-                    style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
-                  >
+                  <span className="w-24 shrink-0 text-xl" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>
                     {lang}
                   </span>
                   <span className="text-sm text-black/55 leading-relaxed self-center">{desc}</span>
@@ -374,7 +313,6 @@ export default async function CorporatePage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* How it works */}
       <section className="section border-t border-black/[0.07]">
         <p className="label mb-10">{t.processLabel}</p>
         <ol className="grid gap-y-0 md:grid-cols-2">
@@ -387,10 +325,7 @@ export default async function CorporatePage({ params }: PageProps) {
                 {n}
               </span>
               <div>
-                <span
-                  className="block text-xl mb-1"
-                  style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
-                >
+                <span className="block text-xl mb-1" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>
                   {step}
                 </span>
                 <span className="text-sm text-black/50 leading-relaxed">{detail}</span>
@@ -400,7 +335,6 @@ export default async function CorporatePage({ params }: PageProps) {
         </ol>
       </section>
 
-      {/* Corporate terms */}
       <section className="section border-t border-black/[0.07]">
         <p className="label mb-6">{t.termsLabel}</p>
         <div className="grid gap-4 md:grid-cols-4">
@@ -413,7 +347,6 @@ export default async function CorporatePage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Testimonial */}
       <section className="section border-t border-black/[0.07]">
         <blockquote className="max-w-2xl">
           <p
@@ -428,7 +361,6 @@ export default async function CorporatePage({ params }: PageProps) {
         </blockquote>
       </section>
 
-      {/* CTA */}
       <section className="section border-t border-black/[0.07] py-6!">
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
           <div>

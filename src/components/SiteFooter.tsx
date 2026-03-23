@@ -33,11 +33,23 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           </nav>
         </div>
 
+        <div className="mt-7 border-t border-black/[0.07] pt-5 flex justify-end">
+          <nav className="flex w-fit flex-wrap justify-end gap-x-5 gap-y-1 text-right">
+            <Link href={`/${locale}/photographer-japan`} className="label hover:opacity-100 transition-opacity">
+              Japan
+            </Link>
+            <Link href={`/${locale}/photographer-australia`} className="label hover:opacity-100 transition-opacity">
+              Australia
+            </Link>
+          </nav>
+        </div>
+
         <div className="mt-7 border-t border-black/[0.07] pt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <p className="label">ABN: listed on invoices · GST if applicable</p>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <a href="https://www.instagram.com/evagorobets/" target="_blank" rel="noreferrer" className="label hover:opacity-100 transition-opacity">Instagram</a>
             <a href="https://www.linkedin.com/in/evgorobets/" target="_blank" rel="noreferrer" className="label hover:opacity-100 transition-opacity">LinkedIn</a>
+            <a href="https://www.artflaneur.art/stories" target="_blank" rel="noreferrer" className="label hover:opacity-100 transition-opacity">Stories</a>
             <p className="label">© {new Date().getFullYear()} Eva Gorobets</p>
           </div>
         </div>

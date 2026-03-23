@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 const base = "https://evagorobets.com";
-const locales = ["en", "jp", "ru"];
+const locales = ["en", "jp"];
 
 const routes = [
   "",
@@ -9,6 +9,8 @@ const routes = [
   "/corporate-events-photography",
   "/corporate",
   "/art-galleries-photography",
+  "/photographer-japan",
+  "/photographer-australia",
   "/portfolio",
   "/clients",
   "/about",

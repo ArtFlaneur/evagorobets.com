@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 import { Locale, locales } from "@/lib/i18n";
 
-const displayLabel: Record<Locale, string> = { en: "EN", jp: "JA", ru: "RU" };
+const displayLabel: Record<Locale, string> = { en: "EN", jp: "JA" };
 
 function replaceLocale(pathname: string, nextLocale: Locale) {
   const parts = pathname.split("/").filter(Boolean);

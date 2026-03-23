@@ -28,14 +28,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ogDescription:
         "エグゼクティブポートレート、コーポレートイベント、アート世界の写真作品集。東京・メルボルン・国際案件。",
     },
-    ru: {
-      title: "Портфолио — корпоративная, портретная и арт-фотография, Токио и Мельбурн | Eva Gorobets",
-      description:
-        "Избранные работы по бизнес-портретам, корпоративным мероприятиям и арт-фотографии — Токио, Мельбурн и международные заказы.",
-      ogTitle: "Портфолио — Eva Gorobets Photography",
-      ogDescription:
-        "Отобранные работы по портретам руководителей, корпоративным событиям и арт-фотографии в Токио, Мельбурне и по всему миру.",
-    },
   } as const;
 
   const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
@@ -57,7 +49,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       languages: {
         en: `${BASE_URL}/en${path}`,
         ja: `${BASE_URL}/jp${path}`,
-        ru: `${BASE_URL}/ru${path}`,
         "x-default": `${BASE_URL}/en${path}`,
       },
     },
@@ -78,13 +69,6 @@ const content = {
     sub: "ビジネスポートレート、コーポレートイベント、アート写真にわたるキュレーテッド作品集 — 東京・メルボルン・海外での受注作品。",
     ctaH2: "プロジェクトについて相談する。",
     ctaBtn: "お問い合わせ",
-  },
-  ru: {
-    eyebrow: "Портфолио",
-    h1: "Избранные работы",
-    sub: "Отобранные работы по бизнес-портретам, корпоративным мероприятиям и арт-фотографии — Токио, Мельбурн и международные заказы.",
-    ctaH2: "Обсудить проект.",
-    ctaBtn: "Написать",
   },
 } as const;
 

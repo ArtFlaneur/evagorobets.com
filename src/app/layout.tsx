@@ -42,7 +42,7 @@ export default async function RootLayout({
   params: Promise<{ locale?: string }>;
 }>) {
   const { locale } = await params;
-  const htmlLang = locale === "jp" ? "ja" : locale === "ru" ? "ru" : "en";
+  const htmlLang = locale === "jp" ? "ja" : "en";
 
   return (
     <html lang={htmlLang}>

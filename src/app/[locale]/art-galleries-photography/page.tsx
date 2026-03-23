@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-
 import Script from "next/script";
+
 import { CurrencyOptions } from "@/components/CurrencyOptions";
 import { EditorialGallery } from "@/components/EditorialGallery";
 import { getArtGallery } from "@/lib/gallery-data";
@@ -30,20 +30,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ogDescription:
         "ギャラリーオープニング、作品ドキュメンテーション、アーティストポートレートを東京・メルボルンで提供。",
     },
-    ru: {
-      title: "Фотограф для галерей и выставок в Токио | Eva Gorobets",
-      description:
-        "Съёмка для галерей, музеев и художников в Токио и Мельбурне: вернисажи, документация произведений, портреты художников. Файлы, готовые для каталога и прессы.",
-      ogTitle: "Фотограф для галерей и выставок в Токио",
-      ogDescription:
-        "Открытия галерей, документация работ и портреты художников в Токио и Мельбурне. Готовая сдача для прессы и каталогов.",
-    },
   } as const;
   const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
   const keywordSets: Record<string, string[]> = {
     en: ["art gallery photographer Tokyo", "exhibition photographer Tokyo", "vernissage photographer Tokyo", "art gallery photographer Melbourne", "exhibition photographer Melbourne", "artwork documentation photographer Tokyo", "artist portrait photographer Tokyo", "gallery opening photographer Melbourne", "art world photographer Tokyo"],
     jp: ["アートギャラリー 撮影 東京", "展覧会 カメラマン 東京", "ヴェルニサージュ 撮影", "アーティストポートレート 東京", "作品ドキュメンテーション 東京", "メルボルン ギャラリー 撮影"],
-    ru: ["фотограф галерей Токио", "съёмка выставок Токио", "фотограф вернисажей Токио", "фотограф галерей Мельбурн", "документация произведений искусства"],
   };
 
   return {
@@ -64,7 +55,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       languages: {
         en: `${BASE_URL}/en${path}`,
         ja: `${BASE_URL}/jp${path}`,
-        ru: `${BASE_URL}/ru${path}`,
         "x-default": `${BASE_URL}/en${path}`,
       },
     },
@@ -91,8 +81,8 @@ const artContent = {
       { title: "Art Events & Talks", text: "Lectures, performances, artist talks and panel discussions. Discreet photography that records the event without disrupting it." },
     ],
     approach: "Approach: careful movement in live spaces, respect for viewers and artists, colour accuracy for print and screen, and deliverables that the gallery can use without further editing. All files are captioned and structured for easy integration into press materials and catalogues.",
-    testimonial: "\u201cEva photographed three consecutive openings for us. Her images ended up in our annual catalogue, in Japanese press and on our international partner\u2019s website.\u201d",
-    testimonialBy: "Gallery Director, Contemporary Art Gallery \u2014 Tokyo",
+    testimonial: "Eva photographed three consecutive openings for us. Her images ended up in our annual catalogue, in Japanese press and on our international partner’s website.",
+    testimonialBy: "Gallery Director, Contemporary Art Gallery — Tokyo",
     ctaH2: "Working on an art project?",
     ctaBtn: "Art Project Enquiry",
     pricingLabel: "Service Options",
@@ -112,34 +102,13 @@ const artContent = {
       { title: "アートイベント＆トーク", text: "講演、パフォーマンス、アーティストトーク、パネルディスカッション。イベントを妨げない、目立たない撮影。" },
     ],
     approach: "アプローチ：ライブスペースでの慎重な動作、閲覧者とアーティストへの敬意、印刷・スクリーン用の色彩精度、そしてギャラリーがさらなる編集なしに使用できる成果物。すべてのファイルにキャプションが付けられ、プレス素材やカタログへの統合が容易な構造になっています。",
-    testimonial: "\u300c3回連続のオープニングをエヴァに撮影していただきました。彼女の画像は年間カタログ、日本のプレス、国際パートナーのウェブサイトに掲載されました。\u300d",
-    testimonialBy: "ギャラリーディレクター、現代アートギャラリー \u2014 東京",
+    testimonial: "3回連続のオープニングをエヴァに撮影していただきました。彼女の画像は年間カタログ、日本のプレス、国際パートナーのウェブサイトに掲載されました。",
+    testimonialBy: "ギャラリーディレクター、現代アートギャラリー — 東京",
     ctaH2: "アートプロジェクトに取り組んでいますか？",
     ctaBtn: "アートプロジェクトのお問い合わせ",
     pricingLabel: "サービスオプション",
     pricingLabels: ["展覧会オープニング / ヴェルニサージュ", "作品ドキュメンテーションセッション", "アーティスト・キュレーターポートレート"],
     pricingNote: "プレス、カタログ、アーカイブ用途に対応したカラー精度の高いファイルを提供します。",
-  },
-  ru: {
-    eyebrow: "Арт и галереи",
-    h1: "Фотосъёмка для галерей и выставок в Токио и Мельбурне",
-    p1: "Для галерей, музеев, художников, кураторов и арт-консультантов, которым нужны визуальные материалы для каталогов, прессы и онлайн-просмотра. Работаю в ритме и по протоколу арт-мира — прихожу заранее, двигаюсь осторожно, поставляю файлы, пригодные для печати.",
-    p2: "Как сооснователь Art Flaneur Global я годами погружена в арт-сцены Токио и Мельбурна — понимаю контекст, в который вхожу, и задействованные отношения. Управлять мной на площадке не нужно.",
-    whatLabel: "Что снимаю",
-    services: [
-      { title: "Выставки и вернисажи", text: "Съёмка вечера открытия: работы, гости, художник, атмосфера. Поставляется набором, структурированным под пресс-релиз и соцсети." },
-      { title: "Портреты художников и кураторов", text: "Сессии в студии, галерее или на локации. Портреты, передающие практику и личность — не просто присутствие." },
-      { title: "Документирование произведений", text: "Цветоточные, технически чистые файлы живописи, графики, скульптуры и инсталляций. Подходят для каталогов, страхования и цифровых архивов." },
-      { title: "Арт-события и лекции", text: "Лекции, перформансы, разговоры с художниками, панельные дискуссии. Ненавязчивая съёмка, фиксирующая событие без вмешательства в него." },
-    ],
-    approach: "Подход: аккуратное движение в живых пространствах, уважение к зрителям и художникам, точность цветопередачи для печати и экрана, материалы, готовые к использованию без дополнительного монтажа. Все файлы подписаны и структурированы для лёгкой интеграции в пресс-материалы и каталоги.",
-    testimonial: "\u00abЭва сняла три подряд открытия для нас. Её снимки попали в наш ежегодный каталог, в японскую прессу и на сайт международного партнёра.\u00bb",
-    testimonialBy: "Директор галереи, галерея современного искусства \u2014 Токио",
-    ctaH2: "Работаете над арт-проектом?",
-    ctaBtn: "Запрос на арт-проект",
-    pricingLabel: "Варианты услуг",
-    pricingLabels: ["Открытие выставки / вернисаж", "Документирование произведений", "Портрет художника или куратора"],
-    pricingNote: "Цветоточные файлы, структурированные для прессы, каталогов и архивов.",
   },
 } as const;
 
@@ -156,12 +125,7 @@ const artFaqPerLocale = {
   jp: [
     { q: "メルボルンでのギャラリーオープニングやヴェルニサージュの撮影は可能ですか？", a: "はい — 東京・日本全国に加え、メルボルン・シドニーでも展覧オープニングおよびヴェルニサージュの撮影に対応しています。" },
     { q: "作品ドキュメンテーションのファイル形式は？", a: "印刷カタログ、保険記録、デジタルアーカイブ用に色彩正確度を校正した高解像度TIFFおよびJPEGファイルで納品します。" },
-    { q: "展覧撮影にアーティストポートレートを組み合わせることはできますか？", a: "はい — 展覧の撮影にアーティストまたはキュレーターのポートレートセッションを合わせて過可能です。" },
-  ],
-  ru: [
-    { q: "Вы снимаете открытия галерей и вернисажи в Мельбурне?", a: "Да — доступна для съёмки открытий выставок и вернисажей в Мельбурне, Сиднее, Токио и по всей Японии." },
-    { q: "В каких форматах доставляются файлы документации произведений?", a: "Высокоразрешённые TIFF и JPEG, с колорокоррекцией для печатных каталогов, страховых записей и цифровых архивов." },
-    { q: "Есть ли у вас опыт работы с арт-сценой Токио и Мельбурна?", a: "Да — Ева является соучредителем Art Flaneur Global, платформы, сݎединяющей арт-дискурс Австралии и международного арт-сообщества. Опыт работы с галереями и музеями обеих городов." },
+    { q: "展覧撮影にアーティストポートレートを組み合わせることはできますか？", a: "はい — 展覧の撮影にアーティストまたはキュレーターのポートレートセッションを合わせて行えます。" },
   ],
 };
 
@@ -190,18 +154,13 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
     return parts.map((part, index) => {
       if (part === "Art Flaneur Global" || part === "Art Flaneur") {
         return (
-          <a
-            key={`${part}-${index}`}
-            href={artFlaneurUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="underline underline-offset-2"
-          >
+          <a key={`${part}-${index}`} href={artFlaneurUrl} target="_blank" rel="noreferrer" className="underline underline-offset-2">
             {part}
           </a>
         );
       }
-      return part;
+
+      return <span key={`${part}-${index}`}>{part}</span>;
     });
   }
 
@@ -209,10 +168,7 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
     <>
       <section className="section pt-20 md:pt-32">
         <p className="label mb-6">{t.eyebrow}</p>
-        <h1
-          className="max-w-3xl text-[clamp(3rem,7vw,6rem)] leading-[0.95]"
-          style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
-        >
+        <h1 className="max-w-3xl text-[clamp(3rem,7vw,6rem)] leading-[0.95]" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>
           {t.h1}
         </h1>
         <div className="mt-10 grid gap-6 md:grid-cols-2">
@@ -230,10 +186,7 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
         <div className="grid gap-y-0 md:grid-cols-2">
           {t.services.map(({ title, text }) => (
             <article key={title} className="border-t border-black/[0.07] py-8 pr-0 md:pr-12">
-              <h2
-                className="text-2xl mb-3"
-                style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
-              >
+              <h2 className="text-2xl mb-3" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>
                 {title}
               </h2>
               <p className="text-sm text-black/55 leading-relaxed">{text}</p>
@@ -242,23 +195,16 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Approach statement */}
       <section className="section border-t border-black/[0.07]">
         <p className="max-w-2xl text-sm text-black/50 leading-relaxed">{t.approach}</p>
       </section>
 
-      {/* Testimonial */}
       <section className="section border-t border-black/[0.07]">
         <blockquote className="max-w-2xl">
-          <p
-            className="text-[clamp(1.4rem,3vw,2.4rem)] leading-[1.2] text-black/80"
-            style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400, fontStyle: "italic" }}
-          >
+          <p className="text-[clamp(1.4rem,3vw,2.4rem)] leading-[1.2] text-black/80" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400, fontStyle: "italic" }}>
             {t.testimonial}
           </p>
-          <footer className="mt-5">
-            <span className="label">{t.testimonialBy}</span>
-          </footer>
+          <footer className="mt-5"><span className="label">{t.testimonialBy}</span></footer>
         </blockquote>
       </section>
 
@@ -273,10 +219,7 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
 
       <section className="section border-t border-black/[0.07] py-6!">
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
-          <h2
-            className="text-[clamp(2rem,4.5vw,4rem)] leading-[0.95]"
-            style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
-          >
+          <h2 className="text-[clamp(2rem,4.5vw,4rem)] leading-[0.95]" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>
             {t.ctaH2}
           </h2>
           <Link href={`/${locale}/contact-booking`} className="btn">{t.ctaBtn}</Link>

@@ -21,11 +21,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description:
         "東京を拠点にメルボルンとの深いつながりを持つポートレート・コーポレートフォトグラファー。コーポレート、文化・アート分野で15年以上の国際的な実績。英語・日本語・ロシア語対応。",
     },
-    ru: {
-      title: "Об Еве Горобец — Фотограф портретов и корпоративных мероприятий Токио и Мельбурн",
-      description:
-        "Портретный и корпоративный фотограф на базе в Токио с мельбурнскими корнями. Более 15 лет международного опыта в корпоративной, культурной и арт-среде. Общение на английском, японском и русском.",
-    },
   } as const;
 
   const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
@@ -47,7 +42,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       languages: {
         en: `${BASE_URL}/en${path}`,
         ja: `${BASE_URL}/jp${path}`,
-        ru: `${BASE_URL}/ru${path}`,
         "x-default": `${BASE_URL}/en${path}`,
       },
     },
@@ -76,7 +70,7 @@ const content = {
     clientsBody: "Corporate, gallery, media and public-sector clients across Tokyo, Melbourne and internationally.",
     clientsLink: "View client list →",
     pressLabel: "Press & Features",
-    pressBody: "Press clippings, publication credits and media appearances available on request.",
+    pressBody: "Press clippings, publication credits and media appearances available on request. Selected writing is available on Art Flaneur Stories.",
     ctaH2: "Let\u2019s work together.",
     ctaBtn: "Get in touch",
   },
@@ -101,34 +95,9 @@ const content = {
     clientsBody: "東京・メルボルン・世界各地の法人、ギャラリー、メディア、公共機関クライアント。",
     clientsLink: "クライアント一覧を見る →",
     pressLabel: "掲載・メディア実績",
-    pressBody: "プレスクリッピング、掲載クレジット、メディア出演歴はご要望に応じてご提供します。",
+    pressBody: "プレスクリッピング、掲載クレジット、メディア出演歴はご要望に応じてご提供します。執筆記事の一部はArt Flaneur Storiesでもご覧いただけます。",
     ctaH2: "一緒に仕事をしませんか。",
     ctaBtn: "お問い合わせ",
-  },
-  ru: {
-    eyebrow: "Фотограф",
-    heroAlt: "Ева Горобец — фотограф",
-    bio: [
-      "Ева Горобец — портретный и корпоративный фотограф с более чем 15-летним международным опытом, живущая в Токио с глубокими связями с Мельбурном. Её практика охватывает портреты руководителей, съёмку корпоративных мероприятий и фотографию арт-мира в Японии, Австралии и за рубежом.",
-      "Имеет степень магистра в области визуальной культуры и является кандидатом PhD по изобразительному и прикладному искусству — академический бэкграунд, формирующий самобытный подход: образно-ориентированный, концептуально осознанный и структурно точный.",
-      "Работает с транснациональными корпорациями, руководителями, независимыми профессионалами, галереями и художниками. Среди клиентов KPMG, Google, McKinsey, SAP, General Electric и EY, а также культурные институции — State Library Victoria и независимые арт-пространства Токио и Мельбурна.",
-      "Сооснователь Art Flaneur — платформы, связывающей арт-дискурс между Австралией и международным сообществом современного искусства. Общение на английском, японском и русском языках.",
-    ],
-    facts: [
-      ["Опыт", "15+ лет (с 2008 года)"],
-      ["Образование", "MA Визуальная культура · Кандидат PhD, изобразительное и прикладное искусство"],
-      ["Языки", "Английский · Японский · Русский"],
-      ["Базируется", "Токио, Япония"],
-      ["Также работает", "Австралия, Мельбурн · Весь мир"],
-      ["Сооснователь", "Art Flaneur"],
-    ],
-    clientsLabel: "Клиенты",
-    clientsBody: "Корпоративные, галерейные, медиа и государственные клиенты в Токио, Мельбурне и по всему миру.",
-    clientsLink: "Список клиентов →",
-    pressLabel: "Пресса и публикации",
-    pressBody: "Вырезки из прессы, упоминания в изданиях и медиавыступления — по запросу.",
-    ctaH2: "Готовы к сотрудничеству?",
-    ctaBtn: "Написать",
   },
 } as const;
 
@@ -139,6 +108,7 @@ export default async function AboutPage({ params }: PageProps) {
   const t = content[(locale as Locale) in content ? (locale as Locale) : "en"];
   const aboutPhotoSrc = await getAboutPhotoSrc();
   const artFlaneurUrl = "https://www.artflaneur.art";
+  const storiesUrl = "https://www.artflaneur.art/stories";
 
   function linkifyArtFlaneur(text: string) {
     const parts = text.split(/(Art Flaneur Global|Art Flaneur|アート・フラヌール)/g);
@@ -205,6 +175,14 @@ export default async function AboutPage({ params }: PageProps) {
       <section className="section border-t border-black/[0.07]">
         <p className="label mb-10">{t.pressLabel}</p>
         <p className="text-sm text-black/40 max-w-sm">{t.pressBody}</p>
+        <a
+          href={storiesUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="btn-ghost mt-6 inline-flex"
+        >
+          Art Flaneur Stories
+        </a>
       </section>
 
       {/* Contact CTA */}

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
-import { isLocale, Locale } from "@/lib/i18n";
+import { isLocale, Locale, locales } from "@/lib/i18n";
 
 type LocaleLayoutProps = {
   children: React.ReactNode;
@@ -13,19 +13,21 @@ type LocaleLayoutProps = {
 
 const BASE_URL = "https://evagorobets.com";
 
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
 export async function generateMetadata({ params }: LocaleLayoutProps): Promise<Metadata> {
   const { locale } = await params;
 
   const titles: Record<string, string> = {
     en: "Eva Gorobets — Portrait & Corporate Photographer, Tokyo & Melbourne",
     jp: "エヴァ・ゴロベッツ — 東京・メルボルン ポートレート & コーポレートフォトグラファー",
-    ru: "Ева Горобец — Фотограф в Токио и Мельбурне: портреты и корпоративные мероприятия",
   };
 
   const descriptions: Record<string, string> = {
     en: "Executive portrait and corporate event photographer based in Tokyo, available in Melbourne and internationally. Business headshots, leadership portraits, conference photography. 15+ years. English, Japanese, Russian.",
     jp: "東京を拠点にメルボルンでも活動するエグゼクティブポートレート・法人イベント撮影のプロフェッショナル。ビジネスヘッドショット、リーダーシップポートレート、カンファレンス撮影。15年以上の経験。英語・日本語・ロシア語対応。",
-    ru: "Фотограф портретов и корпоративных мероприятий, базируется в Токио, работает в Мельбурне и по всему миру. Хэдшоты руководителей, деловые портреты, съёмка конференций. Более 15 лет опыта. Английский, японский, русский.",
   };
 
   const keywords: Record<string, string[]> = {
@@ -45,6 +47,14 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
       "executive headshots Melbourne",
       "headshot photographer Melbourne CBD",
       "LinkedIn photographer Melbourne",
+      "corporate photographer Japan",
+      "business photographer Japan",
+      "art gallery photographer Tokyo",
+      "art photographer Japan",
+      "corporate photographer Australia",
+      "business portrait photographer Australia",
+      "art gallery photographer Melbourne",
+      "event photographer Australia",
       "photographer for international companies Tokyo",
       "photographer for expats Tokyo",
       "photographer for expats Melbourne",
@@ -62,21 +72,9 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
       "メルボルン コーポレートフォトグラファー",
       "東京 LinkedIn 写真",
     ],
-    ru: [
-      "коммерческий фотограф Токио",
-      "фотограф портретов Токио",
-      "деловые портреты Токио",
-      "фотограф Мельбурн",
-      "портретный фотограф Мельбурн",
-      "корпоративный фотограф Токио",
-      "фотосъёмка мероприятий Токио",
-      "корпоративный фотограф Мельбурн",
-      "хэдшот фотограф Токио",
-      "фотограф для иностранных компаний Токио",
-    ],
   };
 
-  const ogLocales: Record<string, string> = { en: "en_US", jp: "ja_JP", ru: "ru_RU" };
+  const ogLocales: Record<string, string> = { en: "en_US", jp: "ja_JP" };
 
   const title = titles[locale] ?? titles.en;
   const description = descriptions[locale] ?? descriptions.en;
@@ -101,7 +99,6 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
       languages: {
         en: `${BASE_URL}/en`,
         ja: `${BASE_URL}/jp`,
-        ru: `${BASE_URL}/ru`,
         "x-default": `${BASE_URL}/en`,
       },
     },
@@ -139,7 +136,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               url: BASE_URL,
               name: "Eva Gorobets Photography",
               description: "Portrait and corporate event photographer — Tokyo & Melbourne",
-              inLanguage: ["en", "ja", "ru"],
+              inLanguage: ["en", "ja"],
             },
             {
               "@type": "Person",
@@ -164,6 +161,13 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               url: BASE_URL,
               email: "eva@artflaneur.com.au",
               priceRange: "¥¥¥",
+              serviceType: [
+                "Executive headshots",
+                "Business portraits",
+                "Corporate event photography",
+                "Art gallery photography",
+                "Artwork documentation",
+              ],
               founder: { "@id": `${BASE_URL}/#person` },
               address: { "@type": "PostalAddress", addressLocality: "Tokyo", addressCountry: "JP" },
               geo: { "@type": "GeoCoordinates", latitude: 35.6762, longitude: 139.6503 },

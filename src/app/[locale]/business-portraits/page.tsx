@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-
 import Script from "next/script";
+
 import { CurrencyOptions } from "@/components/CurrencyOptions";
 import { EditorialGallery } from "@/components/EditorialGallery";
 import { getPortraitsGallery } from "@/lib/gallery-data";
@@ -30,20 +30,30 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ogDescription:
         "東京・メルボルンの経営層・創業者・リーダー向けスタジオ/ロケーション撮影。迅速納品、3言語コミュニケーション。",
     },
-    ru: {
-      title: "Бизнес-портреты в Токио и Мельбурне | Eva Gorobets",
-      description:
-        "Профессиональные headshots и портреты руководителей в Токио и Мельбурне. Студия и съёмка на локации. Для корпоративных сайтов, LinkedIn, годовых отчётов и прессы. Брифинг на трёх языках.",
-      ogTitle: "Бизнес-портреты и executive headshots в Токио и Мельбурне",
-      ogDescription:
-        "Студийные и выездные сессии для руководителей, основателей и команд лидерства в Токио и Мельбурне. Быстрая сдача и трёхъязычная коммуникация.",
-    },
   } as const;
   const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
   const keywordSets: Record<string, string[]> = {
-    en: ["executive headshots Tokyo", "business portrait photographer Tokyo", "executive headshots Melbourne", "business portrait photographer Melbourne", "LinkedIn headshots Tokyo", "LinkedIn headshots Melbourne", "professional headshots Marunouchi", "executive portraits Tokyo", "corporate portraits Melbourne", "headshot photographer Melbourne CBD"],
-    jp: ["エグゼクティブヘッドショット 東京", "ビジネスポートレート 東京", "エグゼクティブポートレート 東京", "ビジネスポートレート メルボルン", "LinkedIn 写真 東京", "丸の内 ヘッドショット", "法人 ポートレート 東京"],
-    ru: ["бизнес-портреты Токио", "executive headshots Токио", "деловые портреты Мельбурн", "хэдшот фотограф Токио", "корпоративные портреты Мельбурн"],
+    en: [
+      "executive headshots Tokyo",
+      "business portrait photographer Tokyo",
+      "executive headshots Melbourne",
+      "business portrait photographer Melbourne",
+      "LinkedIn headshots Tokyo",
+      "LinkedIn headshots Melbourne",
+      "professional headshots Marunouchi",
+      "executive portraits Tokyo",
+      "corporate portraits Melbourne",
+      "headshot photographer Melbourne CBD",
+    ],
+    jp: [
+      "エグゼクティブヘッドショット 東京",
+      "ビジネスポートレート 東京",
+      "エグゼクティブポートレート 東京",
+      "ビジネスポートレート メルボルン",
+      "LinkedIn 写真 東京",
+      "丸の内 ヘッドショット",
+      "法人 ポートレート 東京",
+    ],
   };
 
   return {
@@ -64,7 +74,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       languages: {
         en: `${BASE_URL}/en${path}`,
         ja: `${BASE_URL}/jp${path}`,
-        ru: `${BASE_URL}/ru${path}`,
         "x-default": `${BASE_URL}/en${path}`,
       },
     },
@@ -93,13 +102,13 @@ const content = {
     process: [
       ["01", "Brief", "We discuss your goals, intended use and visual direction — in EN, JP or RU."],
       ["02", "Moodboard", "I share two or three reference images as a starting point before we meet."],
-      ["03", "Session", "60\u201390 minutes. Guided, relaxed, efficient. You do not need to know how to pose."],
+      ["03", "Session", "60–90 minutes. Guided, relaxed, efficient. You do not need to know how to pose."],
       ["04", "Selection", "You receive a proof gallery and choose your favourite frames."],
-      ["05", "Delivery", "Retouched web and print-ready files. Delivered within 3\u20135 business days."],
+      ["05", "Delivery", "Retouched web and print-ready files. Delivered within 3–5 business days."],
     ],
-    testimonial: "\u201cEva sees what others miss and captures the true essence of a person. I have commissioned her more than once and have always been very satisfied with the result.\u201d",
+    testimonial: "Eva sees what others miss and captures the true essence of a person. I have commissioned her more than once and have always been very satisfied with the result.",
     testimonialBy: "Mikhail Yermolayev, Managing Partner, GAB Consulting",
-    ctaH2: "Let\u2019s create your portrait.",
+    ctaH2: "Let’s create your portrait.",
     ctaBtn: "Enquire for a Business Portrait",
   },
   jp: {
@@ -121,34 +130,10 @@ const content = {
       ["04", "セレクション", "プルーフギャラリーをお送りし、お好みのカットをお選びいただきます。"],
       ["05", "納品", "Web用・印刷用レタッチ済みファイル。3〜5営業日以内に納品。"],
     ],
-    testimonial: "\u300cエヴァは、他の人が見落とす要素を見抜き、人物の本質を引き出して撮影してくれます。私は複数回依頼していますが、毎回とても満足しています。\u300d",
+    testimonial: "エヴァは、他の人が見落とす要素を見抜き、人物の本質を引き出して撮影してくれます。私は複数回依頼していますが、毎回とても満足しています。",
     testimonialBy: "Mikhail Yermolayev（GAB Consulting マネージングパートナー）",
     ctaH2: "あなたのポートレートを撮影しましょう。",
     ctaBtn: "ビジネスポートレートのお問い合わせ",
-  },
-  ru: {
-    eyebrow: "Бизнес-портреты",
-    h1: "Бизнес-портреты и корпоративные хэдшоты в Токио",
-    p1: "Профессиональные портреты для руководителей, основателей, консультантов, художников и арт-менеджеров, которым нужна премиальная и убедительная визуальная идентичность. Съёмки выстраиваются вокруг позиционирования бренда, коммуникационных целей и практического использования на сайтах, в медиакитах и профилях выступающих.",
-    p2: "Базируется в Токио, выезды в Мельбурн и за рубеж. Брифинг и общение на английском, японском и русском. Финальные ретушированные изображения — в течение трёх-пяти рабочих дней.",
-    sessionTypesLabel: "Форматы съёмки",
-    sessionTypes: [
-      { title: "Студия", text: "Контролируемая среда с гладким или фактурным фоном. Чистый, вневременной результат для любого редакционного использования." },
-      { title: "Локация", text: "Офис, коворкинг, отель или городская среда. Фон усиливает контекст вашей деятельности." },
-      { title: "Творческий эдиториал", text: "Арт-направленные портреты для художников, кураторов и творческих профессионалов. Больше свободы, больше характера." },
-    ],
-    processLabel: "Процесс",
-    process: [
-      ["01", "Бриф", "Обсуждаем цели, способы использования и визуальное направление — на EN, JP или RU."],
-      ["02", "Мудборд", "Делюсь двумя-тремя референсами для отправки точки отсчёта."],
-      ["03", "Съёмка", "60–90 минут. С направлением, расслабленно, эффективно. Знание поз не требуется."],
-      ["04", "Отбор", "Получаете превью-галерею и выбираете лучшие кадры."],
-      ["05", "Доставка", "Ретушированные файлы для web и печати. В течение 3–5 рабочих дней."],
-    ],
-    testimonial: "\u00abЕвгения видит то, что обычно не замечают, и умеет передать суть человека в кадре. Не раз работал с ней как заказчик и всегда оставался очень доволен результатом.\u00bb",
-    testimonialBy: "Михаил Ермолаев, управляющий партнёр GAB Consulting",
-    ctaH2: "Создадим ваш портрет.",
-    ctaBtn: "Запрос на бизнес-портрет",
   },
 } as const;
 
@@ -167,12 +152,6 @@ const faqPerLocale = {
     { q: "ビジネスポートレートのセッションはどのくらいかかりますか？", a: "標準的なセッションは60〜90分です。ガイド付きで進行しますので、ポーズの知識は不要です。" },
     { q: "東京のポートレートセッションで日本語でのやり取りは可能ですか？", a: "はい — エヴァは英語・日本語・ロシア語でコミュニケーションが取れます。日本語スタッフが直接ブリーフすることも可能です。" },
     { q: "レタッチ済み画像の納品までどのくらいかかりますか？", a: "Web用・印刷用レタッチ済みファイルは、撮影から3〜5営業日以内に納品されます。" },
-  ],
-  ru: [
-    { q: "Можно ли сделать деловые портреты и хэдшоты в Мельбурне?", a: "Да — помимо Токио, Ева доступна для съёмки бизнес-портретов и executive headshots в Мельбурне. Сессии проводятся в студии, офисе или на выбранной локации." },
-    { q: "Сколько длится сессия для бизнес-портретов?", a: "Стандартная сессия занимает 60–90 минут. Съёмка проводится с профессиональным руководством — знание поз не требуется." },
-    { q: "Можно ли работать на японском языке при съёмке в Токио?", a: "Да — Ева работает на английском, японском и русском языках. Ваш японский офис-менеджер может координировать съёмку напрямую." },
-    { q: "Как быстро готовы ретушированные файлы?", a: "Готовые web- и печатные файлы доставляются в течение 3–5 рабочих дней после сессии." },
   ],
 };
 
@@ -195,7 +174,7 @@ export default async function BusinessPortraitsPage({ params }: PageProps) {
 
   return (
     <>
-      <section className="section pt-20 md:pt-32">
+      <section className="section pt-32">
         <p className="label mb-6">{t.eyebrow}</p>
         <h1 className="max-w-3xl text-[clamp(3rem,7vw,6rem)] leading-[0.95]" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>
           {t.h1}
@@ -227,10 +206,7 @@ export default async function BusinessPortraitsPage({ params }: PageProps) {
           <ol>
             {t.process.map(([n, step, detail]) => (
               <li key={step} className="flex gap-6 border-t border-black/[0.07] py-7">
-                <span
-                  className="w-12 shrink-0 text-[clamp(2.1rem,4vw,3.2rem)] leading-none text-black/12 select-none"
-                  style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}
-                >
+                <span className="w-12 shrink-0 text-[clamp(2.1rem,4vw,3.2rem)] leading-none text-black/12 select-none" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>
                   {n}
                 </span>
                 <div>
@@ -271,4 +247,3 @@ export default async function BusinessPortraitsPage({ params }: PageProps) {
     </>
   );
 }
-
