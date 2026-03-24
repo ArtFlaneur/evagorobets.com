@@ -17,7 +17,32 @@ type ContactPayload = {
   nda: string;
   notes: string;
   website: string;
+  startedAt: string;
 };
+
+const MIN_FORM_FILL_MS = 4_000;
+const MAX_LINKS = 2;
+const SPAM_PHRASES = [
+  "seo",
+  "backlinks",
+  "guest post",
+  "guest posts",
+  "domain authority",
+  "marketing agency",
+  "digital marketing",
+  "cold outreach",
+  "lead generation",
+  "casino",
+  "forex",
+  "crypto",
+  "telegram",
+  "whatsapp",
+  "click here",
+  "do follow",
+  "dofollow",
+  "link exchange",
+  "sponsored post",
+];
 
 function getString(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
@@ -25,6 +50,57 @@ function getString(value: unknown): string {
 
 function pickLocale(value: string): string {
   return SUPPORTED_LOCALES.has(value) ? value : "en";
+}
+
+function countLinks(text: string): number {
+  const matches = text.match(/https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|org|io|co|ru|jp|au|info|biz)\b/gi);
+  return matches?.length ?? 0;
+}
+
+function hasRepeatedCharacters(text: string): boolean {
+  return /(.)\1{6,}/i.test(text);
+}
+
+function getContentForSpamCheck(payload: ContactPayload): string {
+  return [
+    payload.name,
+    payload.company,
+    payload.email,
+    payload.type,
+    payload.location,
+    payload.notes,
+  ]
+    .join("\n")
+    .toLowerCase();
+}
+
+function isSuspiciousPayload(payload: ContactPayload): boolean {
+  const content = getContentForSpamCheck(payload);
+  const matchedSpamPhrase = SPAM_PHRASES.some((phrase) => content.includes(phrase));
+  const excessiveLinks = countLinks(content) > MAX_LINKS;
+  const repeatedCharacters = hasRepeatedCharacters(content);
+  const suspiciousEmail = /@(mailinator|guerrillamail|tempmail|10minutemail|sharklasers)\./i.test(payload.email);
+  const oversizedNotes = payload.notes.length > 2_000;
+
+  return matchedSpamPhrase || excessiveLinks || repeatedCharacters || suspiciousEmail || oversizedNotes;
+}
+
+function isTooFast(startedAt: string): boolean {
+  if (!startedAt) return false;
+
+  const timestamp = Number(startedAt);
+  if (!Number.isFinite(timestamp) || timestamp <= 0) return false;
+
+  return Date.now() - timestamp < MIN_FORM_FILL_MS;
+}
+
+function logBlockedSubmission(reason: string, payload: ContactPayload) {
+  console.warn("Contact form blocked", {
+    reason,
+    locale: payload.locale,
+    email: payload.email,
+    name: payload.name,
+  });
 }
 
 async function parsePayload(req: NextRequest): Promise<ContactPayload> {
@@ -47,6 +123,7 @@ async function parsePayload(req: NextRequest): Promise<ContactPayload> {
       nda: getString(body.nda),
       notes: getString(body.notes),
       website: getString(body.website),
+      startedAt: getString(body.startedAt),
     };
   }
 
@@ -66,6 +143,7 @@ async function parsePayload(req: NextRequest): Promise<ContactPayload> {
     nda: getString(formData.get("nda")),
     notes: getString(formData.get("notes")),
     website: getString(formData.get("website")),
+    startedAt: getString(formData.get("startedAt")),
   };
 }
 
@@ -149,6 +227,17 @@ export async function POST(req: NextRequest) {
   const payload = await parsePayload(req);
 
   if (payload.website) {
+    logBlockedSubmission("honeypot", payload);
+    return redirectTo(payload.locale, "sent", req);
+  }
+
+  if (isTooFast(payload.startedAt)) {
+    logBlockedSubmission("submitted_too_fast", payload);
+    return redirectTo(payload.locale, "sent", req);
+  }
+
+  if (isSuspiciousPayload(payload)) {
+    logBlockedSubmission("suspicious_content", payload);
     return redirectTo(payload.locale, "sent", req);
   }
 

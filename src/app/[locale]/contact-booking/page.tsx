@@ -159,6 +159,7 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
   const t = content[(locale as Locale) in content ? (locale as Locale) : "en"];
   const showSent = query.sent === "1";
   const showError = query.error === "1";
+  const formTimestampInputId = "contact-started-at";
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -178,6 +179,27 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
       <Script id="contact-faq-schema" type="application/ld+json">
         {JSON.stringify(faqSchema)}
       </Script>
+      <Script id="contact-form-antispam" strategy="afterInteractive">
+        {`
+          (() => {
+            const inputId = ${JSON.stringify(formTimestampInputId)};
+
+            const setTimestamp = () => {
+              const input = document.getElementById(inputId);
+              if (!(input instanceof HTMLInputElement)) return;
+              input.value = String(Date.now());
+            };
+
+            if (document.readyState === "loading") {
+              document.addEventListener("DOMContentLoaded", setTimestamp, { once: true });
+            } else {
+              setTimestamp();
+            }
+
+            window.addEventListener("pageshow", setTimestamp);
+          })();
+        `}
+      </Script>
       <section className="section pt-32">
         <p className="label mb-6">{t.eyebrow}</p>
         <h1
@@ -193,6 +215,7 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
         {/* Form */}
         <form className="space-y-0" method="POST" action="/api/contact">
           <input type="hidden" name="locale" value={locale} />
+          <input type="hidden" id={formTimestampInputId} name="startedAt" defaultValue="" />
           <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
 
           {showSent && (

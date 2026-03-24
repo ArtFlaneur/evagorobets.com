@@ -186,17 +186,14 @@ export async function setCloudinaryContext(
   if (entries.length === 0) return true;
 
   const cloud = process.env.CLOUDINARY_CLOUD_NAME;
-  const url = `https://api.cloudinary.com/v1_1/${cloud}/resources/image/context`;
+  const encodedPublicId = encodeURIComponent(publicId);
+  const url = `https://api.cloudinary.com/v1_1/${cloud}/resources/image/upload/${encodedPublicId}`;
 
   const context = entries
     .map(([key, value]) => `${key}=${value}`)
     .join("|");
 
-  const body = new URLSearchParams({
-    command: "add",
-    context,
-  });
-  body.append("public_ids[]", publicId);
+  const body = new URLSearchParams({ context });
 
   const res = await fetch(url, {
     method: "POST",
