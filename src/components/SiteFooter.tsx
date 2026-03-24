@@ -39,8 +39,8 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           </nav>
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 md:max-w-xs md:justify-end md:text-right">
-            <a href="https://www.instagram.com/evagorobets/" target="_blank" rel="noreferrer" className="label hover:opacity-100 transition-opacity">Instagram</a>
-            <a href="https://www.linkedin.com/in/evgorobets/" target="_blank" rel="noreferrer" className="label hover:opacity-100 transition-opacity">LinkedIn</a>
+            <a href="https://www.instagram.com/eva_gorobets_/" target="_blank" rel="noreferrer" className="label hover:opacity-100 transition-opacity">Instagram</a>
+            <a href="https://www.linkedin.com/in/evagorobets/" target="_blank" rel="noreferrer" className="label hover:opacity-100 transition-opacity">LinkedIn</a>
             <a href="https://www.artflaneur.art/stories" target="_blank" rel="noreferrer" className="label hover:opacity-100 transition-opacity">Stories</a>
             <p className="label">© {new Date().getFullYear()} Eva Gorobets</p>
           </div>
