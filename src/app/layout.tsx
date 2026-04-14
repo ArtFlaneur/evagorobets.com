@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   title: "Eva Gorobets — Portrait & Corporate Photographer, Tokyo & Melbourne",
   description:
     "Portrait and corporate event photographer based in Tokyo, available in Melbourne. Executive headshots, corporate event coverage, art-world photography. Communication in English, Japanese and Russian.",
+  verification: {
+    google: "naTVcEvP0Y1pUnEWD8fa-6Mn2dUWm0bw2pBj3tg7bDw",
+  },
   openGraph: {
     type: "website",
     siteName: "Eva Gorobets Photography",
