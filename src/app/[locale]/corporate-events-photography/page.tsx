@@ -5,6 +5,7 @@ import Script from "next/script";
 import { CurrencyOptions } from "@/components/CurrencyOptions";
 import { EditorialGallery } from "@/components/EditorialGallery";
 import { getCorporateGallery } from "@/lib/gallery-data";
+import { buildServiceSchema } from "@/lib/schema";
 
 type PageProps = { params: Promise<{ locale: string }> };
 
@@ -82,18 +83,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     en: {
       title: "Corporate Event Photographer Tokyo and Melbourne — Conferences, Forums & Internal Events | Eva Gorobets",
       description:
-        "Structured corporate event photography in Tokyo and Melbourne. Conferences, AGMs, product launches, client receptions. PR and social media delivery sets. Available across Japan.",
+        "Structured corporate event photography in Tokyo and Melbourne. Conferences, AGMs, product launches, client receptions. Visible coverage pricing and an instant calculator for planning budgets. PR and social media delivery sets.",
       ogTitle: "Corporate Event Photographer Tokyo and Melbourne",
       ogDescription:
-        "Coverage for corporate conferences, forums and internal events in Tokyo. Structured process, fast delivery, trilingual communication.",
+        "Coverage for corporate conferences, forums and internal events in Tokyo and Melbourne. Visible pricing, instant calculator, structured process, fast delivery.",
     },
     jp: {
       title: "東京・メルボルン コーポレートイベント撮影 — 会議・フォーラム・社内イベント | Eva Gorobets",
       description:
-        "東京・メルボルンの法人イベント撮影。会議、株主総会、製品発表、レセプションまで対応。PR・SNS向け納品セットを提供。日本・オーストラリア全国で撮影可能。",
+        "東京・メルボルンの法人イベント撮影。会議、株主総会、製品発表、レセプションまで対応。料金の目安を表示し、見積もり計算で予算感をすぐ確認可能。PR・SNS向け納品セットを提供。",
       ogTitle: "東京・メルボルン コーポレートイベント撮影",
       ogDescription:
-        "東京・メルボルンで会議・フォーラム・社内イベントを構造化プロセスで撮影。迅速納品、3言語コミュニケーション。",
+        "東京・メルボルンで会議・フォーラム・社内イベントを構造化プロセスで撮影。価格表示あり、見積もり計算あり、迅速納品、3言語対応。",
     },
   } as const;
   const s = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
@@ -163,9 +164,41 @@ export default async function CorporateEventsPage({ params }: PageProps) {
   const { locale } = await params;
   const corporateGallery = await getCorporateGallery();
   const t = eventsContent[(locale as Locale) in eventsContent ? (locale as Locale) : "en"];
+  const typedLocale = locale === "jp" ? "jp" : "en";
 
   const jpyPrices = ["from ¥125,000", "from ¥215,000", "from ¥200,000"];
   const audPrices = ["from A$1,520", "from A$2,630", "from A$2,370"];
+  const serviceSchema = buildServiceSchema({
+    name:
+      typedLocale === "jp"
+        ? "コーポレートイベント撮影"
+        : "Corporate Event Photography",
+    description:
+      typedLocale === "jp"
+        ? "東京とメルボルンでの会議、フォーラム、ローンチ、社内イベント撮影。料金目安を表示し、見積もり計算にも対応。"
+        : "Corporate event coverage for conferences, launches and internal events in Tokyo and Melbourne with visible rates and an instant calculator.",
+    path: "/corporate-events-photography",
+    locale: typedLocale,
+    serviceType: ["Conference photography", "Corporate event photography", "Forum coverage"],
+    areaServed: ["Tokyo", "Melbourne", "Japan", "Australia"],
+    offers: [
+      {
+        name: typedLocale === "jp" ? "ハーフデイ撮影" : "Half-day coverage",
+        price: typedLocale === "jp" ? 125000 : 1520,
+        priceCurrency: typedLocale === "jp" ? "JPY" : "AUD",
+      },
+      {
+        name: typedLocale === "jp" ? "フルデイ撮影" : "Full-day coverage",
+        price: typedLocale === "jp" ? 215000 : 2630,
+        priceCurrency: typedLocale === "jp" ? "JPY" : "AUD",
+      },
+      {
+        name: typedLocale === "jp" ? "複数日イベント" : "Multi-day coverage",
+        price: typedLocale === "jp" ? 200000 : 2370,
+        priceCurrency: typedLocale === "jp" ? "JPY" : "AUD",
+      },
+    ],
+  });
 
   return (
     <>
@@ -234,6 +267,9 @@ export default async function CorporateEventsPage({ params }: PageProps) {
 
       <Script id="events-faq-schema" type="application/ld+json">
         {JSON.stringify(buildEventsFAQSchema(eventsFaqPerLocale[locale as keyof typeof eventsFaqPerLocale] ?? eventsFaqPerLocale.en))}
+      </Script>
+      <Script id="events-service-schema" type="application/ld+json">
+        {JSON.stringify(serviceSchema)}
       </Script>
     </>
   );

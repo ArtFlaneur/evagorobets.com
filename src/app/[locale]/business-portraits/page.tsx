@@ -5,6 +5,7 @@ import Script from "next/script";
 import { CurrencyOptions } from "@/components/CurrencyOptions";
 import { EditorialGallery } from "@/components/EditorialGallery";
 import { getPortraitsGallery } from "@/lib/gallery-data";
+import { buildServiceSchema } from "@/lib/schema";
 
 type PageProps = { params: Promise<{ locale: string }> };
 
@@ -17,18 +18,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     en: {
       title: "Executive Headshots & Business Portraits Tokyo & Melbourne | Eva Gorobets",
       description:
-        "Professional executive headshots and leadership portraits in Tokyo and Melbourne. Studio and on-location. Used for company websites, LinkedIn, annual reports and press. Trilingual briefing.",
+        "Professional executive headshots and leadership portraits in Tokyo and Melbourne. Studio and on-location. Visible starting prices and an instant calculator for quick budget planning. Used for websites, LinkedIn, annual reports and press.",
       ogTitle: "Executive Headshots & Business Portraits Tokyo & Melbourne",
       ogDescription:
-        "Studio and on-location portrait sessions for executives, founders and leadership teams in Tokyo and Melbourne. Fast delivery, trilingual communication.",
+        "Studio and on-location portrait sessions for executives, founders and leadership teams in Tokyo and Melbourne. Visible pricing, instant calculator, fast delivery, trilingual communication.",
     },
     jp: {
       title: "東京・メルボルン ビジネスポートレート & エグゼクティブヘッドショット | Eva Gorobets",
       description:
-        "東京・メルボルンでのエグゼクティブヘッドショットとリーダーシップポートレート。スタジオ・ロケーション対応。企業サイト、LinkedIn、年次報告書、プレス用途に最適。3言語でブリーフ対応。",
+        "東京・メルボルンでのエグゼクティブヘッドショットとリーダーシップポートレート。スタジオ・ロケーション対応。開始価格を表示し、見積もり計算で予算感をすぐ確認可能。企業サイト、LinkedIn、年次報告書、プレス用途に最適。",
       ogTitle: "東京・メルボルン ビジネスポートレート & エグゼクティブヘッドショット",
       ogDescription:
-        "東京・メルボルンの経営層・創業者・リーダー向けスタジオ/ロケーション撮影。迅速納品、3言語コミュニケーション。",
+        "東京・メルボルンの経営層・創業者・リーダー向けスタジオ/ロケーション撮影。価格表示あり、見積もり計算あり、迅速納品、3言語コミュニケーション。",
     },
   } as const;
   const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
@@ -173,6 +174,38 @@ export default async function BusinessPortraitsPage({ params }: PageProps) {
   const { locale } = await params;
   const t = content[(locale as Locale) in content ? (locale as Locale) : "en"];
   const portraitsGallery = await getPortraitsGallery();
+  const typedLocale = locale === "jp" ? "jp" : "en";
+  const serviceSchema = buildServiceSchema({
+    name:
+      typedLocale === "jp"
+        ? "ビジネスポートレートとエグゼクティブヘッドショット"
+        : "Business Portraits and Executive Headshots",
+    description:
+      typedLocale === "jp"
+        ? "東京とメルボルンでのエグゼクティブヘッドショット、ビジネスポートレート、LinkedIn用撮影。開始価格を表示し、見積もり計算にも対応。"
+        : "Executive headshots, business portraits and LinkedIn photography in Tokyo and Melbourne with visible starting prices and an instant calculator.",
+    path: "/business-portraits",
+    locale: typedLocale,
+    serviceType: ["Executive headshots", "Business portraits", "Leadership portraits"],
+    areaServed: ["Tokyo", "Melbourne", "Japan", "Australia"],
+    offers: [
+      {
+        name: typedLocale === "jp" ? "スタジオポートレート" : "Studio portraits",
+        price: typedLocale === "jp" ? 95000 : 1100,
+        priceCurrency: typedLocale === "jp" ? "JPY" : "AUD",
+      },
+      {
+        name: typedLocale === "jp" ? "ロケーションポートレート" : "On-location portraits",
+        price: typedLocale === "jp" ? 68000 : 780,
+        priceCurrency: typedLocale === "jp" ? "JPY" : "AUD",
+      },
+      {
+        name: typedLocale === "jp" ? "クリエイティブエディトリアル" : "Creative editorial portraits",
+        price: typedLocale === "jp" ? 130000 : 1450,
+        priceCurrency: typedLocale === "jp" ? "JPY" : "AUD",
+      },
+    ],
+  });
 
   return (
     <>
@@ -248,6 +281,9 @@ export default async function BusinessPortraitsPage({ params }: PageProps) {
 
       <Script id="bp-faq-schema" type="application/ld+json">
         {JSON.stringify(buildFAQSchema(faqPerLocale[locale as keyof typeof faqPerLocale] ?? faqPerLocale.en))}
+      </Script>
+      <Script id="bp-service-schema" type="application/ld+json">
+        {JSON.stringify(serviceSchema)}
       </Script>
     </>
   );

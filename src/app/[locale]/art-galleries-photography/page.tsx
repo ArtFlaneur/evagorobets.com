@@ -5,6 +5,7 @@ import Script from "next/script";
 import { CurrencyOptions } from "@/components/CurrencyOptions";
 import { EditorialGallery } from "@/components/EditorialGallery";
 import { getArtGallery } from "@/lib/gallery-data";
+import { buildServiceSchema } from "@/lib/schema";
 
 type PageProps = { params: Promise<{ locale: string }> };
 
@@ -17,18 +18,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     en: {
       title: "Art Gallery & Exhibition Photography Tokyo | Eva Gorobets",
       description:
-        "Photography for galleries, museums and artists in Tokyo and Melbourne. Vernissage coverage, artwork documentation, artist portraits. Catalogue and press-ready files.",
+        "Photography for galleries, museums and artists in Tokyo and Melbourne. Vernissage coverage, artwork documentation, artist portraits. Visible starting prices and an instant calculator for art projects. Catalogue and press-ready files.",
       ogTitle: "Art Gallery & Exhibition Photography Tokyo",
       ogDescription:
-        "Gallery openings, artwork documentation and artist portraits in Tokyo and Melbourne. Press and catalogue-ready delivery.",
+        "Gallery openings, artwork documentation and artist portraits in Tokyo and Melbourne. Visible pricing, instant calculator, press and catalogue-ready delivery.",
     },
     jp: {
       title: "東京アートギャラリー・展覧会撮影 | Eva Gorobets",
       description:
-        "東京・メルボルンのギャラリー、美術館、アーティスト向け撮影。ヴェルニサージュ、作品ドキュメント、アーティストポートレート。カタログ・プレス対応ファイルで納品。",
+        "東京・メルボルンのギャラリー、美術館、アーティスト向け撮影。ヴェルニサージュ、作品ドキュメント、アーティストポートレート。開始価格を表示し、見積もり計算で予算感をすぐ確認可能。",
       ogTitle: "東京アートギャラリー・展覧会撮影",
       ogDescription:
-        "ギャラリーオープニング、作品ドキュメンテーション、アーティストポートレートを東京・メルボルンで提供。",
+        "ギャラリーオープニング、作品ドキュメンテーション、アーティストポートレートを東京・メルボルンで提供。価格表示あり、見積もり計算あり。",
     },
   } as const;
   const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
@@ -147,9 +148,41 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
   const { locale } = await params;
   const t = artContent[(locale as Locale) in artContent ? (locale as Locale) : "en"];
   const artGallery = await getArtGallery();
+  const typedLocale = locale === "jp" ? "jp" : "en";
   const artJPY = ["from ¥70,000", "from ¥70,000", "from ¥100,000"];
   const artAUD = ["from A$800", "from A$800", "from A$1,120"];
   const artFlaneurUrl = "https://www.artflaneur.art";
+  const serviceSchema = buildServiceSchema({
+    name:
+      typedLocale === "jp"
+        ? "アートギャラリー・展覧会撮影"
+        : "Art Gallery and Exhibition Photography",
+    description:
+      typedLocale === "jp"
+        ? "東京とメルボルンでのギャラリーオープニング、作品ドキュメント、アーティストポートレート撮影。開始価格を表示し、見積もり計算にも対応。"
+        : "Gallery openings, artwork documentation and artist portraits in Tokyo and Melbourne with visible starting prices and an instant calculator.",
+    path: "/art-galleries-photography",
+    locale: typedLocale,
+    serviceType: ["Exhibition photography", "Artwork documentation", "Artist portraits"],
+    areaServed: ["Tokyo", "Melbourne", "Japan", "Australia"],
+    offers: [
+      {
+        name: typedLocale === "jp" ? "展覧会オープニング撮影" : "Exhibition opening coverage",
+        price: typedLocale === "jp" ? 70000 : 800,
+        priceCurrency: typedLocale === "jp" ? "JPY" : "AUD",
+      },
+      {
+        name: typedLocale === "jp" ? "作品ドキュメンテーション" : "Artwork documentation session",
+        price: typedLocale === "jp" ? 70000 : 800,
+        priceCurrency: typedLocale === "jp" ? "JPY" : "AUD",
+      },
+      {
+        name: typedLocale === "jp" ? "アーティストポートレート" : "Artist or curator portrait",
+        price: typedLocale === "jp" ? 100000 : 1120,
+        priceCurrency: typedLocale === "jp" ? "JPY" : "AUD",
+      },
+    ],
+  });
 
   function linkifyArtFlaneur(text: string) {
     const parts = text.split(/(Art Flaneur Global|Art Flaneur)/g);
@@ -233,6 +266,9 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
 
       <Script id="art-faq-schema" type="application/ld+json">
         {JSON.stringify(buildArtFAQSchema(artFaqPerLocale[locale as keyof typeof artFaqPerLocale] ?? artFaqPerLocale.en))}
+      </Script>
+      <Script id="art-service-schema" type="application/ld+json">
+        {JSON.stringify(serviceSchema)}
       </Script>
     </>
   );

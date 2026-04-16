@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 
 import { PricingCalculator } from "@/components/PricingCalculator";
 import { CalculatorService } from "@/lib/pricing-calculator";
+import { buildWebApplicationSchema } from "@/lib/schema";
 
 type PageProps = {
   params: Promise<{ locale: string }>;
@@ -30,12 +32,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     en: {
       title: "Photography Pricing Calculator Tokyo & Melbourne | Eva Gorobets",
       description:
-        "Estimate photography pricing ranges for business portraits, corporate events, gallery events and artwork documentation in Japan and Australia.",
+        "See photography pricing ranges instantly for business portraits, corporate events, gallery events and artwork documentation in Japan and Australia, then send a brief in English or Japanese.",
     },
     jp: {
       title: "撮影費見積もり計算 東京・メルボルン | Eva Gorobets",
       description:
-        "日本・オーストラリア向けに、ビジネスポートレート、法人イベント、ギャラリーイベント、作品撮影の概算レンジを確認できます。",
+        "日本・オーストラリア向けに、ビジネスポートレート、法人イベント、ギャラリーイベント、作品撮影の概算価格レンジをその場で確認し、日本語または英語でそのまま相談できます。",
     },
   } as const;
 
@@ -44,6 +46,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: active.title,
     description: active.description,
+    openGraph: {
+      title: active.title,
+      description: active.description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: active.title,
+      description: active.description,
+    },
     alternates: {
       canonical: `${BASE_URL}/${locale}${path}`,
       languages: {
@@ -60,6 +71,30 @@ export default async function PricingCalculatorPage({ params, searchParams }: Pa
   const query = (await searchParams) ?? {};
   const initialService = pickInitialService(query.service);
   const initialStatus = query.sent === "1" ? "sent" : query.error === "1" ? "error" : null;
+  const typedLocale = locale === "jp" ? "jp" : "en";
+  const calculatorSchema = buildWebApplicationSchema({
+    name:
+      typedLocale === "jp"
+        ? "撮影費見積もり計算"
+        : "Photography Pricing Calculator",
+    description:
+      typedLocale === "jp"
+        ? "日本とオーストラリア向けに、ポートレート、法人イベント、ギャラリー案件の概算価格レンジをその場で確認できる見積もり計算。"
+        : "Instant estimate calculator for portrait, corporate event and gallery photography pricing in Japan and Australia.",
+    path: "/pricing-calculator",
+    locale: typedLocale,
+    featureList:
+      typedLocale === "jp"
+        ? ["価格レンジをその場で表示", "日本語と英語に対応", "日本・オーストラリア料金に対応", "見積もりからそのまま問い合わせ可能"]
+        : ["Shows estimate ranges instantly", "Available in English and Japanese", "Supports Japan and Australia pricing", "Connects estimate to enquiry form"],
+  });
 
-  return <PricingCalculator locale={locale === "jp" ? "jp" : "en"} initialService={initialService} initialStatus={initialStatus} />;
+  return (
+    <>
+      <PricingCalculator locale={typedLocale} initialService={initialService} initialStatus={initialStatus} />
+      <Script id="pricing-calculator-schema" type="application/ld+json">
+        {JSON.stringify(calculatorSchema)}
+      </Script>
+    </>
+  );
 }

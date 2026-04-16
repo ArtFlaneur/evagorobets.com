@@ -26,8 +26,8 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
   };
 
   const descriptions: Record<string, string> = {
-    en: "Executive portrait and corporate event photographer based in Tokyo, available in Melbourne and internationally. Business headshots, leadership portraits, conference photography. 15+ years. English, Japanese, Russian.",
-    jp: "東京を拠点にメルボルンでも活動するエグゼクティブポートレート・法人イベント撮影のプロフェッショナル。ビジネスヘッドショット、リーダーシップポートレート、カンファレンス撮影。15年以上の経験。英語・日本語・ロシア語対応。",
+    en: "Executive portrait and corporate event photographer based in Tokyo, available in Melbourne and internationally. Business headshots, leadership portraits, conference photography, and an instant pricing calculator with visible ranges. 15+ years. English, Japanese, Russian.",
+    jp: "東京を拠点にメルボルンでも活動するエグゼクティブポートレート・法人イベント撮影のプロフェッショナル。ビジネスヘッドショット、リーダーシップポートレート、カンファレンス撮影に加え、価格レンジをすぐ確認できる見積もり計算を提供。15年以上の経験。英語・日本語・ロシア語対応。",
   };
 
   const keywords: Record<string, string[]> = {
@@ -167,6 +167,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
                 "Corporate event photography",
                 "Art gallery photography",
                 "Artwork documentation",
+                "Instant photography pricing calculator",
               ],
               founder: { "@id": `${BASE_URL}/#person` },
               address: { "@type": "PostalAddress", addressLocality: "Tokyo", addressCountry: "JP" },
@@ -209,6 +210,15 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
                       name: "Art Gallery & Exhibition Photography",
                       areaServed: ["Tokyo", "Melbourne"],
                       url: `${BASE_URL}/en/art-galleries-photography`,
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "Instant Pricing Calculator",
+                      areaServed: ["Tokyo", "Melbourne", "Japan", "Australia"],
+                      url: `${BASE_URL}/en/pricing-calculator`,
                     },
                   },
                 ],

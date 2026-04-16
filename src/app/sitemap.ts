@@ -9,6 +9,7 @@ const routes = [
   "/corporate-events-photography",
   "/corporate",
   "/art-galleries-photography",
+  "/pricing-calculator",
   "/photographer-japan",
   "/photographer-australia",
   "/portfolio",

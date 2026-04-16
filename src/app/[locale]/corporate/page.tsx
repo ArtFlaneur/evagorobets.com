@@ -4,6 +4,7 @@ import Script from "next/script";
 
 import { EditorialGallery } from "@/components/EditorialGallery";
 import { corporateGallery, portraitsGallery } from "@/lib/gallery-data";
+import { buildServiceSchema } from "@/lib/schema";
 
 type PageProps = { params: Promise<{ locale: string }> };
 
@@ -16,18 +17,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     en: {
       title: "Corporate Photography Tokyo — For International Companies | Eva Gorobets",
       description:
-        "Executive portraits, leadership headshots and corporate event photography for international companies based in Tokyo. Briefing in English, Japanese and Russian. Fast delivery.",
+        "Executive portraits, leadership headshots and corporate event photography for international companies based in Tokyo. Visible pricing and an instant calculator help teams budget before briefing. English, Japanese and Russian.",
       ogTitle: "Corporate Photography Tokyo — For International Companies",
       ogDescription:
-        "Executive portraits and event coverage for global companies with Tokyo offices. Structured process, fast turnaround, trilingual communication.",
+        "Executive portraits and event coverage for global companies with Tokyo offices. Visible pricing, instant calculator, structured process, fast turnaround.",
     },
     jp: {
       title: "東京の法人向けコーポレート撮影 — 外資系企業対応 | Eva Gorobets",
       description:
-        "東京の外資系企業向けに、エグゼクティブポートレート、リーダーシップヘッドショット、コーポレートイベント撮影を提供。英語・日本語・ロシア語でブリーフ対応。迅速納品。",
+        "東京の外資系企業向けに、エグゼクティブポートレート、リーダーシップヘッドショット、コーポレートイベント撮影を提供。価格表示と見積もり計算で社内予算確認がしやすく、英語・日本語・ロシア語でブリーフ対応。",
       ogTitle: "東京の法人向けコーポレート撮影",
       ogDescription:
-        "東京拠点のグローバル企業向けポートレートとイベント撮影。構造化された進行、迅速納品、3言語対応。",
+        "東京拠点のグローバル企業向けポートレートとイベント撮影。価格表示あり、見積もり計算あり、構造化された進行、迅速納品、3言語対応。",
     },
   } as const;
   const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
@@ -233,6 +234,21 @@ function buildCorporateFAQSchema(items: Array<{ q: string; a: string }>) {
 export default async function CorporatePage({ params }: PageProps) {
   const { locale } = await params;
   const t = content[(locale as Locale) in content ? (locale as Locale) : "en"];
+  const typedLocale = locale === "jp" ? "jp" : "en";
+  const serviceSchema = buildServiceSchema({
+    name:
+      typedLocale === "jp"
+        ? "外資系企業向けコーポレート撮影"
+        : "Corporate Photography for International Companies",
+    description:
+      typedLocale === "jp"
+        ? "東京オフィスの外資系企業向けに、ポートレート、イベント、継続撮影を提供。見積もり計算から直接ブリーフ送信まで対応。"
+        : "Portrait, event and on-retainer photography for international companies with Tokyo offices, from instant calculator to direct brief submission.",
+    path: "/corporate",
+    locale: typedLocale,
+    serviceType: ["Corporate photography", "Executive portraits", "On-retainer event coverage"],
+    areaServed: ["Tokyo", "Melbourne", "Japan", "Australia"],
+  });
 
   return (
     <>
@@ -390,6 +406,9 @@ export default async function CorporatePage({ params }: PageProps) {
 
       <Script id="corporate-faq-schema" type="application/ld+json">
         {JSON.stringify(buildCorporateFAQSchema(corporateFaqPerLocale[locale as keyof typeof corporateFaqPerLocale] ?? corporateFaqPerLocale.en))}
+      </Script>
+      <Script id="corporate-service-schema" type="application/ld+json">
+        {JSON.stringify(serviceSchema)}
       </Script>
     </>
   );

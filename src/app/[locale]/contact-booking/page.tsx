@@ -13,18 +13,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     en: {
       title: "Contact & Booking — Executive Portrait & Corporate Event Photographer Tokyo & Melbourne | Eva Gorobets",
       description:
-        "Book an executive portrait or corporate event session in Tokyo or Melbourne. Structured brief form, response within 24 hours. Communication in English, Japanese and Russian.",
+        "Book an executive portrait or corporate event session in Tokyo or Melbourne. Use the instant pricing calculator first or send a structured brief directly. Response within 24 hours. Communication in English, Japanese and Russian.",
       ogTitle: "Contact & Booking — Eva Gorobets",
       ogDescription:
-        "Send a brief for executive portraits, corporate events or art projects in Tokyo or Melbourne. Response within 24 hours.",
+        "Get a visible price range first with the calculator or send a brief for portraits, corporate events and art projects in Tokyo or Melbourne. Response within 24 hours.",
     },
     jp: {
       title: "お問い合わせ・予約 — 東京・メルボルンのエグゼクティブポートレート/法人イベント撮影 | Eva Gorobets",
       description:
-        "東京・メルボルンでのエグゼクティブポートレート・コーポレートイベント撮影のご予約。構造化フォームで3分以内、24時間以内に返信。英語・日本語・ロシア語対応。",
+        "東京・メルボルンでのエグゼクティブポートレート・コーポレートイベント撮影のご予約。先に見積もり計算で価格レンジを確認することも、直接ブリーフを送ることも可能です。24時間以内に返信。英語・日本語・ロシア語対応。",
       ogTitle: "お問い合わせ・予約 — Eva Gorobets",
       ogDescription:
-        "東京・メルボルンでのエグゼクティブポートレート、法人イベント、アート案件のご相談を受付。24時間以内に返信。",
+        "見積もり計算で価格レンジをすぐ確認し、そのまま東京・メルボルンのポートレート、法人イベント、アート案件をご相談いただけます。24時間以内に返信。",
     },
   } as const;
   const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];

@@ -9,6 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/", "/admin", "/admin/"],
       },
     ],
+    host: "https://evagorobets.com",
     sitemap: "https://evagorobets.com/sitemap.xml",
   };
 }
