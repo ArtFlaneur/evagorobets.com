@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
 
+import { formatEstimateRange } from "@/lib/pricing-calculator";
+
 const BASE_URL = "https://evagorobets.com";
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -52,7 +54,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 type PageProps = {
   params: Promise<{ locale: string }>;
-  searchParams?: Promise<{ sent?: string; error?: string }>;
+  searchParams?: Promise<{
+    sent?: string;
+    error?: string;
+    calc?: string;
+    calcCountry?: string;
+    calcService?: string;
+    calcPreferredLanguage?: string;
+    calcSecondaryLanguages?: string;
+    calcEstimateLow?: string;
+    calcEstimateHigh?: string;
+    calcCurrency?: string;
+    calcDetails?: string;
+  }>;
 };
 
 const inputClass =
@@ -65,10 +79,21 @@ const content = {
     eyebrow: "Contact",
     h1: "Send a brief or enquiry",
     sub: "Structured form — takes under three minutes. Response within 24 hours.",
+    choiceLabel: "Choose your route",
+    directBriefTitle: "Direct brief",
+    directBriefBody: "Skip the calculator and send the full project brief now.",
+    directBriefBtn: "Open Direct Brief",
+    calculatorTitle: "Estimate calculator",
+    calculatorBody: "Get a pricing range first, then send a shorter follow-up enquiry.",
+    calculatorBtn: "Open Calculator",
     sectionContact: "Your details",
     namePh: "Name",
     companyPh: "Company / organisation",
     emailPh: "Email",
+    preferredLanguageLabel: "Preferred communication language",
+    preferredLanguageOptions: ["English", "Japanese", "Russian"],
+    compactSectionLabel: "Final details",
+    compactSectionBody: "Your estimate is attached. Add contact details, preferred date and any context that matters.",
     sectionProject: "Project",
     typeLabel: "Type of photography",
     typeOptions: ["Executive / leadership portraits", "Corporate event — one day", "Corporate event — multi-day", "Portraits + event (combined)", "On-retainer coverage", "Art gallery / cultural event", "Other"],
@@ -89,6 +114,14 @@ const content = {
     ndaOptions: ["Yes — please send NDA before briefing", "No — happy to proceed without", "Not sure"],
     notesPh: "Anything else — optional",
     submitBtn: "Send brief",
+    calculatorCta: "Use the estimate calculator first",
+    calculatorSummaryLabel: "Calculator estimate attached",
+    calculatorSummaryBody: "This brief includes your estimated range and communication preferences.",
+    calculatorDetailsLabel: "Estimate details",
+    calculatorRangeLabel: "Estimated range",
+    calculatorLanguageLabel: "Preferred communication language",
+    calculatorSecondaryLabel: "Secondary languages",
+    switchToBriefBtn: "Use Full Brief Instead",
     directLabel: "Direct contact",
     corporateLabel: "Corporate clients",
     corporateItems: [["NDA", "Available before briefing"], ["Invoicing", "JPY · AUD · USD"], ["ABN / GST", "ABN listed on invoices · GST if applicable"], ["Payment", "Net-30 for corporate accounts"], ["Confidentiality", "Client names not published without consent"], ["Response", "Within 24 hours"]],
@@ -109,10 +142,21 @@ const content = {
     eyebrow: "お問い合わせ",
     h1: "ブリーフまたはご相談を送る",
     sub: "フォームへの入力は3分以内。24時間以内にご返答します。",
+    choiceLabel: "進め方を選ぶ",
+    directBriefTitle: "直接ブリーフを送る",
+    directBriefBody: "見積もり計算を使わず、そのまま詳細ブリーフを送ります。",
+    directBriefBtn: "直接ブリーフを開く",
+    calculatorTitle: "見積もり計算",
+    calculatorBody: "先に価格レンジを確認し、その後に短い追加入力だけ送ります。",
+    calculatorBtn: "見積もり計算を開く",
     sectionContact: "お客様の情報",
     namePh: "お名前",
     companyPh: "会社名 / 組織名",
     emailPh: "メールアドレス",
+    preferredLanguageLabel: "希望する連絡言語",
+    preferredLanguageOptions: ["英語", "日本語", "ロシア語"],
+    compactSectionLabel: "最終確認事項",
+    compactSectionBody: "見積もり内容は添付されています。連絡先、希望日程、補足事項のみ追加してください。",
     sectionProject: "撮影内容",
     typeLabel: "撮影の種類",
     typeOptions: ["エグゼクティブ / リーダーシップポートレート", "コーポレートイベント — 1日", "コーポレートイベント — 複数日", "ポートレート + イベント（複合）", "顧問契約カバレッジ", "アートギャラリー / 文化イベント", "その他"],
@@ -133,6 +177,14 @@ const content = {
     ndaOptions: ["はい — ブリーフ前にNDAをお送りください", "不要 — NDAなしで進めます", "未定"],
     notesPh: "その他 — 任意",
     submitBtn: "ブリーフを送る",
+    calculatorCta: "先に見積もり計算を使う",
+    calculatorSummaryLabel: "見積もり内容を添付済み",
+    calculatorSummaryBody: "このブリーフには概算レンジと言語希望が付いた状態で送信されます。",
+    calculatorDetailsLabel: "見積もり条件",
+    calculatorRangeLabel: "概算レンジ",
+    calculatorLanguageLabel: "希望する連絡言語",
+    calculatorSecondaryLabel: "補助言語",
+    switchToBriefBtn: "完全なブリーフに切り替える",
     directLabel: "直接連絡",
     corporateLabel: "法人クライアント",
     corporateItems: [["NDA", "ブリーフ前に対応可能"], ["請求通貨", "JPY · AUD · USD"], ["ABN / GST", "ABNは請求書に記載 · GSTは該当時のみ"], ["支払条件", "法人アカウントはNet-30"], ["守秘義務", "同意なくクライアント名を公開しません"], ["応答時間", "24時間以内"]],
@@ -159,7 +211,44 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
   const t = content[(locale as Locale) in content ? (locale as Locale) : "en"];
   const showSent = query.sent === "1";
   const showError = query.error === "1";
+  const calculatorAttached = query.calc === "1";
   const formTimestampInputId = "contact-started-at";
+  const preferredLanguage =
+    query.calcPreferredLanguage === "english" ||
+    query.calcPreferredLanguage === "japanese" ||
+    query.calcPreferredLanguage === "russian"
+      ? query.calcPreferredLanguage
+      : "";
+  const preferredLanguageLabel =
+    preferredLanguage === "english"
+      ? t.preferredLanguageOptions[0]
+      : preferredLanguage === "japanese"
+        ? t.preferredLanguageOptions[1]
+        : preferredLanguage === "russian"
+          ? t.preferredLanguageOptions[2]
+          : "";
+  const estimateRange =
+    query.calcEstimateLow && query.calcEstimateHigh && (query.calcCurrency === "JPY" || query.calcCurrency === "AUD")
+      ? formatEstimateRange({
+          currency: query.calcCurrency,
+          low: Number(query.calcEstimateLow),
+          high: Number(query.calcEstimateHigh),
+        })
+      : null;
+  const secondaryLanguages =
+    query.calcSecondaryLanguages
+      ?.split(",")
+      .filter(Boolean)
+      .map((language) =>
+        language === "english"
+          ? t.preferredLanguageOptions[0]
+          : language === "japanese"
+            ? t.preferredLanguageOptions[1]
+            : language === "russian"
+              ? t.preferredLanguageOptions[2]
+              : language,
+      )
+      .join(", ") ?? "";
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -209,14 +298,55 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
           {t.h1}
         </h1>
         <p className="mt-5 text-sm text-black/50">{t.sub}</p>
+        {calculatorAttached ? (
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link href={`/${locale}/contact-booking`} className="btn-ghost">
+              {t.switchToBriefBtn}
+            </Link>
+            <Link href={`/${locale}/pricing-calculator`} className="btn">
+              {t.calculatorCta}
+            </Link>
+          </div>
+        ) : (
+          <>
+            <p className="label mt-10 mb-5">{t.choiceLabel}</p>
+            <div className="grid gap-4 md:max-w-3xl md:grid-cols-2">
+              <div className="border border-black/8 bg-black/1.5 p-5 sm:p-6">
+                <h2 className="text-2xl text-black/85" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>
+                  {t.directBriefTitle}
+                </h2>
+                <p className="mt-3 text-sm text-black/55 leading-relaxed">{t.directBriefBody}</p>
+                <a href="#brief-form" className="btn mt-5">
+                  {t.directBriefBtn}
+                </a>
+              </div>
+              <div className="border border-black/8 bg-black/1.5 p-5 sm:p-6">
+                <h2 className="text-2xl text-black/85" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>
+                  {t.calculatorTitle}
+                </h2>
+                <p className="mt-3 text-sm text-black/55 leading-relaxed">{t.calculatorBody}</p>
+                <Link href={`/${locale}/pricing-calculator`} className="btn mt-5">
+                  {t.calculatorBtn}
+                </Link>
+              </div>
+            </div>
+          </>
+        )}
       </section>
 
-      <section className="section grid gap-20 border-t border-black/[0.07] md:grid-cols-[3fr_2fr]">
+      <section id="brief-form" className="section grid gap-12 border-t border-black/[0.07] md:gap-20 md:grid-cols-[3fr_2fr]">
         {/* Form */}
         <form className="space-y-0" method="POST" action="/api/contact">
           <input type="hidden" name="locale" value={locale} />
           <input type="hidden" id={formTimestampInputId} name="startedAt" defaultValue="" />
           <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
+          <input type="hidden" name="calcCountry" value={query.calcCountry ?? ""} />
+          <input type="hidden" name="calcService" value={query.calcService ?? ""} />
+          <input type="hidden" name="calcEstimateLow" value={query.calcEstimateLow ?? ""} />
+          <input type="hidden" name="calcEstimateHigh" value={query.calcEstimateHigh ?? ""} />
+          <input type="hidden" name="calcCurrency" value={query.calcCurrency ?? ""} />
+          <input type="hidden" name="calcDetails" value={query.calcDetails ?? ""} />
+          <input type="hidden" name="calcSecondaryLanguages" value={query.calcSecondaryLanguages ?? ""} />
 
           {showSent && (
             <p className="mb-4 border border-black/15 bg-black/2 px-4 py-3 text-sm text-black/70">
@@ -229,49 +359,108 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
             </p>
           )}
 
+          {calculatorAttached && (
+            <div className="mb-6 border border-black/15 bg-black/2 px-4 py-4 text-sm text-black/70">
+              <p className="label mb-3">{t.calculatorSummaryLabel}</p>
+              <p className="mb-3 text-black/60">{t.calculatorSummaryBody}</p>
+              {estimateRange && (
+                <p className="mb-3 wrap-break-word">
+                  <span className="label mb-1 block">{t.calculatorRangeLabel}</span>
+                  {estimateRange}
+                </p>
+              )}
+              {preferredLanguage && (
+                <p className="mb-3 wrap-break-word">
+                  <span className="label mb-1 block">{t.calculatorLanguageLabel}</span>
+                  {preferredLanguageLabel}
+                </p>
+              )}
+              {secondaryLanguages && (
+                <p className="mb-3 wrap-break-word">
+                  <span className="label mb-1 block">{t.calculatorSecondaryLabel}</span>
+                  {secondaryLanguages}
+                </p>
+              )}
+              {query.calcDetails && (
+                <p className="wrap-break-word">
+                  <span className="label mb-1 block">{t.calculatorDetailsLabel}</span>
+                  {query.calcDetails}
+                </p>
+              )}
+            </div>
+          )}
+
           {/* Contact */}
-          <p className="label py-5 border-t border-black/[0.07]">{t.sectionContact}</p>
-          <input type="text" name="name" required placeholder={t.namePh} className={inputClass} />
-          <input type="text" name="company" placeholder={t.companyPh} className={inputClass} />
-          <input type="email" name="email" required placeholder={t.emailPh} className={inputClass} />
+          <div className="mt-8 border border-black/8 p-5 sm:p-6">
+            <p className="label mb-4">{t.sectionContact}</p>
+            <input type="text" name="name" required placeholder={t.namePh} className={inputClass} />
+            <input type="text" name="company" placeholder={t.companyPh} className={inputClass} />
+            <input type="email" name="email" required placeholder={t.emailPh} className={inputClass} />
+            <select name="preferredLanguage" className={selectClass} defaultValue={preferredLanguage}>
+              <option value="">{t.preferredLanguageLabel}</option>
+              <option value="english">{t.preferredLanguageOptions[0]}</option>
+              <option value="japanese">{t.preferredLanguageOptions[1]}</option>
+              <option value="russian">{t.preferredLanguageOptions[2]}</option>
+            </select>
+          </div>
 
-          {/* Project */}
-          <p className="label pt-8 pb-5 border-t border-black/[0.07] mt-4">{t.sectionProject}</p>
-          <select name="type" className={selectClass}>
-            <option value="">{t.typeLabel}</option>
-            {t.typeOptions.map((o) => <option key={o}>{o}</option>)}
-          </select>
-          <select name="people" className={selectClass}>
-            <option value="">{t.peopleLabel}</option>
-            {t.peopleOptions.map((o) => <option key={o}>{o}</option>)}
-          </select>
-          <select name="location" className={selectClass}>
-            <option value="">{t.locationLabel}</option>
-            {t.locationOptions.map((o) => <option key={o}>{o}</option>)}
-          </select>
-          <input type="text" name="date" placeholder={t.datePh} className={inputClass} />
-
-          {/* Deliverables */}
-          <p className="label pt-8 pb-5 border-t border-black/[0.07] mt-4">{t.sectionDeliverables}</p>
-          <select name="formats" className={selectClass}>
-            <option value="">{t.formatsLabel}</option>
-            {t.formatsOptions.map((o) => <option key={o}>{o}</option>)}
-          </select>
-          <select name="timeline" className={selectClass}>
-            <option value="">{t.timelineLabel}</option>
-            {t.timelineOptions.map((o) => <option key={o}>{o}</option>)}
-          </select>
+          {calculatorAttached ? (
+            <>
+              <div className="mt-4 border border-black/8 p-5 sm:p-6">
+                <p className="label mb-4">{t.compactSectionLabel}</p>
+                <p className="mb-4 text-sm text-black/50">{t.compactSectionBody}</p>
+                <input type="text" name="date" placeholder={t.datePh} className={inputClass} />
+                <input type="hidden" name="type" value={query.calcService ?? ""} />
+                <input type="hidden" name="people" value="" />
+                <input type="hidden" name="location" value={query.calcCountry ?? ""} />
+                <input type="hidden" name="formats" value="" />
+                <input type="hidden" name="timeline" value="" />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="mt-4 border border-black/8 p-5 sm:p-6">
+                <p className="label mb-4">{t.sectionProject}</p>
+                <select name="type" className={selectClass}>
+                  <option value="">{t.typeLabel}</option>
+                  {t.typeOptions.map((o) => <option key={o}>{o}</option>)}
+                </select>
+                <select name="people" className={selectClass}>
+                  <option value="">{t.peopleLabel}</option>
+                  {t.peopleOptions.map((o) => <option key={o}>{o}</option>)}
+                </select>
+                <select name="location" className={selectClass}>
+                  <option value="">{t.locationLabel}</option>
+                  {t.locationOptions.map((o) => <option key={o}>{o}</option>)}
+                </select>
+                <input type="text" name="date" placeholder={t.datePh} className={inputClass} />
+              </div>
+              <div className="mt-4 border border-black/8 p-5 sm:p-6">
+                <p className="label mb-4">{t.sectionDeliverables}</p>
+                <select name="formats" className={selectClass}>
+                  <option value="">{t.formatsLabel}</option>
+                  {t.formatsOptions.map((o) => <option key={o}>{o}</option>)}
+                </select>
+                <select name="timeline" className={selectClass}>
+                  <option value="">{t.timelineLabel}</option>
+                  {t.timelineOptions.map((o) => <option key={o}>{o}</option>)}
+                </select>
+              </div>
+            </>
+          )}
 
           {/* Corporate needs */}
-          <p className="label pt-8 pb-5 border-t border-black/[0.07] mt-4">{t.sectionCorporate}</p>
-          <select name="invoice" className={selectClass}>
-            <option value="">{t.invoiceLabel}</option>
-            {t.invoiceOptions.map((o) => <option key={o}>{o}</option>)}
-          </select>
-          <select name="nda" className={selectClass}>
-            <option value="">{t.ndaLabel}</option>
-            {t.ndaOptions.map((o) => <option key={o}>{o}</option>)}
-          </select>
+          <div className="mt-4 border border-black/8 p-5 sm:p-6">
+            <p className="label mb-4">{t.sectionCorporate}</p>
+            <select name="invoice" className={selectClass}>
+              <option value="">{t.invoiceLabel}</option>
+              {t.invoiceOptions.map((o) => <option key={o}>{o}</option>)}
+            </select>
+            <select name="nda" className={selectClass}>
+              <option value="">{t.ndaLabel}</option>
+              {t.ndaOptions.map((o) => <option key={o}>{o}</option>)}
+            </select>
+          </div>
 
           {/* Extra */}
           <textarea

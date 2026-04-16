@@ -84,6 +84,7 @@ const artContent = {
     testimonial: "Eva photographed three consecutive openings for us. Her images ended up in our annual catalogue, in Japanese press and on our international partner’s website.",
     testimonialBy: "Gallery Director, Contemporary Art Gallery — Tokyo",
     ctaH2: "Working on an art project?",
+    calcBtn: "Estimate with Calculator",
     ctaBtn: "Art Project Enquiry",
     pricingLabel: "Service Options",
     pricingLabels: ["Exhibition opening / vernissage", "Artwork documentation session", "Artist or curator portrait"],
@@ -105,6 +106,7 @@ const artContent = {
     testimonial: "3回連続のオープニングをエヴァに撮影していただきました。彼女の画像は年間カタログ、日本のプレス、国際パートナーのウェブサイトに掲載されました。",
     testimonialBy: "ギャラリーディレクター、現代アートギャラリー — 東京",
     ctaH2: "アートプロジェクトに取り組んでいますか？",
+    calcBtn: "見積もり計算を使う",
     ctaBtn: "アートプロジェクトのお問い合わせ",
     pricingLabel: "サービスオプション",
     pricingLabels: ["展覧会オープニング / ヴェルニサージュ", "作品ドキュメンテーションセッション", "アーティスト・キュレーターポートレート"],
@@ -222,7 +224,10 @@ export default async function ArtGalleriesPage({ params }: PageProps) {
           <h2 className="text-[clamp(2rem,4.5vw,4rem)] leading-[0.95]" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>
             {t.ctaH2}
           </h2>
-          <Link href={`/${locale}/contact-booking`} className="btn">{t.ctaBtn}</Link>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link href={`/${locale}/pricing-calculator?service=gallery-event`} className="btn-ghost">{t.calcBtn}</Link>
+            <Link href={`/${locale}/contact-booking`} className="btn">{t.ctaBtn}</Link>
+          </div>
         </div>
       </section>
 

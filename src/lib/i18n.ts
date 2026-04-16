@@ -49,5 +49,11 @@ export const navItems: NavItem[] = [
   {
     href: "/contact-booking",
     labels: { en: "Contact", jp: "お問い合わせ" },
+    children: [
+      {
+        href: "/pricing-calculator",
+        labels: { en: "Estimate Calculator", jp: "見積もり計算" },
+      },
+    ],
   },
 ];

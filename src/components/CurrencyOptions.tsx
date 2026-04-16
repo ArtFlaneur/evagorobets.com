@@ -12,15 +12,15 @@ interface CurrencyOptionsProps {
 }
 
 const defaultJPY: Package[] = [
-  { label: "Studio Session", price: "from ¥68,000" },
-  { label: "On-location Session", price: "from ¥90,000" },
-  { label: "Creative Editorial Portrait", price: "from ¥110,000" },
+  { label: "Studio Session", price: "from ¥95,000" },
+  { label: "On-location Session", price: "from ¥68,000" },
+  { label: "Creative Editorial Portrait", price: "from ¥130,000" },
 ];
 
 const defaultAUD: Package[] = [
-  { label: "Studio Session", price: "from A$780" },
-  { label: "On-location Session", price: "from A$1,100" },
-  { label: "Creative Editorial Portrait", price: "from A$1,250" },
+  { label: "Studio Session", price: "from A$1,100" },
+  { label: "On-location Session", price: "from A$780" },
+  { label: "Creative Editorial Portrait", price: "from A$1,450" },
 ];
 
 export function CurrencyOptions({

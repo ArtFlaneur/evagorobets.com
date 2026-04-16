@@ -109,6 +109,7 @@ const content = {
     testimonial: "Eva sees what others miss and captures the true essence of a person. I have commissioned her more than once and have always been very satisfied with the result.",
     testimonialBy: "Mikhail Yermolayev, Managing Partner, GAB Consulting",
     ctaH2: "Let’s create your portrait.",
+    calcBtn: "Estimate with Calculator",
     ctaBtn: "Enquire for a Business Portrait",
   },
   jp: {
@@ -133,6 +134,7 @@ const content = {
     testimonial: "エヴァは、他の人が見落とす要素を見抜き、人物の本質を引き出して撮影してくれます。私は複数回依頼していますが、毎回とても満足しています。",
     testimonialBy: "Mikhail Yermolayev（GAB Consulting マネージングパートナー）",
     ctaH2: "あなたのポートレートを撮影しましょう。",
+    calcBtn: "見積もり計算を使う",
     ctaBtn: "ビジネスポートレートのお問い合わせ",
   },
 } as const;
@@ -237,7 +239,10 @@ export default async function BusinessPortraitsPage({ params }: PageProps) {
           <h2 className="text-[clamp(2rem,4.5vw,4rem)] leading-[0.95]" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>
             {t.ctaH2}
           </h2>
-          <Link href={`/${locale}/contact-booking`} className="btn">{t.ctaBtn}</Link>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link href={`/${locale}/pricing-calculator?service=portrait`} className="btn-ghost">{t.calcBtn}</Link>
+            <Link href={`/${locale}/contact-booking`} className="btn">{t.ctaBtn}</Link>
+          </div>
         </div>
       </section>
 

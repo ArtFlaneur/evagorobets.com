@@ -38,6 +38,7 @@ const eventsContent = {
     pricingLabels: ["Half-day coverage (up to 4 hours)", "Full-day coverage (up to 8 hours)", "Multi-day rate (per day)"],
     pricingNote: "Includes pre-event briefing, on-site coverage and structured delivery sets.",
     ctaH2: "Planning an event?",
+    calcBtn: "Estimate with Calculator",
     ctaBtn2: "Request Event Coverage",
   },
   jp: {
@@ -67,6 +68,7 @@ const eventsContent = {
     pricingLabels: ["ハーフデイ撮影（4時間まで）", "フルデイ撮影（8時間まで）", "複数日料金（1日あたり）"],
     pricingNote: "事前ブリーフィング、現地撮影、構造化された納品セットを含みます。",
     ctaH2: "イベントをご予定ですか？",
+    calcBtn: "見積もり計算を使う",
     ctaBtn2: "イベント撮影のお問い合わせ",
   },
 } as const;
@@ -177,6 +179,7 @@ export default async function CorporateEventsPage({ params }: PageProps) {
           <p className="text-sm text-black/60 leading-relaxed">{t.p2}</p>
         </div>
         <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+          <Link href={`/${locale}/pricing-calculator?service=corporate-event`} className="btn-ghost">{t.calcBtn}</Link>
           <Link href={`/${locale}/contact-booking`} className="btn">{t.ctaBtn}</Link>
           <a href="/commission-portfolio-events.pdf" download className="btn-ghost">{t.ctaBtnPdf}</a>
         </div>
@@ -222,7 +225,10 @@ export default async function CorporateEventsPage({ params }: PageProps) {
           <h2 className="text-[clamp(2rem,4.5vw,4rem)] leading-[0.95]" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>
             {t.ctaH2}
           </h2>
-          <Link href={`/${locale}/contact-booking`} className="btn">{t.ctaBtn2}</Link>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link href={`/${locale}/pricing-calculator?service=corporate-event`} className="btn-ghost">{t.calcBtn}</Link>
+            <Link href={`/${locale}/contact-booking`} className="btn">{t.ctaBtn2}</Link>
+          </div>
         </div>
       </section>
 

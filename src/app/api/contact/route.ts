@@ -7,6 +7,7 @@ type ContactPayload = {
   name: string;
   company: string;
   email: string;
+  preferredLanguage: string;
   type: string;
   people: string;
   location: string;
@@ -16,6 +17,14 @@ type ContactPayload = {
   invoice: string;
   nda: string;
   notes: string;
+  calcCountry: string;
+  calcService: string;
+  calcEstimateLow: string;
+  calcEstimateHigh: string;
+  calcCurrency: string;
+  calcDetails: string;
+  calcSecondaryLanguages: string;
+  redirectPath: string;
   website: string;
   startedAt: string;
 };
@@ -113,6 +122,7 @@ async function parsePayload(req: NextRequest): Promise<ContactPayload> {
       name: getString(body.name),
       company: getString(body.company),
       email: getString(body.email),
+      preferredLanguage: getString(body.preferredLanguage),
       type: getString(body.type),
       people: getString(body.people),
       location: getString(body.location),
@@ -122,6 +132,14 @@ async function parsePayload(req: NextRequest): Promise<ContactPayload> {
       invoice: getString(body.invoice),
       nda: getString(body.nda),
       notes: getString(body.notes),
+      calcCountry: getString(body.calcCountry),
+      calcService: getString(body.calcService),
+      calcEstimateLow: getString(body.calcEstimateLow),
+      calcEstimateHigh: getString(body.calcEstimateHigh),
+      calcCurrency: getString(body.calcCurrency),
+      calcDetails: getString(body.calcDetails),
+      calcSecondaryLanguages: getString(body.calcSecondaryLanguages),
+      redirectPath: getString(body.redirectPath),
       website: getString(body.website),
       startedAt: getString(body.startedAt),
     };
@@ -133,6 +151,7 @@ async function parsePayload(req: NextRequest): Promise<ContactPayload> {
     name: getString(formData.get("name")),
     company: getString(formData.get("company")),
     email: getString(formData.get("email")),
+    preferredLanguage: getString(formData.get("preferredLanguage")),
     type: getString(formData.get("type")),
     people: getString(formData.get("people")),
     location: getString(formData.get("location")),
@@ -142,6 +161,14 @@ async function parsePayload(req: NextRequest): Promise<ContactPayload> {
     invoice: getString(formData.get("invoice")),
     nda: getString(formData.get("nda")),
     notes: getString(formData.get("notes")),
+    calcCountry: getString(formData.get("calcCountry")),
+    calcService: getString(formData.get("calcService")),
+    calcEstimateLow: getString(formData.get("calcEstimateLow")),
+    calcEstimateHigh: getString(formData.get("calcEstimateHigh")),
+    calcCurrency: getString(formData.get("calcCurrency")),
+    calcDetails: getString(formData.get("calcDetails")),
+    calcSecondaryLanguages: getString(formData.get("calcSecondaryLanguages")),
+    redirectPath: getString(formData.get("redirectPath")),
     website: getString(formData.get("website")),
     startedAt: getString(formData.get("startedAt")),
   };
@@ -155,6 +182,7 @@ function toPlainText(payload: ContactPayload): string {
     `Name: ${payload.name}`,
     `Company: ${payload.company || "-"}`,
     `Email: ${payload.email}`,
+    `Preferred language: ${payload.preferredLanguage || "-"}`,
     "",
     "Project",
     `Type: ${payload.type || "-"}`,
@@ -169,6 +197,13 @@ function toPlainText(payload: ContactPayload): string {
     "Corporate",
     `Invoice: ${payload.invoice || "-"}`,
     `NDA: ${payload.nda || "-"}`,
+    "",
+    "Calculator estimate",
+    `Country pricing: ${payload.calcCountry || "-"}`,
+    `Service: ${payload.calcService || "-"}`,
+    `Estimated range: ${payload.calcCurrency && payload.calcEstimateLow && payload.calcEstimateHigh ? `${payload.calcCurrency} ${payload.calcEstimateLow} - ${payload.calcEstimateHigh}` : "-"}`,
+    `Details: ${payload.calcDetails || "-"}`,
+    `Secondary languages: ${payload.calcSecondaryLanguages || "-"}`,
     "",
     "Notes",
     payload.notes || "-",
@@ -189,6 +224,12 @@ async function sendViaWebhook(payload: ContactPayload): Promise<boolean> {
       text: toPlainText(payload),
     }),
   });
+
+  if (!response.ok) {
+    let body = "(could not read body)";
+    try { body = await response.text(); } catch { /* ignore */ }
+    console.error("Webhook delivery failed", { status: response.status, body });
+  }
 
   return response.ok;
 }
@@ -215,12 +256,35 @@ async function sendViaResend(payload: ContactPayload): Promise<boolean> {
     }),
   });
 
+  if (!response.ok) {
+    let body = "(could not read body)";
+    try { body = await response.text(); } catch { /* ignore */ }
+    console.error("Resend delivery failed", {
+      status: response.status,
+      from,
+      to,
+      submitter: payload.email,
+      body,
+    });
+  }
+
   return response.ok;
 }
 
 function redirectTo(locale: string, state: "sent" | "error", req: NextRequest): NextResponse {
-  const target = new URL(`/${locale}/contact-booking?${state}=1`, req.url);
+  const target = new URL(`/${locale}/contact-booking`, req.url);
+  target.searchParams.set(state, "1");
   return NextResponse.redirect(target, { status: 303 });
+}
+
+function redirectForPayload(payload: ContactPayload, state: "sent" | "error", req: NextRequest): NextResponse {
+  if (payload.redirectPath.startsWith("/")) {
+    const target = new URL(payload.redirectPath, req.url);
+    target.searchParams.set(state, "1");
+    return NextResponse.redirect(target, { status: 303 });
+  }
+
+  return redirectTo(payload.locale, state, req);
 }
 
 export async function POST(req: NextRequest) {
@@ -228,32 +292,32 @@ export async function POST(req: NextRequest) {
 
   if (payload.website) {
     logBlockedSubmission("honeypot", payload);
-    return redirectTo(payload.locale, "sent", req);
+    return redirectForPayload(payload, "sent", req);
   }
 
   if (isTooFast(payload.startedAt)) {
     logBlockedSubmission("submitted_too_fast", payload);
-    return redirectTo(payload.locale, "sent", req);
+    return redirectForPayload(payload, "sent", req);
   }
 
   if (isSuspiciousPayload(payload)) {
     logBlockedSubmission("suspicious_content", payload);
-    return redirectTo(payload.locale, "sent", req);
+    return redirectForPayload(payload, "sent", req);
   }
 
   if (!payload.name || !payload.email) {
-    return redirectTo(payload.locale, "error", req);
+    return redirectForPayload(payload, "error", req);
   }
 
   try {
     const sent = (await sendViaResend(payload)) || (await sendViaWebhook(payload));
     if (!sent) {
       console.error("Contact form: no delivery transport configured.");
-      return redirectTo(payload.locale, "error", req);
+      return redirectForPayload(payload, "error", req);
     }
-    return redirectTo(payload.locale, "sent", req);
+    return redirectForPayload(payload, "sent", req);
   } catch (error) {
     console.error("Contact form send failed", error);
-    return redirectTo(payload.locale, "error", req);
+    return redirectForPayload(payload, "error", req);
   }
 }

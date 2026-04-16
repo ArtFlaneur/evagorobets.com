@@ -15,6 +15,16 @@ export function SiteHeader({ locale }: { locale: Locale }) {
   // Hidden during black intro, appears when slideshow starts.
   // HeroSlideshow writes data-hero-phase="photo" on body when overlay slides away.
   const [visible, setVisible] = useState(!isHome);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 8);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     if (!isHome) { setVisible(true); return; }
@@ -29,12 +39,14 @@ export function SiteHeader({ locale }: { locale: Locale }) {
     return () => observer.disconnect();
   }, [isHome]);
 
-  const color = "rgba(0,0,0,0.4)";
-  const colorTransition = "color 0.5s ease";
+  const color = scrolled ? "rgba(0,0,0,0.65)" : "rgba(0,0,0,0.4)";
+  const colorTransition = "color 0.3s ease";
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-30 transition-opacity duration-500"
+      className={`fixed top-0 left-0 right-0 z-30 transition-[opacity,background-color,border-color,box-shadow] duration-300${
+        scrolled ? " bg-white border-b border-black/6" : ""
+      }`}
       style={{ opacity: visible ? 1 : 0, pointerEvents: visible ? "auto" : "none" }}
     >
       <div className="mx-auto flex w-full max-w-340 items-center justify-between px-6 py-6 md:px-10">
@@ -66,7 +78,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
                   {item.labels[locale]}
                 </Link>
                 <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-150 z-30">
-                  <div className="bg-white border border-black/10 py-2 min-w-[11rem]">
+                  <div className="bg-white border border-black/10 py-2 min-w-44">
                     {item.children.map((child) => (
                       <Link
                         key={child.href}

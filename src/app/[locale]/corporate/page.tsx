@@ -97,6 +97,7 @@ const content = {
     p1: "Your Tokyo team needs portraits for the new regional director, coverage of next month’s all-hands, or headshots for the APAC leadership page. Eva Gorobets handles the full process — brief, shoot, delivery — without escalating to your London or New York office for coordination.",
     p2: "Communication in English, Japanese and Russian. Your Japanese office manager can brief directly. Your global PR team gets press-ready files. Corporate invoicing in JPY, AUD or USD. NDA available on request.",
     p2Bold: "English, Japanese and Russian",
+    calcBtn: "Estimate with Calculator",
     ctaPrimary: "Submit a brief",
     ctaSecondary: "See client sectors →",
     coversLabel: "What we cover",
@@ -150,6 +151,7 @@ const content = {
     p1: "新しい地域責任者のポートレート、翌月の全社集会の記録、APACリーダーシップページ用のヘッドショット。エヴァ・ゴロベッツが全プロセスを担当します。ロンドンやニューヨークの本社に調整を戻す必要はありません。",
     p2: "日本語・英語・ロシア語でコミュニケーション可能。東京オフィスのマネージャーが直接ブリーフできます。グローバルPRチームにはプレス対応ファイルを納品。法人請求はJPY・AUD・USD対応。NDAはご要望に応じて対応。",
     p2Bold: "日本語・英語・ロシア語",
+    calcBtn: "見積もり計算を使う",
     ctaPrimary: "ブリーフを送る",
     ctaSecondary: "クライアント実績を見る →",
     coversLabel: "撮影対応内容",
@@ -250,6 +252,9 @@ export default async function CorporatePage({ params }: PageProps) {
           </p>
         </div>
         <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+          <Link href={`/${locale}/pricing-calculator`} className="btn-ghost">
+            {t.calcBtn}
+          </Link>
           <Link href={`/${locale}/contact-booking`} className="btn">
             {t.ctaPrimary}
           </Link>
@@ -372,9 +377,14 @@ export default async function CorporatePage({ params }: PageProps) {
             </h2>
             <p className="mt-3 text-sm text-black/50">{t.ctaSub}</p>
           </div>
-          <Link href={`/${locale}/contact-booking`} className="btn">
-            {t.ctaBtn}
-          </Link>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link href={`/${locale}/pricing-calculator`} className="btn-ghost">
+              {t.calcBtn}
+            </Link>
+            <Link href={`/${locale}/contact-booking`} className="btn">
+              {t.ctaBtn}
+            </Link>
+          </div>
         </div>
       </section>
 
