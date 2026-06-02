@@ -252,6 +252,16 @@ export default async function CorporatePage({ params }: PageProps) {
 
   return (
     <>
+      <Script id="corp-breadcrumb-schema" type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: locale === "jp" ? "ホーム" : "Home", item: `${BASE_URL}/${locale}` },
+            { "@type": "ListItem", position: 2, name: locale === "jp" ? "法人向けコーポレート撮影" : "Corporate Photography Tokyo", item: `${BASE_URL}/${locale}/corporate` },
+          ],
+        })}
+      </Script>
       <section className="section pt-32">
         <p className="label mb-6">{t.eyebrow}</p>
         <h1

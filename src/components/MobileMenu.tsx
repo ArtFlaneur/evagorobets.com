@@ -91,8 +91,8 @@ export function MobileMenu({ locale }: { locale: Locale }) {
 
           <div className="mt-10 flex flex-col gap-4">
             <LanguageSwitcher currentLocale={locale} />
-            <a href="mailto:eva@artflaneur.com.au" className="label text-black/50 hover:text-black transition-colors">
-              eva@artflaneur.com.au
+            <a href="mailto:eva@evagorobets.com" className="label text-black/50 hover:text-black transition-colors">
+              eva@evagorobets.com
             </a>
           </div>
         </nav>

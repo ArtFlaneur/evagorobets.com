@@ -45,7 +45,7 @@ export async function getFeaturedGallery(): Promise<GalleryImage[]> {
         ratio < 0.85 ? "portrait" : ratio > 1.15 ? "landscape" : "square";
       return {
         src: optimizeCloudinaryDeliveryUrl(r.secure_url),
-        alt: r.context?.custom?.alt ?? "",
+        alt: r.context?.custom?.alt || "Eva Gorobets — photographer, Tokyo & Melbourne",
         aspect,
       };
     });

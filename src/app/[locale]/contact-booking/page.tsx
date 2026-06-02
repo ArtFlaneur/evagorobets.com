@@ -136,7 +136,7 @@ const content = {
       ["Location and travel", "Based in Tokyo, available anywhere in Japan. Melbourne and international sessions by arrangement. Travel costs discussed at quote stage."],
     ],
     sentMsg: "Thank you — your brief has been sent. You will receive a reply within 24 hours.",
-    errorMsg: "Something went wrong while sending. Please try again or email eva@artflaneur.com.au.",
+    errorMsg: "Something went wrong while sending. Please try again or email eva@evagorobets.com.",
   },
   jp: {
     eyebrow: "お問い合わせ",
@@ -199,7 +199,7 @@ const content = {
       ["撮影場所と出張について", "東京を拠点とし、日本国内どこでも対応可能。メルボルンおよび海外での撮影はご相談ください。出張費は見積もり段階でご確認します。"],
     ],
     sentMsg: "ありがとうございます。ブリーフを受け付けました。24時間以内にご返信します。",
-    errorMsg: "送信時に問題が発生しました。再度お試しいただくか、eva@artflaneur.com.au までご連絡ください。",
+    errorMsg: "送信時に問題が発生しました。再度お試しいただくか、eva@evagorobets.com までご連絡ください。",
   },
 } as const;
 
@@ -482,10 +482,10 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
           <div>
             <p className="label mb-4">{t.directLabel}</p>
             <a
-              href="mailto:eva@artflaneur.com.au"
+              href="mailto:eva@evagorobets.com"
               className="block text-sm text-black/70 hover:text-black transition-colors"
             >
-              eva@artflaneur.com.au
+              eva@evagorobets.com
             </a>
             <div className="mt-3 flex gap-5">
               <a href="https://www.instagram.com/evagorobets/" target="_blank" rel="noreferrer" className="label hover:opacity-100 transition-opacity">Instagram</a>

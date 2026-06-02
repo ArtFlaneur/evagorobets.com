@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { isLocale, Locale, locales } from "@/lib/i18n";
+import { getAboutPhotoSrc } from "@/lib/gallery-data";
 
 type LocaleLayoutProps = {
   children: React.ReactNode;
@@ -19,6 +20,8 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: LocaleLayoutProps): Promise<Metadata> {
   const { locale } = await params;
+
+  const ogImage = await getAboutPhotoSrc();
 
   const titles: Record<string, string> = {
     en: "Eva Gorobets — Portrait & Corporate Photographer, Tokyo & Melbourne",
@@ -88,11 +91,13 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
       description,
       locale: ogLocales[locale] ?? "en_US",
       type: "website",
+      images: [{ url: ogImage, width: 1200, height: 800, alt: "Eva Gorobets — Portrait & Corporate Photographer, Tokyo & Melbourne" }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [ogImage],
     },
     alternates: {
       canonical: `${BASE_URL}/${locale}`,
@@ -119,6 +124,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   }
 
   const typedLocale = locale as Locale;
+  const aboutPhotoSrc = await getAboutPhotoSrc();
 
   return (
     <>
@@ -144,7 +150,12 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               name: "Eva Gorobets",
               jobTitle: "Portrait & Corporate Photographer",
               url: BASE_URL,
-              email: "eva@artflaneur.com.au",
+              email: "eva@evagorobets.com",
+              image: {
+                "@type": "ImageObject",
+                url: aboutPhotoSrc,
+                contentUrl: aboutPhotoSrc,
+              },
               knowsLanguage: ["English", "Japanese", "Russian"],
               worksFor: { "@id": `${BASE_URL}/#business` },
               sameAs: [
@@ -159,7 +170,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               description:
                 "Executive portrait and corporate event photographer based in Tokyo, available in Melbourne and internationally. Trilingual: English, Japanese, Russian.",
               url: BASE_URL,
-              email: "eva@artflaneur.com.au",
+              email: "eva@evagorobets.com",
               priceRange: "¥¥¥",
               serviceType: [
                 "Executive headshots",
@@ -227,6 +238,20 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
                 "https://www.instagram.com/evagorobets/",
                 "https://www.linkedin.com/in/evgorobets/",
               ],
+              review: {
+                "@type": "Review",
+                author: {
+                  "@type": "Person",
+                  name: "Danielle Chung",
+                  jobTitle: "Senior Client Services Manager",
+                },
+                reviewBody: "Working with Eva is always highly collaborative. She makes people feel at ease on set, gives expert direction, and consistently delivers top-class photography for our publications and campaigns.",
+                publisher: {
+                  "@type": "Organization",
+                  name: "ANZSAP Magazine",
+                  url: "https://anzsapmagazine.com.au/",
+                },
+              },
             },
           ],
         })}

@@ -103,7 +103,7 @@ describe("POST — too-fast submission rejection", () => {
 
   it("passes through when startedAt is old enough (6 seconds ago)", async () => {
     vi.stubEnv("RESEND_API_KEY", "test_key");
-    vi.stubEnv("CONTACT_TO_EMAIL", "eva@artflaneur.com.au");
+    vi.stubEnv("CONTACT_TO_EMAIL", "eva@evagorobets.com");
     mockFetch.mockResolvedValue({ ok: true });
 
     const req = jsonRequest({
@@ -118,7 +118,7 @@ describe("POST — too-fast submission rejection", () => {
 
   it("passes through when startedAt is empty string", async () => {
     vi.stubEnv("RESEND_API_KEY", "test_key");
-    vi.stubEnv("CONTACT_TO_EMAIL", "eva@artflaneur.com.au");
+    vi.stubEnv("CONTACT_TO_EMAIL", "eva@evagorobets.com");
     mockFetch.mockResolvedValue({ ok: true });
 
     const req = jsonRequest({ ...validCalcPayload, startedAt: "" });
@@ -187,7 +187,7 @@ describe("POST — missing required fields", () => {
 describe("POST — delivery via Resend", () => {
   beforeEach(() => {
     vi.stubEnv("RESEND_API_KEY", "re_test_123");
-    vi.stubEnv("CONTACT_TO_EMAIL", "eva@artflaneur.com.au");
+    vi.stubEnv("CONTACT_TO_EMAIL", "eva@evagorobets.com");
   });
 
   it("calls Resend API with correct headers and returns sent redirect", async () => {
@@ -223,7 +223,7 @@ describe("POST — delivery via Resend", () => {
     await POST(req);
 
     const body = JSON.parse(mockFetch.mock.calls[0][1].body as string);
-    expect(body.to).toContain("eva@artflaneur.com.au");
+    expect(body.to).toContain("eva@evagorobets.com");
   });
 
   it("reply_to is set to the submitter email", async () => {
@@ -334,7 +334,7 @@ describe("POST — no transport configured", () => {
 describe("POST — redirectPath routing", () => {
   beforeEach(() => {
     vi.stubEnv("RESEND_API_KEY", "re_test_123");
-    vi.stubEnv("CONTACT_TO_EMAIL", "eva@artflaneur.com.au");
+    vi.stubEnv("CONTACT_TO_EMAIL", "eva@evagorobets.com");
     mockFetch.mockResolvedValue({ ok: true });
   });
 
@@ -507,7 +507,7 @@ describe("POST — Australia calculator submission end-to-end", () => {
 describe("POST — network error during send", () => {
   it("returns error redirect when fetch throws", async () => {
     vi.stubEnv("RESEND_API_KEY", "re_test_123");
-    vi.stubEnv("CONTACT_TO_EMAIL", "eva@artflaneur.com.au");
+    vi.stubEnv("CONTACT_TO_EMAIL", "eva@evagorobets.com");
     mockFetch.mockRejectedValue(new Error("network timeout"));
 
     const req = jsonRequest(validCalcPayload);

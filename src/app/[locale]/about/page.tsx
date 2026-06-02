@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import { getAboutPhotoSrc } from "@/lib/gallery-data";
 
 type PageProps = { params: Promise<{ locale: string }> };
@@ -14,7 +15,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     en: {
       title: "About Eva Gorobets — Portrait & Corporate Photographer Tokyo & Melbourne",
       description:
-        "Portrait and corporate photographer based in Tokyo with a Melbourne background. 15+ years of international experience across corporate, cultural and art-world commissions. Fluent in English, Japanese and Russian.",
+        "Portrait and corporate photographer based in Tokyo, available in Melbourne. Executive headshots, business portraits and corporate event coverage. 15+ years of international experience. English, Japanese, Russian.",
     },
     jp: {
       title: "エヴァ・ゴロベッツ プロフィール — 東京・メルボルンのポートレート & コーポレートフォトグラファー",
@@ -51,6 +52,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 const content = {
   en: {
     eyebrow: "Photographer",
+    h1: "Eva Gorobets — Portrait & Corporate Photographer, Tokyo & Melbourne",
     heroAlt: "Eva Gorobets — photographer",
     bio: [
       "Eva Gorobets is a portrait and corporate photographer with over 15 years of international experience, based in Tokyo with a deep Melbourne background. Her practice spans executive portraiture, corporate event coverage and art-world photography across Japan, Australia and internationally.",
@@ -76,6 +78,7 @@ const content = {
   },
   jp: {
     eyebrow: "フォトグラファー",
+    h1: "エヴァ・ゴロベッツ — 東京・メルボルン ポートレート & コーポレートフォトグラファー",
     heroAlt: "エヴァ・ゴロベッツ — フォトグラファー",
     bio: [
       "エヴァ・ゴロベッツは、東京を拠点に15年以上の国際的な経験を持つポートレート・コーポレートフォトグラファーです。メルボルンとの深いつながりを持ちながら、日本・オーストラリア・海外でエグゼクティブポートレート、コーポレートイベント撮影、アート写真を手がけています。",
@@ -132,6 +135,18 @@ export default async function AboutPage({ params }: PageProps) {
 
   return (
     <>
+      <h1 className="sr-only">{t.h1}</h1>
+      <Script id="about-breadcrumb-schema" type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: locale === "jp" ? "ホーム" : "Home", item: `${BASE_URL}/${locale}` },
+            { "@type": "ListItem", position: 2, name: locale === "jp" ? "エヴァについて" : "About Eva Gorobets", item: `${BASE_URL}/${locale}/about` },
+          ],
+        })}
+      </Script>
+
       {/* Bio + info */}
       <section className="section grid gap-16 pt-20 md:pt-32 md:grid-cols-2">
         <div>
@@ -157,6 +172,16 @@ export default async function AboutPage({ params }: PageProps) {
               </li>
             ))}
           </ul>
+          <div className="mt-6">
+            <a
+              href="https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=evagorobets"
+              target="_blank"
+              rel="noreferrer"
+              className="btn-ghost"
+            >
+              LinkedIn →
+            </a>
+          </div>
         </div>
       </section>
 

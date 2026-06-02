@@ -90,7 +90,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 const content = {
   en: {
     eyebrow: "Business Portraits",
-    h1: "Business Portraits & Executive Headshots",
+    h1: "Business Portraits & Executive Headshots — Tokyo & Melbourne",
     p1: "Professional portraits for executives, founders, consultants, artists and art managers who need a premium, credible visual identity. Sessions are designed around brand positioning, communication goals and practical usage across websites, media kits and speaking profiles.",
     p2: "Based in Tokyo and available in Melbourne and internationally. Briefing and communication available in English, Japanese and Russian. Final retouched images delivered within three to five business days.",
     sessionTypesLabel: "Session Types",
@@ -115,7 +115,7 @@ const content = {
   },
   jp: {
     eyebrow: "ビジネスポートレート",
-    h1: "東京ビジネスポートレート & エグゼクティブヘッドショット",
+    h1: "東京・メルボルン ビジネスポートレート & エグゼクティブヘッドショット",
     p1: "エグゼクティブ、創業者、コンサルタント、アーティスト、アートマネージャーなど、上質で信頼感のあるビジュアルアイデンティティを必要とする方のためのポートレート撮影。セッションはブランドポジショニング、コミュニケーション目標、ウェブサイト・メディアキット・登壇者プロフィールへの実用的な活用を中心に設計されます。",
     p2: "東京在住、メルボルンおよび海外への出張対応可。英語・日本語・ロシア語でのブリーフおよびコミュニケーションに対応。最終レタッチ済み画像は3〜5営業日以内に納品。",
     sessionTypesLabel: "セッションの種類",
@@ -209,6 +209,16 @@ export default async function BusinessPortraitsPage({ params }: PageProps) {
 
   return (
     <>
+      <Script id="bp-breadcrumb-schema" type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: locale === "jp" ? "ホーム" : "Home", item: `${BASE_URL}/${locale}` },
+            { "@type": "ListItem", position: 2, name: locale === "jp" ? "ビジネスポートレート" : "Business Portraits & Executive Headshots", item: `${BASE_URL}/${locale}/business-portraits` },
+          ],
+        })}
+      </Script>
       <section className="section pt-32">
         <p className="label mb-6">{t.eyebrow}</p>
         <h1 className="max-w-3xl text-[clamp(3rem,7vw,6rem)] leading-[0.95]" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>

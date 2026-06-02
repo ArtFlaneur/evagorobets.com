@@ -136,6 +136,9 @@ export default async function LocaleHome({ params }: PageProps) {
 
   return (
     <>
+      {/* SEO: primary heading */}
+      <h1 className="sr-only">{t.heroName} — {t.h1.join(" ")} — {t.eyebrow}</h1>
+
       {/* Hero slideshow */}
       <HeroSlideshow
         images={featuredGallery}
@@ -243,7 +246,7 @@ export default async function LocaleHome({ params }: PageProps) {
             <Link href={`/${locale}/contact-booking`} className="btn whitespace-nowrap">
               {t.ctaBtn}
             </Link>
-            <a href="mailto:eva@artflaneur.com.au" className="btn-ghost whitespace-nowrap">
+            <a href="mailto:eva@evagorobets.com" className="btn-ghost whitespace-nowrap">
               {t.ctaEmail}
             </a>
           </div>
