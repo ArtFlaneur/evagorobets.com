@@ -9,12 +9,15 @@ function thumbUrl(url: string) {
 }
 
 const GALLERIES = [
-  { label: "Business Portraits", folder: "eva/portraits" },
-  { label: "Corporate Events", folder: "eva/corporate" },
-  { label: "Art & Galleries", folder: "eva/art" },
-  { label: "About Photo", folder: "eva/about" },
-  { label: "Hero Slideshow", folder: "eva/featured" },
-  { label: "Portfolio", folder: "eva/portfolio" },
+  { label: "Business Portraits", folder: "eva/portraits", type: "image" as const },
+  { label: "Corporate Events", folder: "eva/corporate", type: "image" as const },
+  { label: "Art & Galleries", folder: "eva/art", type: "image" as const },
+  { label: "About Photo", folder: "eva/about", type: "image" as const },
+  { label: "Hero Slideshow", folder: "eva/featured", type: "image" as const },
+  { label: "Portfolio", folder: "eva/portfolio", type: "image" as const },
+  { label: "UGC Photo", folder: "eva/ugc-photo", type: "image" as const },
+  { label: "UGC Gallery", folder: "eva/ugc-gallery", type: "image" as const },
+  { label: "UGC Reels", folder: "eva/ugc", type: "reels" as const },
 ] as const;
 
 const SOURCE_FOLDERS = ["eva/portraits", "eva/corporate", "eva/art"];
@@ -34,11 +37,18 @@ export default function AdminPage() {
   const router = useRouter();
   const [gallery, setGallery] = useState<(typeof GALLERIES)[number]>(GALLERIES[0]);
   const isFeatured = gallery.folder === "eva/featured";
+  const isReels = gallery.type === "reels";
 
   // regular gallery state
   const [images, setImages] = useState<CloudinaryResource[]>([]);
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
+
+  // reels editor state
+  const [reelsText, setReelsText] = useState("");
+  const [reelsLoading, setReelsLoading] = useState(false);
+  const [reelsSaving, setReelsSaving] = useState(false);
+  const [reelsSaved, setReelsSaved] = useState(false);
 
   // featured picker state
   const [sourceImages, setSourceImages] = useState<CloudinaryResource[]>([]);
@@ -54,10 +64,10 @@ export default function AdminPage() {
   const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
   const cloudinaryReady = !!(cloudName && uploadPreset);
 
-  const fetchImages = useCallback(async (folder: string) => {
+  const fetchImages = useCallback(async (folder: string, type: "image" | "video") => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/gallery?folder=${encodeURIComponent(folder)}`);
+      const res = await fetch(`/api/admin/gallery?folder=${encodeURIComponent(folder)}&type=${type}`);
       setImages(res.ok ? await res.json() : []);
     } catch {
       setImages([]);
@@ -103,10 +113,44 @@ export default function AdminPage() {
     }
   }, []);
 
+  const fetchReels = useCallback(async () => {
+    setReelsLoading(true);
+    try {
+      const res = await fetch("/api/admin/reels");
+      const data = res.ok ? await res.json() : { urls: [] };
+      setReelsText((data.urls ?? []).join("\n"));
+    } catch {
+      setReelsText("");
+    } finally {
+      setReelsLoading(false);
+    }
+  }, []);
+
+  async function saveReels() {
+    setReelsSaving(true);
+    setReelsSaved(false);
+    try {
+      const urls = reelsText.split("\n").map((u) => u.trim()).filter(Boolean);
+      const res = await fetch("/api/admin/reels", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ urls }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setReelsText((data.urls ?? urls).join("\n"));
+        setReelsSaved(true);
+      }
+    } finally {
+      setReelsSaving(false);
+    }
+  }
+
   useEffect(() => {
-    if (isFeatured) fetchFeaturedData();
-    else fetchImages(gallery.folder);
-  }, [gallery, isFeatured, fetchImages, fetchFeaturedData]);
+    if (isReels) fetchReels();
+    else if (isFeatured) fetchFeaturedData();
+    else fetchImages(gallery.folder, "image");
+  }, [gallery, isFeatured, isReels, fetchImages, fetchFeaturedData, fetchReels]);
 
   async function toggleFeatured(publicId: string) {
     const action = featuredIds.has(publicId) ? "remove" : "add";
@@ -174,6 +218,7 @@ export default function AdminPage() {
         uploadPreset,
         folder: gallery.folder,
         multiple: true,
+        resourceType: "image",
         sources: ["local", "url", "camera"],
         showAdvancedOptions: true,
         cropping: false,
@@ -191,7 +236,7 @@ export default function AdminPage() {
       },
       (err, result) => {
         if (!err && (result.event === "success" || result.event === "close")) {
-          fetchImages(gallery.folder);
+          fetchImages(gallery.folder, "image");
         }
       }
     );
@@ -203,7 +248,7 @@ export default function AdminPage() {
     await fetch("/api/admin/gallery", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ publicId }),
+      body: JSON.stringify({ publicId, type: "image" }),
     });
     setImages((p) => p.filter((r) => r.public_id !== publicId));
     setDeleting(null);
@@ -470,6 +515,92 @@ export default function AdminPage() {
     );
   }
 
+  // ── UGC REELS (YouTube links) ──────────────────────────────────────────
+
+  if (isReels) {
+    const previewIds = reelsText
+      .split("\n")
+      .map((line) => {
+        try {
+          const u = new URL(line.trim());
+          const parts = u.pathname.split("/").filter(Boolean);
+          if (u.hostname === "youtu.be") return parts[0] ?? "";
+          const keyed = parts.findIndex((p) => p === "shorts" || p === "embed" || p === "v");
+          if (keyed >= 0 && parts[keyed + 1]) return parts[keyed + 1];
+          return u.searchParams.get("v") ?? "";
+        } catch {
+          return "";
+        }
+      })
+      .filter(Boolean);
+
+    return (
+      <div className="flex min-h-screen bg-white">
+        {sidebar}
+        <main className="flex-1 px-6 py-10 md:px-10">
+          <div className="mb-8">
+            <p className="text-[10px] tracking-[0.2em] uppercase opacity-40 mb-1">Gallery</p>
+            <h1 className="text-3xl md:text-4xl" style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400 }}>
+              UGC Reels
+            </h1>
+            <p className="text-[11px] tracking-[0.1em] opacity-30 mt-1">
+              Paste YouTube links (Shorts, watch or youtu.be) — one per line. They appear as the vertical reels gallery on the UGC page in this order.
+            </p>
+          </div>
+
+          {reelsLoading ? (
+            <div className="flex h-48 items-center justify-center">
+              <p className="text-[11px] tracking-[0.15em] uppercase opacity-30">Loading...</p>
+            </div>
+          ) : (
+            <div className="grid gap-10 lg:grid-cols-2">
+              <div>
+                <label className="text-[10px] tracking-[0.2em] uppercase opacity-40">YouTube links</label>
+                <textarea
+                  value={reelsText}
+                  onChange={(e) => { setReelsText(e.target.value); setReelsSaved(false); }}
+                  rows={12}
+                  placeholder={"https://youtube.com/shorts/VIDEO_ID\nhttps://youtu.be/VIDEO_ID\nhttps://www.youtube.com/watch?v=VIDEO_ID"}
+                  className="mt-3 w-full resize-y border border-black/15 bg-white p-4 font-mono text-xs leading-relaxed outline-none focus:border-black/40"
+                />
+                <div className="mt-4 flex items-center gap-4">
+                  <button onClick={saveReels} disabled={reelsSaving} className="btn disabled:opacity-30">
+                    {reelsSaving ? "Saving..." : "Save reels"}
+                  </button>
+                  {reelsSaved && <span className="text-[10px] tracking-[0.15em] uppercase text-black/40">Saved</span>}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-[10px] tracking-[0.2em] uppercase opacity-40 mb-3">Preview — {previewIds.length}</p>
+                {previewIds.length === 0 ? (
+                  <div className="flex h-48 items-center justify-center border border-dashed border-black/15">
+                    <p className="text-[11px] tracking-[0.15em] uppercase opacity-30">No valid links yet</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                    {previewIds.map((id, i) => (
+                      <div key={`${id}-${i}`} className="relative overflow-hidden bg-black" style={{ aspectRatio: "9 / 16" }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
+                          alt=""
+                          loading="lazy"
+                          className="h-full w-full object-cover"
+                        />
+                        <div className="absolute top-1 left-1 bg-black/70 text-white text-[10px] px-1.5 py-0.5 leading-none">#{i + 1}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
+    );
+  }
+
   // ── REGULAR GALLERY ────────────────────────────────────────────────────
 
   return (
@@ -494,7 +625,7 @@ export default function AdminPage() {
               </p>
             )}
             <button onClick={openWidget} disabled={!cloudinaryReady} className="btn disabled:opacity-30">
-              + Upload
+              {"+ Upload"}
             </button>
           </div>
         </div>
@@ -538,7 +669,7 @@ export default function AdminPage() {
                   />
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                     <p className="text-[10px] tracking-[0.1em] uppercase text-white/50">
-                      {img.width}&times;{img.height}
+                      {`${img.width}×${img.height}`}
                     </p>
                     <button
                       onClick={() => deleteImage(img.public_id)}

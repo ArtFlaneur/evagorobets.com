@@ -5,6 +5,14 @@ export type GalleryImage = {
   aspect: "portrait" | "landscape" | "square";
 };
 
+export type UgcVideo = {
+  src: string;
+  poster?: string;
+  title: string;
+  category?: string;
+  createdAt: string;
+};
+
 // ── Async helpers — Cloudinary-first, static fallback ───────────────────────
 // Imported lazily so static builds work without env vars set.
 
@@ -64,6 +72,67 @@ export async function getAboutPhotoSrc(): Promise<string> {
   const live = await fromCloudinary("eva/about");
   if (live.length === 0) return fallback;
   return live[live.length - 1].src;
+}
+
+/**
+ * Portrait for the /ugc page. Returns the most recent image in the eva/ugc-photo
+ * Cloudinary folder, falling back to the About photo, then a static image.
+ */
+export async function getUgcPhotoSrc(): Promise<string> {
+  const live = await fromCloudinary("eva/ugc-photo");
+  if (live.length > 0) return live[live.length - 1].src;
+  return getAboutPhotoSrc();
+}
+
+/**
+ * Content photography gallery for the /ugc page (eva/ugc-gallery folder).
+ * Cloudinary-first; falls back to the portfolio gallery.
+ */
+export async function getUgcGallery(): Promise<GalleryImage[]> {
+  const live = await fromCloudinary("eva/ugc-gallery");
+  return live.length > 0 ? live : portfolioGallery;
+}
+
+/**
+ * Admin-managed list of YouTube reel URLs for the /ugc page. Stored as a raw
+ * JSON asset in Cloudinary (eva/ugc-reels.json). Falls back to env var.
+ */
+export async function getUgcReelUrls(): Promise<string[]> {
+  try {
+    const { readCloudinaryRawText, cloudinaryConfigured } = await import("./cloudinary");
+    if (cloudinaryConfigured()) {
+      const raw = await readCloudinaryRawText("eva/ugc-reels.json");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed?.urls) && parsed.urls.length > 0) return parsed.urls;
+      }
+    }
+  } catch {
+    // fall through to env
+  }
+  const env = process.env.NEXT_PUBLIC_UGC_REELS ?? process.env.NEXT_PUBLIC_UGC_SHOWREEL_URL ?? "";
+  return env.split(",").map((u) => u.trim()).filter(Boolean);
+}
+
+/**
+ * Vertical UGC videos for the /ugc page. Returns Cloudinary-hosted videos in
+ * the eva/ugc folder, newest first. Falls back to an empty array.
+ */
+export async function getUgcVideos(): Promise<UgcVideo[]> {
+  try {
+    const { getCloudinaryResources, cloudinaryConfigured, optimizeCloudinaryDeliveryUrl } = await import("./cloudinary");
+    if (!cloudinaryConfigured()) return [];
+    const resources = await getCloudinaryResources("eva/ugc", "video");
+    return resources.map((r) => ({
+      src: r.secure_url,
+      poster: optimizeCloudinaryDeliveryUrl(r.secure_url.replace(/\.[^./]+$/, ".jpg")),
+      title: r.context?.custom?.caption || r.context?.custom?.alt || r.public_id.split("/").pop() || "Untitled",
+      category: r.context?.custom?.alt,
+      createdAt: r.created_at,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 // ── Business Portraits ───────────────────────────────────────────────────────

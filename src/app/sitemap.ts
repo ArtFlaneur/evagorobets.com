@@ -39,5 +39,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   }
 
+  entries.push({
+    url: `${base}/ugc`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  });
+
   return entries;
 }

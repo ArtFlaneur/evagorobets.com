@@ -5,6 +5,7 @@ import type { GalleryImage } from "@/lib/gallery-data";
 export type CloudinaryResource = {
   public_id: string;
   secure_url: string;
+  resource_type?: "image" | "video";
   width: number;
   height: number;
   bytes: number;
@@ -95,23 +96,29 @@ export async function getCloudinaryImages(
  * Fetch raw resources (for the admin panel).
  */
 export async function getCloudinaryResources(
-  folder: string
+  folder: string,
+  resourceType: "image" | "video" | "auto" = "image"
 ): Promise<CloudinaryResource[]> {
   if (!cloudinaryConfigured()) return [];
 
   const cloud = process.env.CLOUDINARY_CLOUD_NAME;
-  const url =
-    `https://api.cloudinary.com/v1_1/${cloud}/resources/image` +
-    `?prefix=${encodeURIComponent(folder + "/")}&type=upload&max_results=200&context=true`;
+  const types = resourceType === "auto" ? (["image", "video"] as const) : [resourceType];
+  const results = await Promise.all(
+    types.map(async (type) => {
+      const url =
+        `https://api.cloudinary.com/v1_1/${cloud}/resources/${type}` +
+        `?prefix=${encodeURIComponent(folder + "/")}&type=upload&max_results=200&context=true`;
+      const res = await fetch(url, {
+        headers: { Authorization: basicAuth() },
+        cache: "no-store",
+      });
+      if (!res.ok) return [];
+      const data = await res.json();
+      return (data.resources ?? []).map((resource: CloudinaryResource) => ({ ...resource, resource_type: type }));
+    })
+  );
 
-  const res = await fetch(url, {
-    headers: { Authorization: basicAuth() },
-    cache: "no-store",
-  });
-
-  if (!res.ok) return [];
-  const data = await res.json();
-  return (data.resources ?? []) as CloudinaryResource[];
+  return results.flat().sort((a, b) => b.created_at.localeCompare(a.created_at));
 }
 
 /**
@@ -178,7 +185,8 @@ export async function setCloudinaryTag(
  */
 export async function setCloudinaryContext(
   publicId: string,
-  values: Record<string, string>
+  values: Record<string, string>,
+  resourceType: "image" | "video" = "image"
 ): Promise<boolean> {
   if (!cloudinaryConfigured()) return false;
 
@@ -187,7 +195,7 @@ export async function setCloudinaryContext(
 
   const cloud = process.env.CLOUDINARY_CLOUD_NAME;
   const encodedPublicId = encodeURIComponent(publicId);
-  const url = `https://api.cloudinary.com/v1_1/${cloud}/resources/image/upload/${encodedPublicId}`;
+  const url = `https://api.cloudinary.com/v1_1/${cloud}/resources/${resourceType}/upload/${encodedPublicId}`;
 
   const context = entries
     .map(([key, value]) => `${key}=${value}`)
@@ -211,10 +219,17 @@ export async function setCloudinaryContext(
  * Delete a single image by public_id.
  */
 export async function deleteCloudinaryImage(publicId: string): Promise<boolean> {
+  return deleteCloudinaryResource(publicId, "image");
+}
+
+export async function deleteCloudinaryResource(
+  publicId: string,
+  resourceType: "image" | "video" = "image"
+): Promise<boolean> {
   if (!cloudinaryConfigured()) return false;
 
   const cloud = process.env.CLOUDINARY_CLOUD_NAME;
-  const url = `https://api.cloudinary.com/v1_1/${cloud}/resources/image/upload`;
+  const url = `https://api.cloudinary.com/v1_1/${cloud}/resources/${resourceType}/upload`;
 
   const res = await fetch(
     url + `?public_ids%5B%5D=${encodeURIComponent(publicId)}`,
@@ -225,4 +240,77 @@ export async function deleteCloudinaryImage(publicId: string): Promise<boolean> 
   );
 
   return res.ok;
+}
+
+// ── Raw JSON store (for small admin-managed lists) ──────────────────────────
+
+async function sha1Hex(input: string): Promise<string> {
+  const data = new TextEncoder().encode(input);
+  const digest = await crypto.subtle.digest("SHA-1", data);
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+/**
+ * Upload a small string of text as a raw Cloudinary asset at a fixed public_id.
+ * Used to persist admin-managed lists (e.g. UGC reel links) without a database.
+ */
+export async function saveCloudinaryRawText(publicId: string, text: string): Promise<boolean> {
+  if (!cloudinaryConfigured()) return false;
+
+  const cloud = process.env.CLOUDINARY_CLOUD_NAME;
+  const apiKey = process.env.CLOUDINARY_API_KEY ?? "";
+  const apiSecret = process.env.CLOUDINARY_API_SECRET ?? "";
+  const timestamp = Math.floor(Date.now() / 1000);
+
+  // Signature is SHA1 of sorted params + api_secret.
+  const paramsToSign = `invalidate=true&overwrite=true&public_id=${publicId}&timestamp=${timestamp}`;
+  const signature = await sha1Hex(paramsToSign + apiSecret);
+
+  const dataUri = `data:text/plain;base64,${Buffer.from(text, "utf8").toString("base64")}`;
+
+  const form = new URLSearchParams({
+    file: dataUri,
+    public_id: publicId,
+    overwrite: "true",
+    invalidate: "true",
+    timestamp: String(timestamp),
+    api_key: apiKey,
+    signature,
+  });
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${cloud}/raw/upload`, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: form.toString(),
+  });
+
+  return res.ok;
+}
+
+/**
+ * Read back a raw text asset previously saved with saveCloudinaryRawText.
+ * Returns null if it does not exist yet.
+ */
+export async function readCloudinaryRawText(publicId: string): Promise<string | null> {
+  if (!cloudinaryConfigured()) return null;
+
+  const cloud = process.env.CLOUDINARY_CLOUD_NAME;
+
+  // Look up the delivery URL via the admin API (cache-busted).
+  const infoUrl = `https://api.cloudinary.com/v1_1/${cloud}/resources/raw/upload/${encodeURIComponent(publicId)}`;
+  const infoRes = await fetch(infoUrl, {
+    headers: { Authorization: basicAuth() },
+    cache: "no-store",
+  });
+  if (!infoRes.ok) return null;
+
+  const info = await infoRes.json();
+  const secureUrl: string | undefined = info.secure_url;
+  if (!secureUrl) return null;
+
+  const fileRes = await fetch(`${secureUrl}?_=${Date.now()}`, { cache: "no-store" });
+  if (!fileRes.ok) return null;
+  return await fileRes.text();
 }
