@@ -11,20 +11,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const path = "/photographer-australia";
   const seo = {
     en: {
-      title: "Corporate, Portrait & Art Photographer in Australia | Eva Gorobets",
+      title: "Corporate, Portrait & Art Photographer in Melbourne | Eva Gorobets",
       description:
-        "Corporate photographer in Australia for executive portraits, business headshots, conferences, corporate events, galleries and exhibitions. Available in Melbourne and Sydney.",
-      ogTitle: "Photographer in Australia — Corporate, Portrait & Art",
+        "Melbourne photographer for executive portraits, business headshots, corporate events, gallery openings and artwork documentation. Regular working periods in Melbourne; Sydney and Australia-wide by arrangement. Cross-border Australia/Japan experience.",
+      ogTitle: "Photographer in Melbourne — Corporate, Portrait & Art",
       ogDescription:
-        "Melbourne-focused photographer for executive portraits, corporate events and art-world commissions across Australia.",
+        "Executive portraits, corporate events and art-world photography during regular working periods in Melbourne. Sydney and Australia-wide by arrangement. Australia/Japan cross-border experience.",
     },
     jp: {
-      title: "オーストラリアで活動するコーポレート・ポートレート・アートフォトグラファー | Eva Gorobets",
+      title: "メルボルンで活動するコーポレート・ポートレート・アートフォトグラファー | Eva Gorobets",
       description:
-        "オーストラリアでエグゼクティブポートレート、ビジネスヘッドショット、会議、法人イベント、ギャラリー、展覧会撮影に対応。メルボルン、シドニーで活動。",
-      ogTitle: "オーストラリアで活動するフォトグラファー — コーポレート・ポートレート・アート",
+        "メルボルンでエグゼクティブポートレート、ビジネスヘッドショット、法人イベント、ギャラリーオープニング、作品ドキュメンテーションに対応。メルボルンでは定期的に活動。シドニーおよびオーストラリア国内は応相談。オーストラリア・日本の跨境実績。",
+      ogTitle: "メルボルンで活動するフォトグラファー — コーポレート・ポートレート・アート",
       ogDescription:
-        "メルボルンを中心に、オーストラリアでビジネスポートレート、法人イベント、アート案件を撮影。",
+        "メルボルンを中心に、エグゼクティブポートレート、法人イベント、アート案件を撮影。シドニー及び国内は応相談。オーストラリア・日本の跨境経験。",
     },
   } as const;
   const t = seo[(locale as keyof typeof seo) in seo ? (locale as keyof typeof seo) : "en"];
@@ -33,14 +33,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: t.title,
     description: t.description,
     keywords: [
+      "corporate photographer Melbourne",
+      "business portrait photographer Melbourne",
+      "executive headshots Melbourne",
+      "headshot photographer Melbourne CBD",
+      "corporate event photographer Melbourne",
+      "conference photographer Melbourne",
+      "gallery photographer Melbourne",
+      "art photographer Melbourne",
       "corporate photographer Australia",
       "business portrait photographer Australia",
-      "executive headshots Australia",
-      "corporate event photographer Australia",
-      "conference photographer Melbourne",
-      "business portrait photographer Melbourne",
-      "art photographer Australia",
-      "gallery photographer Melbourne",
     ],
     openGraph: {
       title: t.ogTitle,
@@ -71,11 +73,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 const content = {
   en: {
     eyebrow: "Australia",
-    h1: "Corporate, Portrait & Art Photography Across Australia",
-    p1: "Eva Gorobets works with Australian and international clients who need executive portraits, business headshots, corporate event coverage, exhibition photography and artwork documentation in Australia. Melbourne is the main Australian base, with Sydney and other cities available by arrangement.",
-    p2: "This page is intended for clients looking for a photographer in Australia with corporate discipline, editorial quality and genuine understanding of both business and art-world contexts. The Australia and Japan work is closely connected, which is often useful for cross-border companies, galleries and cultural projects.",
+    h1: "Corporate, Portrait & Art Photographer in Melbourne",
+    p1: "Eva Gorobets works regularly in Melbourne with Australian and international clients who need executive portraits, business headshots, corporate event coverage, exhibition photography and artwork documentation. Melbourne bookings are scheduled during regular working periods; Sydney and other Australian cities are available by arrangement.",
+    p2: "For Melbourne teams, galleries and cultural projects, the work combines corporate discipline with editorial quality and an understanding of business and art-world contexts. Eva is based in Tokyo and works between Japan and Melbourne, which is useful for cross-border companies, galleries and cultural projects.",
     regionsLabel: "Where in Australia",
-    regions: ["Melbourne", "Sydney", "Australia-wide assignments by arrangement"],
+    regions: ["Melbourne — regular working periods", "Sydney — by arrangement", "Other Australian cities — by arrangement"],
     servicesLabel: "Services in Australia",
     services: [
       ["Business portraits & executive headshots", "/business-portraits"],
@@ -85,27 +87,28 @@ const content = {
     ],
     fitLabel: "Who this page is for",
     fit: [
-      "Executives and leadership teams in Melbourne",
+      "Executives and leadership teams booking in Melbourne",
       "Companies running conferences, launches and internal events",
       "Artists, galleries and cultural institutions in Australia",
       "Cross-border Australia/Japan projects needing one photographer across both contexts",
     ],
     faq: [
-      ["Are you available in Melbourne?", "Yes. Melbourne is the main Australian base for portrait sessions, corporate coverage and art-world commissions."],
+      ["Are you available in Melbourne?", "Yes. Eva works in Melbourne regularly for portrait sessions, corporate coverage and art-world commissions. Share your date and scope to discuss availability."],
       ["Do you also work in Sydney?", "Yes. Sydney assignments are available by arrangement for portraits, events and art-related commissions."],
       ["Is this only for corporate work?", "No. The work in Australia includes executive portraits, business headshots, conferences, corporate events, gallery openings, artist portraits and artwork documentation."],
       ["How do Australia clients enquire?", "Send the contact form with your city, date and scope. You will receive a reply within 24 hours."],
     ],
     ctaH2: "Planning a shoot in Australia?",
     ctaBtn: "Send a brief",
+    viewPage: "View page",
   },
   jp: {
-    eyebrow: "Australia",
-    h1: "オーストラリア全国でのコーポレート・ポートレート・アート撮影",
-    p1: "Eva Gorobetsは、オーストラリア国内でエグゼクティブポートレート、ビジネスヘッドショット、法人イベント、展覧会撮影、作品ドキュメンテーションを必要とする国内外クライアントに対応しています。主なオーストラリア拠点はメルボルンで、シドニーその他の都市も案件に応じて対応可能です。",
-    p2: "このページは、オーストラリアでコーポレートの進行力、エディトリアル品質、ビジネスとアート双方の文脈理解を持つフォトグラファーを探している方のためのものです。オーストラリアと日本の両方での活動経験は、越境案件にも有利です。",
+    eyebrow: "Melbourne, Australia",
+    h1: "メルボルンで活動するコーポレート・ポートレート・アートフォトグラファー",
+    p1: "Eva Gorobetsはメルボルンで定期的に活動し、エグゼクティブポートレート、ビジネスヘッドショット、法人イベント、展覧会撮影、作品ドキュメンテーションを必要とする国内外クライアントに対応しています。メルボルンでの撮影は定期的な滞在期間に受け付け、シドニーその他の都市は案件に応じて対応します。",
+    p2: "メルボルンのチーム、ギャラリー、文化プロジェクトには、コーポレートの進行力とエディトリアル品質、ビジネスとアート双方の文脈理解を組み合わせます。東京を拠点に日本とメルボルンの間で活動しており、越境する企業、ギャラリー、文化プロジェクトにも適しています。",
     regionsLabel: "対応エリア",
-    regions: ["メルボルン", "シドニー", "その他オーストラリア国内は応相談"],
+    regions: ["メルボルン — 定期的な活動期間", "シドニー — 応相談", "その他オーストラリア国内 — 応相談"],
     servicesLabel: "オーストラリアで対応する撮影",
     services: [
       ["ビジネスポートレート・エグゼクティブヘッドショット", "/business-portraits"],
@@ -115,19 +118,20 @@ const content = {
     ],
     fitLabel: "このページに合うご依頼",
     fit: [
-      "メルボルンの経営層・リーダーシップチーム",
+      "メルボルンで撮影を予定する経営層・リーダーシップチーム",
       "会議、ローンチ、社内イベントを運営する企業",
       "オーストラリアのアーティスト、ギャラリー、文化機関",
       "オーストラリアと日本をまたぐ案件で一貫して依頼したいチーム",
     ],
     faq: [
-      ["メルボルンでの撮影に対応していますか？", "はい。メルボルンはオーストラリアでの主要拠点で、ポートレート、イベント、アート案件に対応しています。"],
+      ["メルボルンでの撮影に対応していますか？", "はい。メルボルンで定期的に活動し、ポートレート、法人イベント、アート案件に対応しています。日程と撮影内容をお知らせください。"],
       ["シドニーでも撮影できますか？", "はい。シドニーでのポートレート、イベント、アート案件も日程調整のうえ対応可能です。"],
       ["コーポレート案件のみですか？", "いいえ。エグゼクティブポートレート、ビジネスヘッドショット、会議、法人イベント、ギャラリーオープニング、アーティストポートレート、作品ドキュメントまで対応しています。"],
       ["オーストラリアでの依頼方法は？", "お問い合わせフォームから都市、日程、撮影内容をお送りください。24時間以内に返信します。"],
     ],
     ctaH2: "オーストラリアでの撮影をご予定ですか？",
     ctaBtn: "ブリーフを送る",
+    viewPage: "ページを見る",
   },
 } as const;
 
@@ -203,7 +207,7 @@ export default async function PhotographerAustraliaPage({ params }: PageProps) {
                 {label}
               </h2>
               <Link href={`/${locale}${href}`} className="btn-ghost">
-                View page
+                {t.viewPage}
               </Link>
             </article>
           ))}
