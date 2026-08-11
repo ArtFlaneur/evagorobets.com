@@ -140,15 +140,17 @@ export default async function UgcPage() {
 
           <div className="mt-16 grid gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-16">
             <div>
-              <div className="relative aspect-4/5 w-full max-w-sm overflow-hidden bg-black/4">
-                <Image
-                  src={photoSrc}
-                  alt="Eva Gorobets — UGC content creator and photographer, Tokyo & Melbourne"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 384px"
-                  className="object-cover"
-                />
-              </div>
+              {photoSrc ? (
+                <div className="relative aspect-4/5 w-full max-w-sm overflow-hidden bg-black/4">
+                  <Image
+                    src={photoSrc}
+                    alt="Eva Gorobets — UGC content creator and photographer, Tokyo & Melbourne"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 384px"
+                    className="object-cover"
+                  />
+                </div>
+              ) : null}
               <div className="mt-5 flex max-w-sm flex-wrap gap-x-5 gap-y-2">
                 {profile.socials.map((social) => (
                   <a
@@ -291,7 +293,7 @@ export default async function UgcPage() {
               "@type": "Person",
               "@id": `${BASE_URL}/ugc#person`,
               name: "Eva Gorobets",
-              image: photoSrc,
+              ...(photoSrc ? { image: photoSrc } : {}),
               jobTitle: "UGC Content Creator & Photographer",
               description:
                 "UGC content creator and photographer based in Tokyo, working in Melbourne and worldwide. Vertical short-form video and photography for hospitality, design, culture and travel brands.",

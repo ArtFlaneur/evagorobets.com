@@ -3,7 +3,7 @@ import Link from "next/link";
 import Script from "next/script";
 
 import { EditorialGallery } from "@/components/EditorialGallery";
-import { corporateGallery, portraitsGallery } from "@/lib/gallery-data";
+import { getCorporateGallery, getPortraitsGallery } from "@/lib/gallery-data";
 import { buildServiceSchema } from "@/lib/schema";
 
 type PageProps = { params: Promise<{ locale: string }> };
@@ -81,15 +81,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
   };
 }
-
-const heroGallery = [
-  portraitsGallery[0],
-  corporateGallery[0],
-  portraitsGallery[2],
-  corporateGallery[4],
-  portraitsGallery[5],
-  corporateGallery[3],
-];
 
 const content = {
   en: {
@@ -235,6 +226,18 @@ export default async function CorporatePage({ params }: PageProps) {
   const { locale } = await params;
   const t = content[(locale as Locale) in content ? (locale as Locale) : "en"];
   const typedLocale = locale === "jp" ? "jp" : "en";
+  const [portraits, corporate] = await Promise.all([
+    getPortraitsGallery(),
+    getCorporateGallery(),
+  ]);
+  const heroGallery = [
+    portraits[0],
+    corporate[0],
+    portraits[2],
+    corporate[4],
+    portraits[5],
+    corporate[3],
+  ].filter(Boolean);
   const serviceSchema = buildServiceSchema({
     name:
       typedLocale === "jp"

@@ -15,12 +15,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     en: {
       title: "About Eva Gorobets — Portrait & Corporate Photographer Tokyo & Melbourne",
       description:
-        "Portrait and corporate photographer based in Tokyo, available in Melbourne. Executive headshots, business portraits and corporate event coverage. 15+ years of international experience. English, Japanese, Russian.",
+        "Portrait and corporate photographer working between Tokyo and Melbourne. Executive headshots, business portraits and corporate event coverage. 15+ years of international experience. English, Japanese, Russian.",
     },
     jp: {
       title: "エヴァ・ゴロベッツ プロフィール — 東京・メルボルンのポートレート & コーポレートフォトグラファー",
       description:
-        "東京を拠点にメルボルンとの深いつながりを持つポートレート・コーポレートフォトグラファー。コーポレート、文化・アート分野で15年以上の国際的な実績。英語・日本語・ロシア語対応。",
+        "東京とメルボルンを拠点に活動するポートレート・コーポレートフォトグラファー。コーポレート、文化・アート分野で15年以上の国際的な実績。英語・日本語・ロシア語対応。",
     },
   } as const;
 
@@ -55,7 +55,7 @@ const content = {
     h1: "Eva Gorobets — Portrait & Corporate Photographer, Tokyo & Melbourne",
     heroAlt: "Eva Gorobets — photographer",
     bio: [
-      "Eva Gorobets is a portrait and corporate photographer with over 15 years of international experience, based in Tokyo with a deep Melbourne background. Her practice spans executive portraiture, corporate event coverage and art-world photography across Japan, Australia and internationally.",
+      "Eva Gorobets is a portrait and corporate photographer with over 15 years of international experience, working between Tokyo and Melbourne. Her practice spans executive portraiture, corporate event coverage and art-world photography across Japan, Australia and internationally.",
       "She holds a Master's degree in Visual Culture and is a PhD candidate in Fine and Applied Arts — an academic background that shapes a distinctive approach: image-led, concept-aware, and structurally precise.",
       "She works with multinational corporations, executives, independent professionals, galleries and artists. Her clients include KPMG, Google, McKinsey, SAP, General Electric and EY — alongside cultural institutions such as State Library Victoria and independent art spaces in Tokyo and Melbourne.",
       "Co-founder of Art Flaneur, a platform connecting art discourse between Australia and the international contemporary art community. Communication in English, Japanese and Russian.",
@@ -64,8 +64,8 @@ const content = {
       ["Experience", "15+ years (since 2008)"],
       ["Education", "MA Visual Culture · PhD candidate, Fine & Applied Arts"],
       ["Languages", "English · Japanese · Russian"],
-      ["Based in", "Tokyo, Japan"],
-      ["Also working in", "Melbourne, Australia · Worldwide"],
+      ["Working between", "Tokyo, Japan · Melbourne, Australia"],
+      ["Also available", "Worldwide by arrangement"],
       ["Co-founder", "Art Flaneur"],
     ],
     clientsLabel: "Clients",
@@ -81,7 +81,7 @@ const content = {
     h1: "エヴァ・ゴロベッツ — 東京・メルボルン ポートレート & コーポレートフォトグラファー",
     heroAlt: "エヴァ・ゴロベッツ — フォトグラファー",
     bio: [
-      "エヴァ・ゴロベッツは、東京を拠点に15年以上の国際的な経験を持つポートレート・コーポレートフォトグラファーです。メルボルンとの深いつながりを持ちながら、日本・オーストラリア・海外でエグゼクティブポートレート、コーポレートイベント撮影、アート写真を手がけています。",
+      "エヴァ・ゴロベッツは、東京とメルボルンを拠点に15年以上の国際的な経験を持つポートレート・コーポレートフォトグラファーです。日本・オーストラリア・海外でエグゼクティブポートレート、コーポレートイベント撮影、アート写真を手がけています。",
       "ヴィジュアルカルチャー修士号取得者であり、美術・応用芸術の博士課程在籍中。この学術的背景が、イメージ主導で概念的意識を持ち、構造的に精緻なアプローチを形成しています。",
       "多国籍企業、経営幹部、独立系プロフェッショナル、ギャラリー、アーティストと幅広く協働。KPMG、Google、McKinsey、SAP、General Electric、EY、さらにState Library Victoria（ビクトリア州立図書館）、東京・メルボルンの独立系アートスペースなどの文化機関とも取り組んでいます。",
       "アート・フラヌールの共同創設者。オーストラリアと国際的な現代アートコミュニティの間でアートを巡る対話を繋ぐプラットフォームです。英語・日本語・ロシア語でのコミュニケーションが可能。",
@@ -90,8 +90,8 @@ const content = {
       ["経験", "15年以上（2008年より）"],
       ["学歴", "ヴィジュアルカルチャー修士 · 美術・応用芸術 博士課程在籍"],
       ["言語", "英語 · 日本語 · ロシア語"],
-      ["拠点", "東京、日本"],
-      ["活動地域", "オーストラリア・メルボルン · 世界各地"],
+      ["活動拠点", "東京（日本）· メルボルン（オーストラリア）"],
+      ["対応地域", "世界各地（応相談）"],
       ["共同創設", "アート・フラヌール"],
     ],
     clientsLabel: "クライアント",
@@ -150,15 +150,17 @@ export default async function AboutPage({ params }: PageProps) {
       {/* Bio + info */}
       <section className="section grid gap-16 pt-20 md:pt-32 md:grid-cols-2">
         <div>
-          <div className="mb-8 overflow-hidden" style={{ width: "200px", aspectRatio: "3/4", position: "relative" }}>
-            <Image
-              src={aboutPhotoSrc}
-              alt={t.heroAlt}
-              fill
-              className="object-cover object-top"
-              sizes="200px"
-            />
-          </div>
+          {aboutPhotoSrc ? (
+            <div className="mb-8 overflow-hidden" style={{ width: "200px", aspectRatio: "3/4", position: "relative" }}>
+              <Image
+                src={aboutPhotoSrc}
+                alt={t.heroAlt}
+                fill
+                className="object-cover object-top"
+                sizes="200px"
+              />
+            </div>
+          ) : null}
           <div className="text-sm text-black/65 leading-relaxed space-y-5 max-w-md">
             {t.bio.map((p, i) => <p key={i}>{linkifyArtFlaneur(p)}</p>)}
           </div>
@@ -174,7 +176,7 @@ export default async function AboutPage({ params }: PageProps) {
           </ul>
           <div className="mt-6">
             <a
-              href="https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=evagorobets"
+              href="https://www.linkedin.com/in/evagorobets/"
               target="_blank"
               rel="noreferrer"
               className="btn-ghost"

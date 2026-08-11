@@ -123,9 +123,14 @@ export async function getCloudinaryResources(
 
 /**
  * Fetch raw resources by tag (for featured picker).
+ *
+ * Pass a positive `revalidate` (seconds) to enable ISR caching for public,
+ * crawlable pages so they do not hit the Cloudinary API on every request.
+ * Omit it (or pass 0) for admin views that must read fresh data.
  */
 export async function getCloudinaryByTag(
-  tag: string
+  tag: string,
+  revalidate = 0
 ): Promise<CloudinaryResource[]> {
   if (!cloudinaryConfigured()) return [];
 
@@ -134,10 +139,17 @@ export async function getCloudinaryByTag(
     `https://api.cloudinary.com/v1_1/${cloud}/resources/image/tags/${encodeURIComponent(tag)}` +
     `?max_results=200&context=true`;
 
-  const res = await fetch(url, {
-    headers: { Authorization: basicAuth() },
-    cache: "no-store",
-  });
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      headers: { Authorization: basicAuth() },
+      ...(revalidate > 0
+        ? { next: { revalidate } }
+        : { cache: "no-store" as const }),
+    });
+  } catch {
+    return [];
+  }
 
   if (!res.ok) return [];
   const data = await res.json();

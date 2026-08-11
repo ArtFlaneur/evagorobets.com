@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://evagorobets.com"),
   title: "Eva Gorobets — Portrait & Corporate Photographer, Tokyo & Melbourne",
   description:
-    "Portrait and corporate event photographer based in Tokyo, available in Melbourne. Executive headshots, corporate event coverage, art-world photography, visible starting prices and an instant pricing calculator. Communication in English, Japanese and Russian.",
+    "Portrait and corporate event photographer working between Tokyo and Melbourne. Executive headshots, corporate event coverage, art-world photography, visible starting prices and an instant pricing calculator. Communication in English, Japanese and Russian.",
   verification: {
     google: "naTVcEvP0Y1pUnEWD8fa-6Mn2dUWm0bw2pBj3tg7bDw",
   },

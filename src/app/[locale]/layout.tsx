@@ -29,8 +29,8 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
   };
 
   const descriptions: Record<string, string> = {
-    en: "Executive portrait and corporate event photographer based in Tokyo, available in Melbourne and internationally. Business headshots, leadership portraits, conference photography, and an instant pricing calculator with visible ranges. 15+ years. English, Japanese, Russian.",
-    jp: "東京を拠点にメルボルンでも活動するエグゼクティブポートレート・法人イベント撮影のプロフェッショナル。ビジネスヘッドショット、リーダーシップポートレート、カンファレンス撮影に加え、価格レンジをすぐ確認できる見積もり計算を提供。15年以上の経験。英語・日本語・ロシア語対応。",
+    en: "Executive portrait and corporate event photographer working between Tokyo and Melbourne, and internationally. Business headshots, leadership portraits, conference photography, and an instant pricing calculator with visible ranges. 15+ years. English, Japanese, Russian.",
+    jp: "東京とメルボルンを拠点に活動するエグゼクティブポートレート・法人イベント撮影のプロフェッショナル。ビジネスヘッドショット、リーダーシップポートレート、カンファレンス撮影に加え、価格レンジをすぐ確認できる見積もり計算を提供。15年以上の経験。英語・日本語・ロシア語対応。",
   };
 
   const keywords: Record<string, string[]> = {
@@ -91,13 +91,15 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
       description,
       locale: ogLocales[locale] ?? "en_US",
       type: "website",
-      images: [{ url: ogImage, width: 1200, height: 800, alt: "Eva Gorobets — Portrait & Corporate Photographer, Tokyo & Melbourne" }],
+      images: ogImage
+        ? [{ url: ogImage, width: 1200, height: 800, alt: "Eva Gorobets — Portrait & Corporate Photographer, Tokyo & Melbourne" }]
+        : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [ogImage],
+      images: ogImage ? [ogImage] : undefined,
     },
     alternates: {
       canonical: `${BASE_URL}/${locale}`,
@@ -151,16 +153,21 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               jobTitle: "Portrait & Corporate Photographer",
               url: BASE_URL,
               email: "eva@evagorobets.com",
-              image: {
-                "@type": "ImageObject",
-                url: aboutPhotoSrc,
-                contentUrl: aboutPhotoSrc,
-              },
+              ...(aboutPhotoSrc
+                ? {
+                    image: {
+                      "@type": "ImageObject",
+                      url: aboutPhotoSrc,
+                      contentUrl: aboutPhotoSrc,
+                    },
+                  }
+                : {}),
               knowsLanguage: ["English", "Japanese", "Russian"],
               worksFor: { "@id": `${BASE_URL}/#business` },
               sameAs: [
-                "https://www.instagram.com/evagorobets/",
-                "https://www.linkedin.com/in/evgorobets/",
+                "https://www.instagram.com/eva_gorobets_/",
+                "https://www.linkedin.com/in/evagorobets/",
+                "https://www.artflaneur.art",
               ],
             },
             {
@@ -168,7 +175,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               "@id": `${BASE_URL}/#business`,
               name: "Eva Gorobets Photography",
               description:
-                "Executive portrait and corporate event photographer based in Tokyo, available in Melbourne and internationally. Trilingual: English, Japanese, Russian.",
+                "Executive portrait and corporate event photographer working between Tokyo and Melbourne, and internationally. Trilingual: English, Japanese, Russian.",
               url: BASE_URL,
               email: "eva@evagorobets.com",
               priceRange: "¥¥¥",
@@ -235,8 +242,8 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
                 ],
               },
               sameAs: [
-                "https://www.instagram.com/evagorobets/",
-                "https://www.linkedin.com/in/evgorobets/",
+                "https://www.instagram.com/eva_gorobets_/",
+                "https://www.linkedin.com/in/evagorobets/",
               ],
               review: {
                 "@type": "Review",
