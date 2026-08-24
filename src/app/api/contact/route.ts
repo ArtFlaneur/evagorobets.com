@@ -124,6 +124,10 @@ function logBlockedSubmission(reason: string, payload: ContactPayload) {
   });
 }
 
+function isMentoringApplication(payload: ContactPayload): boolean {
+  return payload.redirectPath === "/mentoring" || payload.redirectPath === "/en/mentoring";
+}
+
 async function parsePayload(req: NextRequest): Promise<ContactPayload> {
   const contentType = req.headers.get("content-type") ?? "";
 
@@ -211,8 +215,9 @@ async function parsePayload(req: NextRequest): Promise<ContactPayload> {
 }
 
 function toPlainText(payload: ContactPayload): string {
+  const mentoringApplication = isMentoringApplication(payload);
   return [
-    "New contact brief",
+    mentoringApplication ? "MENTORING APPLICATION — International Photography Practice" : "New contact brief",
     "",
     `Locale: ${payload.locale}`,
     `Name: ${payload.name}`,
@@ -241,7 +246,7 @@ function toPlainText(payload: ContactPayload): string {
     `Details: ${payload.calcDetails || "-"}`,
     `Secondary languages: ${payload.calcSecondaryLanguages || "-"}`,
     "",
-    "Mentoring application",
+    mentoringApplication ? "Mentoring application" : "",
     `Instagram: ${payload.instagram || "-"}`,
     `LinkedIn: ${payload.linkedin || "-"}`,
     `Portfolio: ${payload.portfolio || "-"}`,
@@ -297,7 +302,7 @@ async function sendViaResend(payload: ContactPayload): Promise<boolean> {
     body: JSON.stringify({
       from,
       to: [to],
-      subject: `New brief — ${payload.name || "No name"} (${payload.locale.toUpperCase()})`,
+      subject: `${isMentoringApplication(payload) ? "MENTORING APPLICATION" : "New brief"} — ${payload.name || "No name"} (${payload.locale.toUpperCase()})`,
       text: toPlainText(payload),
       reply_to: payload.email || undefined,
     }),
@@ -356,8 +361,8 @@ export async function POST(req: NextRequest) {
     return redirectForPayload(payload, "error", req);
   }
 
-  const isMentoringApplication = payload.redirectPath === "/mentoring" || payload.redirectPath === "/en/mentoring";
-  if (isMentoringApplication && (payload.consent !== "on" || (!payload.instagram && !payload.linkedin && !payload.portfolio))) {
+  const mentoringApplication = isMentoringApplication(payload);
+  if (mentoringApplication && (payload.consent !== "on" || (!payload.instagram && !payload.linkedin && !payload.portfolio))) {
     return redirectForPayload(payload, "error", req);
   }
 

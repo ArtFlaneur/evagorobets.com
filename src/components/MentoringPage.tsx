@@ -108,7 +108,7 @@ const copy = {
 } as const;
 
 function Field({ name, placeholder, required = false, textarea = false }: { name: string; placeholder: string; required?: boolean; textarea?: boolean }) {
-  const className = "mt-2 block w-full border border-black/15 bg-white px-4 py-3 text-sm outline-none placeholder:text-black/35 transition-colors focus:border-black focus:bg-[#fffdf8] focus:ring-2 focus:ring-black/10";
+  const className = "mt-2 block w-full border border-black/15 bg-white px-4 py-3 text-sm text-black outline-none placeholder:text-black/35 transition-colors focus:border-black focus:bg-[#fffdf8] focus:ring-2 focus:ring-black/10";
   const questionField = ["currentClients", "targetMarket", "serviceDescription", "documents", "difficultSituation", "mainProblem", "successResult"].includes(name);
   const fieldName = name === "documents" ? "mainProblem" : name === "difficultSituation" ? "successResult" : name;
   return <div className="mentoring-field">

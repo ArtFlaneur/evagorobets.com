@@ -109,10 +109,28 @@ h1, h2, h3, h4 {
 }
 
 .mentoring-page main > section:first-child {
-  background: linear-gradient(110deg, #f3eee5 0%, #fbfaf7 62%, #e7efe9 100%);
+  position: relative;
+  isolation: isolate;
+  background: transparent;
   border-bottom: 1px solid rgb(17 17 17 / 0.08);
-  box-shadow: 0 0 0 100vmax #fbfaf7;
-  clip-path: inset(0 -100vmax);
+}
+
+.mentoring-page main > section:first-child::before,
+.mentoring-page .mentoring-kit::before,
+.mentoring-page .mentoring-boundaries::before,
+.mentoring-page #application::before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  content: "";
+  transform: translateX(-50%);
+}
+
+.mentoring-page main > section:first-child::before {
+  background: linear-gradient(110deg, #f3eee5 0%, #fbfaf7 62%, #e7efe9 100%);
 }
 
 .mentoring-page .section {
@@ -187,9 +205,13 @@ h1, h2, h3, h4 {
 }
 
 .mentoring-kit {
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+}
+
+.mentoring-page .mentoring-kit::before {
   background: #f6f5f1;
-  box-shadow: 0 0 0 100vmax #f6f5f1;
-  clip-path: inset(0 -100vmax);
 }
 
 .mentoring-kit-list {
@@ -293,9 +315,13 @@ h1, h2, h3, h4 {
 }
 
 .mentoring-boundaries {
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+}
+
+.mentoring-page .mentoring-boundaries::before {
   background: #ededeb;
-  box-shadow: 0 0 0 100vmax #ededeb;
-  clip-path: inset(0 -100vmax);
 }
 
 .mentoring-page > footer {
@@ -523,10 +549,14 @@ h1, h2, h3, h4 {
 }
 
 #application {
-  background: #20251f;
+  position: relative;
+  isolation: isolate;
+  background: transparent;
   color: #f7f4ec;
-  box-shadow: 0 0 0 100vmax #20251f;
-  clip-path: inset(0 -100vmax);
+}
+
+.mentoring-page #application::before {
+  background: #20251f;
 }
 
 #application .label,
@@ -538,6 +568,7 @@ h1, h2, h3, h4 {
 #application form input:not([type="checkbox"]),
 #application form textarea {
   background: rgb(255 255 255 / 0.96);
+  color: #111111;
 }
 
 #application form input:not([type="checkbox"]):focus,
