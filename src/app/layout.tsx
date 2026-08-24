@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans, Manrope, PT_Serif } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans, Instrument_Serif, Manrope, PT_Serif } from "next/font/google";
 import { headers } from "next/headers";
 import Script from "next/script";
 import "./globals.css";
@@ -29,6 +29,13 @@ const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["cyrillic", "latin"],
   weight: ["300", "400", "500", "600"],
+});
+
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -66,7 +73,7 @@ export default async function RootLayout({
 
   return (
     <html lang={htmlLang}>
-        <body className={`${cormorant.variable} ${dmSans.variable} ${ptSerif.variable} ${manrope.variable} antialiased`}>
+        <body className={`${cormorant.variable} ${dmSans.variable} ${ptSerif.variable} ${manrope.variable} ${instrumentSerif.variable} antialiased`}>
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`} strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
           {`
