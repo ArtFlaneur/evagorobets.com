@@ -186,6 +186,8 @@ h1, h2, h3, h4 {
 
 .mentoring-kit {
   background: #f6f5f1;
+  box-shadow: 0 0 0 100vmax #f6f5f1;
+  clip-path: inset(0 -100vmax);
 }
 
 .mentoring-kit-list {
@@ -245,7 +247,7 @@ h1, h2, h3, h4 {
 }
 
 .mentoring-fit-panel-muted {
-  background: #f3eee5;
+  background: #f6f5f1;
 }
 
 .mentoring-fit-panel ul {
@@ -290,6 +292,8 @@ h1, h2, h3, h4 {
 
 .mentoring-boundaries {
   background: #ededeb;
+  box-shadow: 0 0 0 100vmax #ededeb;
+  clip-path: inset(0 -100vmax);
 }
 
 .mentoring-page > footer {
@@ -519,6 +523,8 @@ h1, h2, h3, h4 {
 #application {
   background: #20251f;
   color: #f7f4ec;
+  box-shadow: 0 0 0 100vmax #20251f;
+  clip-path: inset(0 -100vmax);
 }
 
 #application .label,
