@@ -24,6 +24,18 @@ type ContactPayload = {
   calcCurrency: string;
   calcDetails: string;
   calcSecondaryLanguages: string;
+  instagram: string;
+  linkedin: string;
+  portfolio: string;
+  currentClients: string;
+  targetMarket: string;
+  serviceDescription: string;
+  mainProblem: string;
+  documents: string;
+  difficultSituation: string;
+  successResult: string;
+  weeklyCommitment: string;
+  consent: string;
   redirectPath: string;
   website: string;
   startedAt: string;
@@ -139,6 +151,18 @@ async function parsePayload(req: NextRequest): Promise<ContactPayload> {
       calcCurrency: getString(body.calcCurrency),
       calcDetails: getString(body.calcDetails),
       calcSecondaryLanguages: getString(body.calcSecondaryLanguages),
+      instagram: getString(body.instagram),
+      linkedin: getString(body.linkedin),
+      portfolio: getString(body.portfolio),
+      currentClients: getString(body.currentClients),
+      targetMarket: getString(body.targetMarket),
+      serviceDescription: getString(body.serviceDescription),
+      mainProblem: getString(body.mainProblem),
+      documents: getString(body.documents),
+      difficultSituation: getString(body.difficultSituation),
+      successResult: getString(body.successResult),
+      weeklyCommitment: getString(body.weeklyCommitment),
+      consent: getString(body.consent),
       redirectPath: getString(body.redirectPath),
       website: getString(body.website),
       startedAt: getString(body.startedAt),
@@ -168,6 +192,18 @@ async function parsePayload(req: NextRequest): Promise<ContactPayload> {
     calcCurrency: getString(formData.get("calcCurrency")),
     calcDetails: getString(formData.get("calcDetails")),
     calcSecondaryLanguages: getString(formData.get("calcSecondaryLanguages")),
+    instagram: getString(formData.get("instagram")),
+    linkedin: getString(formData.get("linkedin")),
+    portfolio: getString(formData.get("portfolio")),
+    currentClients: getString(formData.get("currentClients")),
+    targetMarket: getString(formData.get("targetMarket")),
+    serviceDescription: getString(formData.get("serviceDescription")),
+    mainProblem: getString(formData.get("mainProblem")),
+    documents: getString(formData.get("documents")),
+    difficultSituation: getString(formData.get("difficultSituation")),
+    successResult: getString(formData.get("successResult")),
+    weeklyCommitment: getString(formData.get("weeklyCommitment")),
+    consent: getString(formData.get("consent")),
     redirectPath: getString(formData.get("redirectPath")),
     website: getString(formData.get("website")),
     startedAt: getString(formData.get("startedAt")),
@@ -204,6 +240,17 @@ function toPlainText(payload: ContactPayload): string {
     `Estimated range: ${payload.calcCurrency && payload.calcEstimateLow && payload.calcEstimateHigh ? `${payload.calcCurrency} ${payload.calcEstimateLow} - ${payload.calcEstimateHigh}` : "-"}`,
     `Details: ${payload.calcDetails || "-"}`,
     `Secondary languages: ${payload.calcSecondaryLanguages || "-"}`,
+    "",
+    "Mentoring application",
+    `Instagram: ${payload.instagram || "-"}`,
+    `LinkedIn: ${payload.linkedin || "-"}`,
+    `Portfolio: ${payload.portfolio || "-"}`,
+    `Current clients and average fee: ${payload.currentClients || "-"}`,
+    `Current and target market: ${payload.targetMarket || "-"}`,
+    `Service description: ${payload.serviceDescription || "-"}`,
+    `Main current problem: ${payload.mainProblem || "-"}`,
+    `Desired result: ${payload.successResult || "-"}`,
+    `Weekly commitment: ${payload.weeklyCommitment || "-"}`,
     "",
     "Notes",
     payload.notes || "-",
@@ -306,6 +353,11 @@ export async function POST(req: NextRequest) {
   }
 
   if (!payload.name || !payload.email) {
+    return redirectForPayload(payload, "error", req);
+  }
+
+  const isMentoringApplication = payload.redirectPath === "/mentoring" || payload.redirectPath === "/en/mentoring";
+  if (isMentoringApplication && (payload.consent !== "on" || (!payload.instagram && !payload.linkedin && !payload.portfolio))) {
     return redirectForPayload(payload, "error", req);
   }
 

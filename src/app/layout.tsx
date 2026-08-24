@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans, Manrope, PT_Serif } from "next/font/google";
+import { headers } from "next/headers";
 import Script from "next/script";
 import "./globals.css";
 
@@ -16,6 +17,18 @@ const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
   weight: ["300", "400", "500"],
+});
+
+const ptSerif = PT_Serif({
+  variable: "--font-pt-serif",
+  subsets: ["cyrillic", "latin"],
+  weight: ["400", "700"],
+});
+
+const manrope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["cyrillic", "latin"],
+  weight: ["300", "400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -48,11 +61,12 @@ export default async function RootLayout({
   params: Promise<{ locale?: string }>;
 }>) {
   const { locale } = await params;
-  const htmlLang = locale === "jp" ? "ja" : "en";
+  const requestLocale = (await headers()).get("x-site-locale");
+  const htmlLang = requestLocale ?? (locale === "jp" ? "ja" : locale === "ru" ? "ru" : "en");
 
   return (
     <html lang={htmlLang}>
-      <body className={`${cormorant.variable} ${dmSans.variable} antialiased`}>
+        <body className={`${cormorant.variable} ${dmSans.variable} ${ptSerif.variable} ${manrope.variable} antialiased`}>
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`} strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
           {`

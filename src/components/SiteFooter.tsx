@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Locale, navItems } from "@/lib/i18n";
 
-export function SiteFooter({ locale }: { locale: Locale }) {
+export function SiteFooter({ locale, brandName = "Eva Gorobets" }: { locale: Locale; brandName?: string }) {
   const mainLinks = navItems.map((item) => ({ href: item.href, label: item.labels[locale] }));
 
   return (
@@ -27,7 +27,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
 
         {/* Zone 2 — Copyright + email */}
         <div className="flex flex-col gap-2 border-t border-black/[0.07] py-4 md:flex-row md:items-center md:justify-between">
-          <p className="label text-black/30">© {new Date().getFullYear()} Eva Gorobets</p>
+          <p className="label text-black/30">© {new Date().getFullYear()} {brandName}</p>
           <a href="mailto:eva@evagorobets.com" className="label text-black/55 hover:text-black transition-colors">
             eva@evagorobets.com
           </a>

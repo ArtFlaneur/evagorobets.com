@@ -18,6 +18,11 @@ const routes = [
   "/contact-booking",
 ];
 
+const mentoringRoutes = [
+  { url: `${base}/mentoring`, changeFrequency: "monthly" as const, priority: 0.9 },
+  { url: `${base}/en/mentoring`, changeFrequency: "monthly" as const, priority: 0.9 },
+];
+
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
@@ -43,6 +48,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "monthly",
     priority: 0.7,
   });
+
+  entries.push(...mentoringRoutes);
 
   return entries;
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  const requestHeaders = new Headers(req.headers);
 
   // Bypass: login page and auth API
   if (
@@ -21,9 +22,13 @@ export function proxy(req: NextRequest) {
     }
   }
 
-  return NextResponse.next();
+  if (pathname === "/mentoring" || pathname.startsWith("/mentoring/")) {
+    requestHeaders.set("x-site-locale", "ru");
+  }
+
+  return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/mentoring", "/mentoring/:path*"],
 };
