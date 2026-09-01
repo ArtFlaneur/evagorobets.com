@@ -142,6 +142,28 @@ h1, h2, h3, h4 {
   margin-top: 2rem;
 }
 
+.mentoring-newsletter-embed {
+  width: 100%;
+  max-width: 480px;
+  overflow: hidden;
+}
+
+.mentoring-newsletter-embed iframe {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  border: 0;
+}
+
+.mentoring-page main {
+  display: flex;
+  flex-direction: column;
+}
+
+.mentoring-page .mentoring-newsletter {
+  order: 1;
+}
+
 .mentoring-page .mentoring-logo-grid,
 .mentoring-page .mentoring-photo-grid {
   margin-top: 1rem;

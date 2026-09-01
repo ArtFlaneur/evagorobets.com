@@ -11,6 +11,7 @@ import { MobileMenu } from "@/components/MobileMenu";
 export function SiteHeader({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
+  const isMentoring = pathname === "/mentoring" || pathname === "/en/mentoring";
 
   // Hidden during black intro, appears when slideshow starts.
   // HeroSlideshow writes data-hero-phase="photo" on body when overlay slides away.
@@ -27,8 +28,8 @@ export function SiteHeader({ locale }: { locale: Locale }) {
   }, []);
 
   useEffect(() => {
-    if (!isHome) { setVisible(true); return; }
-    setVisible(false);
+    if (!isHome) return;
+    const frame = window.requestAnimationFrame(() => setVisible(false));
     const observer = new MutationObserver(() => {
       if (document.body.dataset.heroPhase === "photo") {
         setVisible(true);
@@ -36,11 +37,16 @@ export function SiteHeader({ locale }: { locale: Locale }) {
       }
     });
     observer.observe(document.body, { attributes: true, attributeFilter: ["data-hero-phase"] });
-    return () => observer.disconnect();
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
   }, [isHome]);
 
   const color = scrolled ? "rgba(0,0,0,0.65)" : "rgba(0,0,0,0.4)";
   const colorTransition = "color 0.3s ease";
+
+  if (isMentoring) return null;
 
   return (
     <header
